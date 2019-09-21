@@ -16,6 +16,9 @@
     "keywords": [
         "security"
     ],
+    "files": [
+        "index.js"
+    ],
     "author": "SlimIO",
     "license": "MIT",
     "bugs": {
@@ -23,7 +26,6 @@
     },
     "homepage": "https://github.com/SlimIO/Security#readme",
     "dependencies": {
-        "@slimio/async-cli-spinner": "^0.4.0",
         "@slimio/lock": "^0.3.0",
         "dotenv": "^8.1.0",
         "isomorphic-git": "^0.67.2",
