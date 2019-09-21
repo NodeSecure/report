@@ -6,19 +6,28 @@ require("make-promises-safe");
 
 // Require Node.js Dependencies
 const { join, dirname } = require("path");
-const { mkdir, writeFile, readFile } = require("fs").promises;
+const fs = require("fs");
+const { mkdir, writeFile } = require("fs").promises;
 
 // Require Third-party Dependencies
 const Lock = require("@slimio/lock");
 const Spinner = require("@slimio/async-cli-spinner");
+const git = require("isomorphic-git");
 const { from } = require("nsecure");
 const { cyan, yellow, white } = require("kleur");
+const premove = require("premove");
+
+// Require Internal Dependencies
+const { linkPackages } = require("./src/utils");
 
 // Vars
 const securityLock = new Lock({ maxConcurrent: 2 });
 Spinner.DEFAULT_SPINNER = "dots";
+git.plugins.set("fs", fs);
 
 // CONSTANTS
+const ORGA_URL = "https://github.com/SlimIO";
+const CLONE_DIR = join(__dirname, "clones");
 const JSON_DIR = join(__dirname, "json");
 const NPM_ADDONS = [
     "@slimio/addon",
@@ -35,6 +44,33 @@ const NPM_ADDONS = [
     "@slimio/ipc",
     "@slimio/safe-emitter"
 ];
+
+const BUILTIN_ADDONS = [
+    "Events",
+    "Aggregator",
+    "Alerting",
+    "Socket",
+    "Gate"
+];
+
+/**
+ * @async
+ * @function cloneRep
+ * @param {!string} repName
+ * @returns {Promise<string>}
+ */
+async function cloneRep(repName) {
+    const dir = join(CLONE_DIR, repName);
+    const url = `${ORGA_URL}/${repName}`;
+
+    await git.clone({
+        dir, url, token,
+        singleBranch: true,
+        oauth2format: "github"
+    });
+
+    return dir;
+}
 
 /**
  * @async
@@ -75,48 +111,17 @@ async function runSecure(packageName) {
 async function main() {
     await mkdir(JSON_DIR, { recursive: true });
 
+    const repos = await Promise.all(BUILTIN_ADDONS.map(cloneRep));
+    console.log(repos);
+    console.log("all clone successfully done!");
+
     const spinner = new Spinner().start(white().bold("Fetching all repositories with nsecure..."));
     const jsonFiles = await Promise.all(NPM_ADDONS.map(runSecure));
     const elapsed = `${spinner.elapsedTime.toFixed(2)}ms`;
     spinner.succeed(`Successfully fetched in ${cyan().bold(elapsed)}`);
     console.log("");
 
-    const pkgStats = new Map();
-    for (const file of jsonFiles) {
-        const buf = await readFile(file);
-        const stats = JSON.parse(buf.toString());
-
-        for (const [name, descriptor] of Object.entries(stats)) {
-            const { versions } = descriptor;
-
-            if (pkgStats.has(name)) {
-                const curr = pkgStats.get(name);
-
-                for (const lVer of versions) {
-                    curr.versions.add(lVer);
-                    const hasIndirectDependencies = descriptor[lVer].flags.hasIndirectDependencies;
-                    curr[lVer] = {
-                        hasIndirectDependencies
-                    };
-                }
-            }
-            else {
-                const ref = {
-                    internal: name.startsWith("@slimio/"),
-                    versions: new Set(versions)
-                };
-
-                for (const lVer of versions) {
-                    const hasIndirectDependencies = descriptor[lVer].flags.hasIndirectDependencies;
-                    ref[lVer] = {
-                        hasIndirectDependencies
-                    };
-                }
-
-                pkgStats.set(name, ref);
-            }
-        }
-    }
+    const pkgStats = linkPackages(jsonFiles);
 
     let internalPkgCount = 0;
     const pkgWithTransitiveDeps = new Set();
@@ -144,5 +149,7 @@ async function main() {
     console.log(`\nNumber of packages with transitive dependencies: ${cyan().bold(pkgWithTransitiveDeps.size)}`);
     // eslint-disable-next-line prefer-template
     console.log(" - " + [...pkgWithTransitiveDeps].join("\n - "));
+
+    await premove(CLONE_DIR);
 }
 main().catch(console.error);
