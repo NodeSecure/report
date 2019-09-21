@@ -5,67 +5,55 @@ require("dotenv").config();
 require("make-promises-safe");
 
 // Require Node.js Dependencies
-const fs = require("fs");
-const { join, basename } = require("path");
+const { join, dirname } = require("path");
 const { mkdir, writeFile, readFile } = require("fs").promises;
 
 // Require Third-party Dependencies
 const Lock = require("@slimio/lock");
-const nsecure = require("nsecure");
-const git = require("isomorphic-git");
-const premove = require("premove");
+const Spinner = require("@slimio/async-cli-spinner");
+const { from } = require("nsecure");
+const { cyan, yellow, white } = require("kleur");
 
 // Vars
-git.plugins.set("fs", fs);
-const securityLock = new Lock({ maxConcurrent: 1 });
-const token = process.env.GIT_TOKEN;
+const securityLock = new Lock({ maxConcurrent: 2 });
+Spinner.DEFAULT_SPINNER = "dots";
 
 // CONSTANTS
-const ORGA_URL = "https://github.com/SlimIO";
-const CLONE_DIR = join(__dirname, "clones");
 const JSON_DIR = join(__dirname, "json");
-const TOFETCH = [
-    "Addon",
-    "Scheduler",
-    "Config"
+const NPM_ADDONS = [
+    "@slimio/addon",
+    "@slimio/scheduler",
+    "@slimio/config",
+    "@slimio/core",
+    "@slimio/arg-parser",
+    "@slimio/profiles",
+    "@slimio/queue",
+    "@slimio/sqlite-transaction",
+    "@slimio/alert",
+    "@slimio/metrics",
+    "@slimio/units",
+    "@slimio/ipc",
+    "@slimio/safe-emitter"
 ];
 
 /**
  * @async
- * @function cloneRep
- * @param {!string} repName
- * @returns {Promise<string>}
- */
-async function cloneRep(repName) {
-    const dir = join(CLONE_DIR, repName);
-    const url = `${ORGA_URL}/${repName}`;
-
-    await git.clone({
-        dir, url, token,
-        singleBranch: true,
-        oauth2format: "github"
-    });
-
-    return dir;
-}
-
-/**
- * @async
  * @function runSecure
- * @param {!string} dir
+ * @param {!string} packageName
  * @returns {Promise<string>}
  */
-async function runSecure(dir) {
+async function runSecure(packageName) {
     await securityLock.acquireOne();
 
     try {
-        const name = `${basename(dir)}.json`;
-        const payload = await nsecure(dir, {
+        const name = `${packageName}.json`;
+        const payload = await from(packageName, {
             maxDepth: 4, verbose: false
         });
 
         const result = JSON.stringify(Object.fromEntries(payload), null, 2);
         const filePath = join(JSON_DIR, name);
+        await mkdir(dirname(filePath), { recursive: true });
         await writeFile(filePath, result);
 
         return filePath;
@@ -85,49 +73,76 @@ async function runSecure(dir) {
  * @function main
  */
 async function main() {
-    await Promise.all([
-        mkdir(CLONE_DIR, { recursive: true }),
-        mkdir(JSON_DIR, { recursive: true })
-    ]);
+    await mkdir(JSON_DIR, { recursive: true });
 
-    try {
-        const dirs = await Promise.all(TOFETCH.map(cloneRep));
-        console.log("all clone successfully done!");
+    const spinner = new Spinner().start(white().bold("Fetching all repositories with nsecure..."));
+    const jsonFiles = await Promise.all(NPM_ADDONS.map(runSecure));
+    const elapsed = `${spinner.elapsedTime.toFixed(2)}ms`;
+    spinner.succeed(`Successfully fetched in ${cyan().bold(elapsed)}`);
+    console.log("");
 
-        const jsonFiles = await Promise.all(dirs.map(runSecure));
-        console.log("security analysis done!");
-        const pkgStats = new Map();
+    const pkgStats = new Map();
+    for (const file of jsonFiles) {
+        const buf = await readFile(file);
+        const stats = JSON.parse(buf.toString());
 
-        for (const file of jsonFiles) {
-            console.log(file);
-            const buf = await readFile(file);
-            const stats = JSON.parse(buf.toString());
+        for (const [name, descriptor] of Object.entries(stats)) {
+            const { versions } = descriptor;
 
-            for (const [name, descriptor] of Object.entries(stats)) {
-                const { versions } = descriptor;
+            if (pkgStats.has(name)) {
+                const curr = pkgStats.get(name);
 
-                if (pkgStats.has(name)) {
-                    const curr = pkgStats.get(name);
-                    versions.forEach((version) => curr.versions.add(version));
-                }
-                else {
-                    const ref = { versions: new Set(versions) };
-                    for (const lVer of versions) {
-                        const hasIndirectDependencies = descriptor[lVer].flags.hasIndirectDependencies;
-                        ref[lVer] = {
-                            hasIndirectDependencies
-                        };
-                    }
-
-                    pkgStats.set(name, ref);
+                for (const lVer of versions) {
+                    curr.versions.add(lVer);
+                    const hasIndirectDependencies = descriptor[lVer].flags.hasIndirectDependencies;
+                    curr[lVer] = {
+                        hasIndirectDependencies
+                    };
                 }
             }
+            else {
+                const ref = {
+                    internal: name.startsWith("@slimio/"),
+                    versions: new Set(versions)
+                };
+
+                for (const lVer of versions) {
+                    const hasIndirectDependencies = descriptor[lVer].flags.hasIndirectDependencies;
+                    ref[lVer] = {
+                        hasIndirectDependencies
+                    };
+                }
+
+                pkgStats.set(name, ref);
+            }
+        }
+    }
+
+    let internalPkgCount = 0;
+    const pkgWithTransitiveDeps = new Set();
+    const thirdPartyPackages = new Set();
+    for (const [name, pkg] of pkgStats.entries()) {
+        if (pkg.internal) {
+            internalPkgCount++;
+            continue;
         }
 
-        console.log(pkgStats);
+        thirdPartyPackages.add(name);
+        for (const version of pkg.versions) {
+            if (pkg[version].hasIndirectDependencies) {
+                pkgWithTransitiveDeps.add(yellow().bold(`${name}@${version}`));
+            }
+        }
     }
-    finally {
-        await premove(CLONE_DIR);
-    }
+    const externalPkgCount = pkgStats.size - internalPkgCount;
+
+    console.log(`Number of SlimIO npm packages: ${cyan().bold(internalPkgCount)}`);
+    console.log(`Number of Third-party npm packages: ${cyan().bold(externalPkgCount)}`);
+    // eslint-disable-next-line prefer-template
+    console.log(" - " + [...thirdPartyPackages].join("\n - "));
+
+    console.log(`\nNumber of packages with transitive dependencies: ${cyan().bold(pkgWithTransitiveDeps.size)}`);
+    // eslint-disable-next-line prefer-template
+    console.log(" - " + [...pkgWithTransitiveDeps].join("\n - "));
 }
 main().catch(console.error);
