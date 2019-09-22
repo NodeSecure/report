@@ -3,6 +3,9 @@
 // Require Node.js Dependencies
 const { readFile } = require("fs").promises;
 
+// Require Third-party Dependencies
+const { yellow } = require("kleur");
+
 /**
  * @async
  * @function linkPackages
@@ -20,7 +23,7 @@ async function linkPackages(files) {
             const { versions } = descriptor;
 
             if (result.has(name)) {
-                const curr = pkgStats.get(name);
+                const curr = result.get(name);
 
                 for (const lVer of versions) {
                     curr.versions.add(lVer);
@@ -51,4 +54,31 @@ async function linkPackages(files) {
     return result;
 }
 
-module.exports = { linkPackages };
+/**
+ * @function stats
+ * @param {*} stats
+ */
+function stats(stats) {
+    const ref = { internal: 0, external: 0 };
+    const third = new Set();
+    const transitive = new Set();
+
+    for (const [name, pkg] of stats.entries()) {
+        if (pkg.internal) {
+            ref.internal++;
+            continue;
+        }
+
+        third.add(name);
+        for (const version of pkg.versions) {
+            if (pkg[version].hasIndirectDependencies) {
+                transitive.add(yellow().bold(`${name}@${version}`));
+            }
+        }
+    }
+    ref.external = stats.size - ref.internal;
+
+    return Object.assign({ third, transitive }, ref);
+}
+
+module.exports = { linkPackages, stats };

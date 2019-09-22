@@ -5,7 +5,7 @@ require("dotenv").config();
 require("make-promises-safe");
 
 // Require Node.js Dependencies
-const { join, dirname } = require("path");
+const { join, dirname, basename } = require("path");
 const fs = require("fs");
 const { mkdir, writeFile } = require("fs").promises;
 
@@ -13,14 +13,15 @@ const { mkdir, writeFile } = require("fs").promises;
 const Lock = require("@slimio/lock");
 const Spinner = require("@slimio/async-cli-spinner");
 const git = require("isomorphic-git");
-const { from } = require("nsecure");
-const { cyan, yellow, white } = require("kleur");
+const { from, cwd } = require("nsecure");
+const { cyan, yellow, white, grey } = require("kleur");
 const premove = require("premove");
 
 // Require Internal Dependencies
-const { linkPackages } = require("./src/utils");
+const { linkPackages, stats } = require("./src/utils");
 
 // Vars
+const token = process.env.GIT_TOKEN;
 const securityLock = new Lock({ maxConcurrent: 2 });
 Spinner.DEFAULT_SPINNER = "dots";
 git.plugins.set("fs", fs);
@@ -46,7 +47,6 @@ const NPM_ADDONS = [
 ];
 
 const BUILTIN_ADDONS = [
-    "Events",
     "Aggregator",
     "Alerting",
     "Socket",
@@ -78,7 +78,7 @@ async function cloneRep(repName) {
  * @param {!string} packageName
  * @returns {Promise<string>}
  */
-async function runSecure(packageName) {
+async function runSecurePackage(packageName) {
     await securityLock.acquireOne();
 
     try {
@@ -95,8 +95,6 @@ async function runSecure(packageName) {
         return filePath;
     }
     catch (error) {
-        console.error(error);
-
         return null;
     }
     finally {
@@ -106,50 +104,116 @@ async function runSecure(packageName) {
 
 /**
  * @async
+ * @function runSecureDir
+ * @param {!string} dir
+ * @returns {Promise<string>}
+ */
+async function runSecureDir(dir) {
+    await securityLock.acquireOne();
+
+    try {
+        const name = `${basename(dir)}.json`;
+        const payload = await cwd(dir, {
+            maxDepth: 4, verbose: false
+        });
+
+        const result = JSON.stringify(Object.fromEntries(payload), null, 2);
+        const filePath = join(JSON_DIR, name);
+        await writeFile(filePath, result);
+
+        return filePath;
+    }
+    catch (error) {
+        return null;
+    }
+    finally {
+        securityLock.freeOne();
+    }
+}
+
+/**
+ * @async
+ * @function fetchPackagesStats
+ * @returns {Map<string, any>}
+ */
+async function fetchPackagesStats() {
+    const spinner = new Spinner({
+        prefixText: white().bold("Fetching packages stats on nsecure")
+    }).start();
+
+    try {
+        const jsonFiles = await Promise.all(NPM_ADDONS.map(runSecurePackage));
+
+        const elapsed = `${spinner.elapsedTime.toFixed(2)}ms`;
+        spinner.succeed(`Successfully done in ${cyan().bold(elapsed)}`);
+        console.log("");
+
+        return linkPackages(jsonFiles);
+    }
+    catch (error) {
+        spinner.failed(error.message);
+        throw error;
+    }
+}
+
+/**
+ * @async
  * @function main
  */
 async function main() {
-    await mkdir(JSON_DIR, { recursive: true });
+    await Promise.all([
+        mkdir(JSON_DIR, { recursive: true }),
+        mkdir(CLONE_DIR, { recursive: true })
+    ]);
 
-    const repos = await Promise.all(BUILTIN_ADDONS.map(cloneRep));
-    console.log(repos);
-    console.log("all clone successfully done!");
+    const spinner = new Spinner({
+        prefixText: white().bold("Clone and analyze built-in addons")
+    }).start("clone repositories...");
 
-    const spinner = new Spinner().start(white().bold("Fetching all repositories with nsecure..."));
-    const jsonFiles = await Promise.all(NPM_ADDONS.map(runSecure));
-    const elapsed = `${spinner.elapsedTime.toFixed(2)}ms`;
-    spinner.succeed(`Successfully fetched in ${cyan().bold(elapsed)}`);
-    console.log("");
+    let builtInThird;
+    try {
+        const repos = await Promise.all(BUILTIN_ADDONS.map(cloneRep));
+        spinner.text = "Run node-secure analyze";
 
-    const pkgStats = linkPackages(jsonFiles);
+        const jsonFiles = await Promise.all(repos.map(runSecureDir));
 
-    let internalPkgCount = 0;
-    const pkgWithTransitiveDeps = new Set();
-    const thirdPartyPackages = new Set();
-    for (const [name, pkg] of pkgStats.entries()) {
-        if (pkg.internal) {
-            internalPkgCount++;
-            continue;
-        }
+        const nMap = await linkPackages(jsonFiles.filter((value) => value !== null));
+        const fStats = stats(nMap);
+        spinner.succeed(`Successfully done in ${spinner.elapsedTime.toFixed(2)}ms`);
 
-        thirdPartyPackages.add(name);
-        for (const version of pkg.versions) {
-            if (pkg[version].hasIndirectDependencies) {
-                pkgWithTransitiveDeps.add(yellow().bold(`${name}@${version}`));
-            }
-        }
+        console.log(grey().bold("\n----------------------------------"));
+        console.log(white().bold("SlimIO built-in stats:\n"));
+        console.log(`Number of Third-party npm packages: ${cyan().bold(fStats.external)}`);
+        // eslint-disable-next-line prefer-template
+        console.log(" - " + [...fStats.third].join("\n - "));
+        builtInThird = fStats.third;
+
+        console.log(`\nNumber of packages with transitive dependencies: ${cyan().bold(fStats.transitive.size)}`);
+        // eslint-disable-next-line prefer-template
+        console.log(" - " + [...fStats.transitive].join("\n - "));
+        console.log("\n");
     }
-    const externalPkgCount = pkgStats.size - internalPkgCount;
+    catch (error) {
+        spinner.failed(error.message);
+        throw error;
+    }
+    finally {
+        await premove(CLONE_DIR);
+    }
 
-    console.log(`Number of SlimIO npm packages: ${cyan().bold(internalPkgCount)}`);
-    console.log(`Number of Third-party npm packages: ${cyan().bold(externalPkgCount)}`);
+    const pkgStats = await fetchPackagesStats();
+    const fStats = stats(pkgStats);
+
+    console.log(grey().bold("----------------------------------"));
+    console.log(white().bold("SlimIO packages stats:\n"));
+    console.log(`Number of SlimIO npm packages: ${cyan().bold(fStats.internal)}`);
+    console.log(`Number of Third-party npm packages: ${cyan().bold(fStats.external)}`);
+    console.log("List (with dedup filtered):");
     // eslint-disable-next-line prefer-template
-    console.log(" - " + [...thirdPartyPackages].join("\n - "));
+    console.log(" - " + [...fStats.third].filter((name) => !builtInThird.has(name)).join("\n - "));
 
-    console.log(`\nNumber of packages with transitive dependencies: ${cyan().bold(pkgWithTransitiveDeps.size)}`);
+    console.log(`\nNumber of packages with transitive dependencies: ${cyan().bold(fStats.transitive.size)}`);
     // eslint-disable-next-line prefer-template
-    console.log(" - " + [...pkgWithTransitiveDeps].join("\n - "));
-
-    await premove(CLONE_DIR);
+    console.log(" - " + [...fStats.transitive].join("\n - "));
 }
 main().catch(console.error);
