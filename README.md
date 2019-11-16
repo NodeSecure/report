@@ -28,7 +28,16 @@ TBC
 TBC
 
 ## Dependencies
-This project have no dependencies.
+
+|Name|Refactoring|Security Risk|Usage|
+|---|---|---|---|
+|[@slimio/async-cli-spinner](https://github.com/SlimIO/Async-cli-spinner)|Minor|Low|Elegant Asynchronous Terminal (CLI) Spinner|
+|[@slimio/lock](https://github.com/SlimIO/Lock)|Minor|Low|Semaphore for async/await|
+|[dotenv](https://github.com/motdotla/dotenv)|Minor|Low|Loads environment variables from .env|
+|[isomorphic-git](https://isomorphic-git.org/)|Minor|High|TBC|
+|[kleur](https://github.com/lukeed/kleur)|Minor|Low|The fastest Node.js library for formatting terminal text with ANSI colors|
+|[make-promises-safe](https://github.com/mcollina/make-promises-safe)|⚠️Major|Low|Force Node.js [DEP00018](https://nodejs.org/dist/latest-v8.x/docs/api/deprecations.html#deprecations_dep0018_unhandled_promise_rejections)|
+|[nsecure](https://github.com/ES-Community/node-secure#readme)|Minor|High|TBC|
 
 ## License
 MIT

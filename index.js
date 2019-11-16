@@ -7,15 +7,14 @@ require("make-promises-safe");
 // Require Node.js Dependencies
 const { join, dirname, basename } = require("path");
 const fs = require("fs");
-const { mkdir, writeFile } = require("fs").promises;
+const { mkdir, writeFile, rmdir } = require("fs").promises;
 
 // Require Third-party Dependencies
 const Lock = require("@slimio/lock");
 const Spinner = require("@slimio/async-cli-spinner");
 const git = require("isomorphic-git");
 const { from, cwd } = require("nsecure");
-const { cyan, yellow, white, grey } = require("kleur");
-const premove = require("premove");
+const { cyan, white, grey } = require("kleur");
 
 // Require Internal Dependencies
 const { linkPackages, stats } = require("./src/utils");
@@ -198,7 +197,7 @@ async function main() {
         throw error;
     }
     finally {
-        await premove(CLONE_DIR);
+        await rmdir(CLONE_DIR, { recursive: true });
     }
 
     const pkgStats = await fetchPackagesStats();
