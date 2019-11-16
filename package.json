@@ -49,7 +49,7 @@
         "jest": "^24.9.0"
     },
     "engines": {
-        "node": ">=10"
+        "node": ">=12"
     },
     "husky": {
         "hooks": {
