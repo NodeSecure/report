@@ -3,7 +3,8 @@
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/SlimIO/security/commit-activity)
 ![MIT](https://img.shields.io/github/license/mashape/apistatus.svg)
 ![dep](https://img.shields.io/david/SlimIO/security)
-![size](https://img.shields.io/bundlephobia/min/@slimio/security.svg?style=flat)
+![size](https://img.shields.io/github/languages/code-size/SlimIO/Security)
+![known vulnerabilities](https://img.shields.io/snyk/vulnerabilities/github/SlimIO/Security)
 
 Security Global Reports
 
