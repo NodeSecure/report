@@ -8,7 +8,7 @@
 [![Build Status](https://travis-ci.com/SlimIO/Security.svg?branch=master)](https://travis-ci.com/SlimIO/Security)
 [![Greenkeeper badge](https://badges.greenkeeper.io/SlimIO/Security.svg)](https://greenkeeper.io/)
 
-Security Global Reports
+This project has been created to analyze and detect dependencies security issues with the help of nsecure.
 
 ## Requirements
 - [Node.js](https://nodejs.org/en/) v12 or higher
@@ -18,17 +18,23 @@ Security Global Reports
 This package is available in the Node Package Repository and can be easily installed with [npm](https://docs.npmjs.com/getting-started/what-is-npm) or [yarn](https://yarnpkg.com).
 
 ```bash
-$ npm i @slimio/security
-# or
-$ yarn add @slimio/security
+$ git clone https://github.com/SlimIO/Security.git
+$ cd Security
+$ npm ci
+$ npm start
 ```
 
+## Environment Variables
 
-## Usage example
-TBC
+To configure the project you have to register (set) environment variables on your system. These variables can be set in a **.env** file (that file must be created at the root of the project).
+```
+GIT_TOKEN=
+NODE_SECURE_TOKEN=
+```
 
-## API
-TBC
+To known how to get a **GIT_TOKEN** or how to register environment variables follow our [Governance Guide](https://github.com/SlimIO/Governance/blob/master/docs/tooling.md#environment-variables).
+
+> For NODE_SECURE_TOKEN, please check the [nsecure documentation](https://github.com/ES-Community/nsecure#fetching-private-packages).
 
 ## Dependencies
 
@@ -37,10 +43,10 @@ TBC
 |[@slimio/async-cli-spinner](https://github.com/SlimIO/Async-cli-spinner)|Minor|Low|Elegant Asynchronous Terminal (CLI) Spinner|
 |[@slimio/lock](https://github.com/SlimIO/Lock)|Minor|Low|Semaphore for async/await|
 |[dotenv](https://github.com/motdotla/dotenv)|Minor|Low|Loads environment variables from .env|
-|[isomorphic-git](https://isomorphic-git.org/)|Minor|High|TBC|
+|[isomorphic-git](https://isomorphic-git.org/)|Minor|High|A pure JavaScript implementation of git for node and browsers!|
 |[kleur](https://github.com/lukeed/kleur)|Minor|Low|The fastest Node.js library for formatting terminal text with ANSI colors|
 |[make-promises-safe](https://github.com/mcollina/make-promises-safe)|⚠️Major|Low|Force Node.js [DEP00018](https://nodejs.org/dist/latest-v8.x/docs/api/deprecations.html#deprecations_dep0018_unhandled_promise_rejections)|
-|[nsecure](https://github.com/ES-Community/node-secure#readme)|Minor|High|TBC|
+|[nsecure](https://github.com/ES-Community/node-secure#readme)|Minor|High|Node.js security CLI / API that allow you to deeply analyze the dependency tree of a given package / directory|
 
 ## License
 MIT
