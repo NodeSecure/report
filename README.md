@@ -5,6 +5,7 @@
 ![dep](https://img.shields.io/david/SlimIO/security)
 ![size](https://img.shields.io/github/languages/code-size/SlimIO/Security)
 ![known vulnerabilities](https://img.shields.io/snyk/vulnerabilities/github/SlimIO/Security)
+[![Build Status](https://travis-ci.com/SlimIO/Security.svg?branch=master)](https://travis-ci.com/SlimIO/Security)
 
 Security Global Reports
 
