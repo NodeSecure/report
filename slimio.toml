@@ -1,3 +1,6 @@
 name = "security"
 version = "1.0.0"
 type = "Degraded"
+
+[psp]
+exclude=["json"]
