@@ -1,0 +1,26 @@
+{
+    "ORG": "SlimIO",
+    "ADDONS": [
+        "@slimio/addon",
+        "@slimio/scheduler",
+        "@slimio/config",
+        "@slimio/core",
+        "@slimio/arg-parser",
+        "@slimio/profiles",
+        "@slimio/queue",
+        "@slimio/sqlite-transaction",
+        "@slimio/alert",
+        "@slimio/metrics",
+        "@slimio/units",
+        "@slimio/ipc",
+        "@slimio/safe-emitter"
+    ],
+    "REPOS": [
+        "Aggregator",
+        "Alerting",
+        "Socket",
+        "Gate",
+        "Events",
+        "ihm"
+    ]
+}

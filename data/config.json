@@ -1,0 +1,10 @@
+{
+    "ORG": "SlimIO",
+    "ADDONS": [
+        "@slimio/addon",
+        "@slimio/scheduler"
+    ],
+    "REPOS": [
+        "Aggregator"
+    ]
+}
