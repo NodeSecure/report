@@ -32,7 +32,7 @@
         "isomorphic-git": "^0.78.4",
         "kleur": "^3.0.3",
         "make-promises-safe": "^5.1.0",
-        "nsecure": "^0.4.0"
+        "nsecure": "^0.4.1"
     },
     "devDependencies": {
         "@commitlint/cli": "^8.3.5",
