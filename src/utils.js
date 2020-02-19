@@ -1,3 +1,4 @@
+/* eslint-disable max-depth */
 "use strict";
 
 // Require Node.js Dependencies
@@ -8,6 +9,7 @@ const { mkdir, writeFile, readFile } = require("fs").promises;
 // Require Third-party Dependencies
 const Lock = require("@slimio/lock");
 const git = require("isomorphic-git");
+const parseAuthor = require("parse-author");
 const { from, cwd } = require("nsecure");
 const { yellow } = require("kleur");
 
@@ -24,80 +26,112 @@ const token = process.env.GIT_TOKEN;
 const securityLock = new Lock({ maxConcurrent: 2 });
 git.plugins.set("fs", fs);
 
-/**
- * @async
- * @function linkPackages
- * @param {string[]} files
- * @returns {Map<string, any>}
- */
-async function linkPackages(files) {
-    const result = new Map();
-
-    for (const file of files) {
-        const buf = await readFile(file);
-        const stats = JSON.parse(buf.toString());
-
-        for (const [name, descriptor] of Object.entries(stats)) {
-            const { versions } = descriptor;
-
-            if (result.has(name)) {
-                const curr = result.get(name);
-
-                for (const lVer of versions) {
-                    curr.versions.add(lVer);
-                    const hasIndirectDependencies = descriptor[lVer].flags.hasIndirectDependencies;
-                    curr[lVer] = {
-                        hasIndirectDependencies
-                    };
-                }
-            }
-            else {
-                const ref = {
-                    internal: name.startsWith("@slimio/"),
-                    versions: new Set(versions)
-                };
-
-                for (const lVer of versions) {
-                    const hasIndirectDependencies = descriptor[lVer].flags.hasIndirectDependencies;
-                    ref[lVer] = {
-                        hasIndirectDependencies
-                    };
-                }
-
-                result.set(name, ref);
-            }
-        }
+function formatBytes(bytes, decimals) {
+    if (bytes === 0) {
+        return "0 B";
     }
+    const dm = decimals <= 0 ? 0 : decimals || 2;
+    const sizes = ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
+    const id = Math.floor(Math.log(bytes) / Math.log(1024));
 
-    return result;
+    // eslint-disable-next-line
+    return parseFloat((bytes / Math.pow(1024, id)).toFixed(dm)) + ' ' + sizes[id];
 }
 
-/**
- * @function stats
- * @param {*} stats
- * @returns {object}
- */
-function stats(stats) {
-    const ref = { internal: 0, external: 0 };
-    const third = new Set();
-    const transitive = new Set();
+async function fetchStatsFromNsecurePayloads(payloadFiles = []) {
+    const stats = {
+        slimioPackagesCount: 0,
+        thirdPartyPackagesCount: 0,
+        allPackagesSize: 0,
+        thirdSize: 0,
+        slimioSize: 0,
+        hasTransitiveDeps: new Set(),
+        nodeCoreDep: new Set(),
+        licenses: {
+            Unknown: 0
+        },
+        extensions: {},
+        authors: new Set(),
+        packages: {}
+    };
 
-    for (const [name, pkg] of stats.entries()) {
-        if (pkg.internal) {
-            ref.internal++;
-            continue;
-        }
+    for (const file of payloadFiles) {
+        const buf = await readFile(file);
 
-        third.add(name);
-        for (const version of pkg.versions) {
-            if (pkg[version].hasIndirectDependencies) {
-                transitive.add(yellow().bold(`${name}@${version}`));
+        /** @type {NodeSecure.Payload} */
+        const nsecurePayload = JSON.parse(buf.toString());
+
+        for (const [name, descriptor] of Object.entries(nsecurePayload)) {
+            const { versions } = descriptor;
+            const isThird = !name.startsWith("@slimio/");
+
+            if (!(name in stats.packages)) {
+                if (isThird) {
+                    stats.thirdPartyPackagesCount++;
+                }
+                stats.packages[name] = { isThird, versions: new Set() };
+            }
+
+            const curr = stats.packages[name];
+            for (const localVersion of versions) {
+                if (curr.versions.has(localVersion)) {
+                    continue;
+                }
+                const { size, composition, license, author } = descriptor[localVersion];
+
+                stats.allPackagesSize += size;
+                stats[isThird ? "thirdSize" : "slimioSize"] += size;
+                composition.required_builtin.forEach((dep) => stats.nodeCoreDep.add(dep));
+                for (const extName of composition.extensions.filter((extName) => extName !== "")) {
+                    stats.extensions[extName] = Reflect.has(stats.extensions, extName) ? ++stats.extensions[extName] : 1;
+                }
+
+                if (typeof license === "string") {
+                    stats.licenses.Unknown++;
+                }
+                else {
+                    for (const licenseName of license.uniqueLicenseIds) {
+                        stats.licenses[licenseName] = Reflect.has(stats.licenses, licenseName) ?
+                            ++stats.licenses[licenseName] : 1;
+                    }
+                }
+
+                const parsedAuthor = parseNsecureAuthor(author);
+                if (parsedAuthor !== null && Reflect.has(parsedAuthor, "email")) {
+                    stats.authors.add(parseAuthor.email);
+                }
+
+                curr.versions.add(localVersion);
+                const hasIndirectDependencies = descriptor[localVersion].flags.hasIndirectDependencies;
+                if (hasIndirectDependencies) {
+                    stats.hasTransitiveDeps.add(`${name}@${localVersion}`);
+                }
+                curr[localVersion] = { hasIndirectDependencies };
             }
         }
     }
-    ref.external = stats.size - ref.internal;
 
-    return Object.assign({ third, transitive }, ref);
+    // Calcule the number of internal dep!
+    stats.slimioPackagesCount = Object.keys(stats.packages).length - stats.thirdPartyPackagesCount;
+    stats.allPackagesSize = formatBytes(stats.allPackagesSize);
+    stats.slimioSize = formatBytes(stats.slimioSize);
+    stats.thirdSize = formatBytes(stats.thirdSize);
+
+    return stats;
+}
+
+function parseNsecureAuthor(author) {
+    if (author === "N/A") {
+        return null;
+    }
+    if (typeof author === "string") {
+        return parseAuthor(author);
+    }
+    if (typeof author.name !== "string") {
+        return null;
+    }
+
+    return { name: author.name, email: author.email || null, url: author.url || null };
 }
 
 /**
@@ -180,8 +214,7 @@ async function onLocalDirectory(dir) {
 }
 
 module.exports = {
-    linkPackages,
-    stats,
+    fetchStatsFromNsecurePayloads,
     cloneGITRepository,
     nsecure: Object.freeze({
         onPackage, onLocalDirectory
