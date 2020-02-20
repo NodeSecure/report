@@ -11,7 +11,6 @@ const Lock = require("@slimio/lock");
 const git = require("isomorphic-git");
 const parseAuthor = require("parse-author");
 const { from, cwd } = require("nsecure");
-const { yellow } = require("kleur");
 
 // Require Internal Dependencies
 const config = require("../data/config.json");
@@ -97,8 +96,8 @@ async function fetchStatsFromNsecurePayloads(payloadFiles = []) {
                 }
 
                 const parsedAuthor = parseNsecureAuthor(author);
-                if (parsedAuthor !== null && Reflect.has(parsedAuthor, "email")) {
-                    stats.authors.add(parseAuthor.email);
+                if (parsedAuthor !== null && "email" in parsedAuthor) {
+                    stats.authors.add(parsedAuthor.email);
                 }
 
                 curr.versions.add(localVersion);
@@ -113,9 +112,6 @@ async function fetchStatsFromNsecurePayloads(payloadFiles = []) {
 
     // Calcule the number of internal dep!
     stats.slimioPackagesCount = Object.keys(stats.packages).length - stats.thirdPartyPackagesCount;
-    stats.allPackagesSize = formatBytes(stats.allPackagesSize);
-    stats.slimioSize = formatBytes(stats.slimioSize);
-    stats.thirdSize = formatBytes(stats.thirdSize);
 
     return stats;
 }
@@ -216,6 +212,7 @@ async function onLocalDirectory(dir) {
 module.exports = {
     fetchStatsFromNsecurePayloads,
     cloneGITRepository,
+    formatBytes,
     nsecure: Object.freeze({
         onPackage, onLocalDirectory
     })
