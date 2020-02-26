@@ -187,34 +187,35 @@
     </section>
 </div>
 
-<script>
-    let ctl = document.getElementById('myChartLi').getContext('2d');
-    var chartLi = new Chart(ctl, {
-        type: 'pie',
-        data: {
-            labels: ['MIT:14', 'Unknown:0'],
-            datasets: [{
-                label: 'Licenses',
-                backgroundColor: ['#33D5FF', '#F9FF90'],
-                data: [14, 0]
-            }]
-        },
-        options: {}
-    });
-</script>
+<script type="text/javascript" defer>
+    document.addEventListener("DOMContentLoaded", () => {
+        const chartExtensions = document.getElementById("myChartEx").getContext("2d");
+        const chartLicenses = document.getElementById("myChartLi").getContext("2d");
 
-<script>
-    let ctx = document.getElementById('myChartEx').getContext('2d');
-    var chartEx = new Chart(ctx, {
-        type: 'pie',
-        data: {
-            labels: ['.yml:2', '.md:14', '.js:14', '.json:14', '.ts:9', '.toml:2'],
-            datasets: [{
-                label: 'Licenses',
-                backgroundColor: ['#33D5FF', '#33A7FF', '#F9FF90', '#C983FF', '#83FF84', '#FF83A8'],
-                data: [2, 14, 14, 14, 9, 2]
-            }]
-        },
-        options: {}
+        new Chart(chartLicenses, {
+            type: 'pie',
+            data: {
+                labels: ['MIT:14', 'Unknown:0'],
+                datasets: [{
+                    label: 'Licenses',
+                    backgroundColor: ['#33D5FF', '#F9FF90'],
+                    data: [14, 0]
+                }]
+            },
+            options: {}
+        });
+
+        new Chart(chartExtensions, {
+            type: 'pie',
+            data: {
+                labels: ['.yml:2', '.md:14', '.js:14', '.json:14', '.ts:9', '.toml:2'],
+                datasets: [{
+                    label: 'Extensions',
+                    backgroundColor: ['#33D5FF', '#33A7FF', '#F9FF90', '#C983FF', '#83FF84', '#FF83A8'],
+                    data: [2, 14, 14, 14, 9, 2]
+                }]
+            },
+            options: {}
+        });
     });
 </script>
