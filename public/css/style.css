@@ -1,0 +1,107 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,700,700i&display=swap');
+
+
+body {
+  position: relative;
+  width: 900px;
+}
+
+.head {
+  background-color: #607D8B;
+  border-bottom: 4mm ridge #607D8B;
+  border-radius: 5px;
+  text-align: center;
+}
+
+h2 {
+  padding-top: 3%;
+  font-family: 'Roboto', sans-serif;
+  font-size: 1.5em;
+}
+
+h3 {
+  font-family: 'Roboto', sans-serif;
+  font-size: 1.2em;
+  text-align: center;
+}
+
+h4 {
+  font-family: 'Roboto', sans-serif;
+  margin: 0.5em;
+}
+
+span {
+  color: #607D8B;
+}
+
+.fas {
+  color: #607D8B;
+}
+
+li {
+  border-top: ridge;
+  border-color: lightgray;
+  text-align: left;
+  padding-right: 3.5em;
+  list-style: none;
+}
+
+b {
+  color: black;
+}
+
+/****************** Box stats **********************/
+
+.Box-stats {
+  border-bottom: 4mm ridge #607D8B;
+  display: flex;
+  justify-content: space-around;
+  text-align: center;
+  padding-top: 2%;
+  padding-bottom: 2%;
+}
+
+.Box-stats-2 {
+  border-bottom: 4mm ridge #607D8B;
+  display: flex;
+  justify-content: space-around;
+  text-align: center;
+  margin-top: 2%;
+  padding-top: 2%;
+}
+
+.Box-stats-2-transDep {
+  margin-left: -1.5%;
+}
+
+.Box-stats-2-node {
+  margin-left: 4%;
+}
+
+.Box-stats-2-author {
+  margin-right: -6%;
+}
+
+.Box-stats-3 {
+  border-bottom: 4mm ridge #607D8B;
+  display: flex;
+  justify-content: space-evenly;
+  text-align: center;
+  margin-top: 2%;
+  padding-top: 2%;
+}
+
+.Box-stats-all-size {
+  margin-top: 2.7em;
+}
+
+.Box-dependency {
+  border-bottom: 4mm ridge #607D8B;
+  display: flex;
+  justify-content: space-evenly;
+  text-align: center;
+  margin-top: 2%;
+  padding-top: 2%;
+}
+
+
