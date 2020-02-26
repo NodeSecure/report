@@ -55,6 +55,7 @@ div.container > section h2 {
         flex-direction: column;
     }
     .box-stats-container > .box-stats > .box-title {
+        
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -105,4 +106,27 @@ li + li {
 
 b {
     color: black;
+}
+
+.box-stats-container > .box-stats > .box-avatar {
+    column-count: 4;
+    margin-top: var(--default-margin);
+}
+
+.avatar img {
+    width: 90%;
+    border-radius: 5px;
+}
+
+.avatar {
+    position: relative;
+}
+
+.avatar p {
+    font-size: 12px;
+    border-radius: 2%;
+    background-color: black;
+    color: white;
+    position: absolute;
+    top: 70% ; left: 60%;
 }
