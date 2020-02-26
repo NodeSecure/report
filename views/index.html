@@ -19,38 +19,44 @@
         <h2>Statistics</h2>
         <div class="box-stats-container">
             <div class="box-stats">
-                <i class="fas fa-boxes"></i>
-                <h3>Slimio Packages Count</h3>
-                <span>7</span>
+                <div class="box-title">
+                    <i class="fas fa-boxes"></i>
+                    <h3>Slimio Packages Count</h3>
+                    <span>7</span>
+                </div>
                 <hr>
-                <div>
+                <div class="box-title">
                     <i class="fas fa-weight-hanging"></i>
                     <h4>Slimio Size</h4>
                     <span>137043</span>
                 </div>
             </div>
             <div class="box-stats">
-                <i class="fas fa-boxes"></i>
-                <h3>Third Party Packages Count</h3>
-                <span>7</span>
+                <div class="box-title">
+                    <i class="fas fa-boxes"></i>
+                    <h3>Third Party Packages Count</h3>
+                    <span>7</span>
+                </div>
                 <hr>
-                <div>
+                <div class="box-title">
                     <i class="fas fa-weight-hanging"></i>
                     <h4>Third Size</h4>
                     <span>174644</span>
                 </div>
             </div>
             <div class="box-stats">
-                <i class="fas fa-weight-hanging"></i>
-                <h3>All Packages Size</h3>
-                <span>311687</span>
+                <div class="box-title">
+                    <i class="fas fa-weight-hanging"></i>
+                    <h3>All Packages Size</h3>
+                    <span>311687</span>
+                </div>
             </div>
         </div>
         <div class="box-stats-container">
             <div class="box-stats">
                 <div class="box-title">
                     <i class="fas fa-sitemap"></i>
-                    <h3>Has Transitive Deps</h3>
+                    <h3>Transitive Dependencies</h3>
                 </div>
                 <ul>
                     <li><b>@slimio/logger@0.1.2</b></li>
@@ -60,7 +66,7 @@
             <div class="box-stats">
                 <div class="box-title">
                     <i class="fas fa-sitemap"></i>
-                    <h3>Node Core Dep</h3>
+                    <h3>Node.js Core Dependencies</h3>
                 </div>
                 <ul>
                     <li><b>crypto</b></li>
@@ -94,35 +100,31 @@
                     <i class="fas fa-file-code"></i>
                     <h3>Extensions</h3>
                 </div>
-                <ul>
-                    <li><b>.yml:<span> 2</span></b></li>
-                    <li><b>.md:<span> 14</span></b></li>
-                    <li><b>.js:<span> 14</span></b></li>
-                    <li><b>.json:<span> 14</span></b></li>
-                    <li><b>.ts:<span> 9</span></b></li>
-                    <li><b>.toml:<span> 2</span></b></li>
-                </ul>
+                <div>
+                    <canvas id="myChartEx"></canvas>
+                </div>
+                
             </div>
             <div class="box-stats">
                 <div class="box-title">
                     <i class="fas fa-file-alt"></i>
-                    <h3>Licenses:</h3>
+                    <h3>Licenses</h3>
                 </div>
-                <ul>
-                    <li><b>Unknown: 0</b></li>
-                    <li><b>MIT: 14</b></li>
-                </ul>
+                <div>
+                    <canvas id="myChartLi"></canvas>
+                </div>
+                
             </div>
 
         </div>
     </section>
     <section>
-        <h2>Dependency</h2>
+        <h2>Dependencies</h2>
         <div class="box-stats-container">
             <div class="box-stats">
                 <div class="box-title">
                     <i class="fas fa-boxes"></i>
-                    <h3>SlimIO Dependency</h3>
+                    <h3>Internal Dependencies</h3>
                 </div>
                 <ul>
                     <li><b>@slimio/scheduler</b></li>
@@ -137,7 +139,7 @@
             <div class="box-stats">
                 <div class="box-title">
                     <i class="fas fa-boxes"></i>
-                    <h3>Third Dependency</h3>
+                    <h3>Third-party Dependencies</h3>
                 </div>
                 <ul>
                     <li><b>is-snake-case</b></li>
@@ -149,3 +151,35 @@
         </div>
     </section>
 </div>
+
+<script>
+    let ctl = document.getElementById('myChartLi').getContext('2d');
+    var chartLi = new Chart(ctl, {
+        type: 'pie',
+        data: {
+            labels: ['MIT:14', 'Unknown:0'],
+            datasets: [{
+                label: 'Licenses',
+                backgroundColor: ['#33D5FF', '#F9FF90'],
+                data: [14, 0]
+            }]
+        },
+        options: {}
+    });
+</script>
+
+<script>
+    let ctx = document.getElementById('myChartEx').getContext('2d');
+    var chartEx = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: ['.yml:2', '.md:14', '.js:14', '.json:14', '.ts:9', '.toml:2'],
+            datasets: [{
+                label: 'Licenses',
+                backgroundColor: ['#33D5FF', '#33A7FF', '#F9FF90', '#C983FF', '#83FF84', '#FF83A8'],
+                data: [2, 14, 14, 14, 9, 2]
+            }]
+        },
+        options: {}
+    });
+</script>
