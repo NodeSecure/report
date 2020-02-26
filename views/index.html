@@ -1,146 +1,151 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,700,700i&display=swap" />
+<link href="../public/css/reset.css" rel="stylesheet" type="text/css">
+<link href="../public/css/style.css" rel="stylesheet" type="text/css">
+<script  defer src="../public/lib/chart.js"></script>
+<script src="https://kit.fontawesome.com/24e8bd11b7.js" crossorigin="anonymous"></script>
+<title>Security</title>
 
-    <script  defer src="../public/lib/chart.js"></script> 
-    <script src="https://kit.fontawesome.com/24e8bd11b7.js" crossorigin="anonymous"></script>
-    <link href="../css/style.css" rel="stylesheet" type="text/css">
-    <title>Security</title>
-</head>
+<div class="container">
+    <header>
+        <h1>SLIMIO REPORT</h1>
+    </header>
 
-<body>
-    <div class="container">
-        <header>
-            <div class="head">
-                <h2>SLIMIO REPORT</h2>
-            </div>
-        </header>
-
-        <section>
-            <div>
-                <h3>Statistics</h3>
-                <div class="Box-stats">
-                    <div>
-                        <i class="fas fa-boxes"></i>
-                        <h4>Slimio Packages Count</h4>
-                        <span>7</span>
-                        <hr>
-                        <div>
-                            <i class="fas fa-weight-hanging"></i>
-                            <h4>Slimio Size</h4>
-                            <span>137043</span>
-                        </div>
-                    </div>
-                    <div>
-                        <i class="fas fa-boxes"></i>
-                        <h4>Third Party Packages Count</h4>
-                        <span>7</span>
-                        <hr>
-                        <div>
-                            <i class="fas fa-weight-hanging"></i>
-                            <h4>Third Size</h4>
-                            <span>174644</span>
-                        </div>
-                    </div>
-                    <div class="Box-stats-all-size">
-                        <i class="fas fa-weight-hanging"></i>
-                        <h4>All Packages Size</h4>
-                        <span>311687</span>
-                    </div>
-                </div>
-                <div class="Box-stats-2">
-                    <div class="Box-stats-2-transDep">
-                        <i class="fas fa-sitemap"></i>
-                        <h4>Has Transitive Deps</h4>
-                        <ul>
-                            <li><b>@slimio/logger@0.1.2</b></li>
-                            <li><b>@slimio/addon@0.22.1</b></li>
-                        </ul>
-                    </div>
-                    <div class="Box-stats-2-node">
-                        <i class="fas fa-sitemap"></i>
-                        <h4>Node Core Dep</h4>
-                        <ul>
-                            <li><b>crypto</b></li>
-                            <li><b>child_process</b></li>
-                            <li><b>os</b></li>
-                            <li><b>timers</b></li>
-                            <li><b>fs</b></li>
-                            <li><b>events</b></li>
-                            <li><b>util</b></li>
-                            <li><b>path</b></li>
-                            <li><b>async_hooks</b></li>
-                            <li><b>perf_hooks</b></li>
-                            <li><b>stream</b></li>
-                        </ul>
-                    </div>
-                    <div class="Box-stats-2-author">
-                        <i class="fas fa-user"></i>
-                        <h4>Authors</h4>
-                        <ul>
-                            <li><b>sindresorhus@gmail.com</b></li>
-                            <li><b>luke.edwards05@gmail.com</b></li>
-                            <li><b>hello@matteocollina.com</b></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="Box-stats-3">
-                    <div class="Box-stats-2-extension">
-                        <i class="fas fa-file-code"></i>
-                        <h4>Extensions</h4>
-                        <ul>
-                            <li><b>.yml:<span> 2</span></b></li>
-                            <li><b>.md:<span> 14</span></b></li>
-                            <li><b>.js:<span> 14</span></b></li>
-                            <li><b>.json:<span> 14</span></b></li>
-                            <li><b>.ts:<span> 9</span></b></li>
-                            <li><b>.toml:<span> 2</span></b></li>
-                        </ul>
-                    </div>
-                    <div class="Box-stats-2-license">
-                        <i class="fas fa-file-alt"></i>
-                        <h4>Licenses:</h4>
-                        <ul>
-                            <li><b>Unknown: 0</b></li>
-                            <li><b>MIT: 14</b></li>
-                        </ul>
-                    </div>
-
-                </div>
-            </div>
-        </section>
-        <section>
-            <h3>Dependency</h3>
-            <div class="Box-dependency">
+    <section>
+        <h2>Statistics</h2>
+        <div class="box-stats-container">
+            <div class="box-stats">
+                <i class="fas fa-boxes"></i>
+                <h3>Slimio Packages Count</h3>
+                <span>7</span>
+                <hr>
                 <div>
-                    <i class="fas fa-boxes"></i>
-                    <h4>SlimIO Dependency</h4>
-                    <ul>
-                        <li><b>@slimio/scheduler</b></li>
-                        <li><b>@slimio/is</b></li>
-                        <li><b>@slimio/safe-emitter</b></li>
-                        <li><b>@slimio/error</b></li>
-                        <li><b>@slimio/timer</b></li>
-                        <li><b>@slimio/logger</b></li>
-                        <li><b>@slimio/addon</b></li>
-                    </ul>
-                </div>
-                <div>
-                    <i class="fas fa-boxes"></i>
-                    <h4>Third Dependency</h4>
-                    <ul>
-                        <li><b>is-snake-case</b></li>
-                        <li><b>zen-observable</b></li>
-                        <li><b>clean-stack</b></li>
-                        <li><b>sonic-boom</b></li>
-                    </ul>
+                    <i class="fas fa-weight-hanging"></i>
+                    <h4>Slimio Size</h4>
+                    <span>137043</span>
                 </div>
             </div>
-        </section>
-    </div>
-</body>
+            <div class="box-stats">
+                <i class="fas fa-boxes"></i>
+                <h3>Third Party Packages Count</h3>
+                <span>7</span>
+                <hr>
+                <div>
+                    <i class="fas fa-weight-hanging"></i>
+                    <h4>Third Size</h4>
+                    <span>174644</span>
+                </div>
+            </div>
+            <div class="box-stats">
+                <i class="fas fa-weight-hanging"></i>
+                <h3>All Packages Size</h3>
+                <span>311687</span>
+            </div>
+        </div>
+        <div class="box-stats-container">
+            <div class="box-stats">
+                <div class="box-title">
+                    <i class="fas fa-sitemap"></i>
+                    <h3>Has Transitive Deps</h3>
+                </div>
+                <ul>
+                    <li><b>@slimio/logger@0.1.2</b></li>
+                    <li><b>@slimio/addon@0.22.1</b></li>
+                </ul>
+            </div>
+            <div class="box-stats">
+                <div class="box-title">
+                    <i class="fas fa-sitemap"></i>
+                    <h3>Node Core Dep</h3>
+                </div>
+                <ul>
+                    <li><b>crypto</b></li>
+                    <li><b>child_process</b></li>
+                    <li><b>os</b></li>
+                    <li><b>timers</b></li>
+                    <li><b>fs</b></li>
+                    <li><b>events</b></li>
+                    <li><b>util</b></li>
+                    <li><b>path</b></li>
+                    <li><b>async_hooks</b></li>
+                    <li><b>perf_hooks</b></li>
+                    <li><b>stream</b></li>
+                </ul>
+            </div>
+            <div class="box-stats">
+                <div class="box-title">
+                    <i class="fas fa-user"></i>
+                    <h3>Authors</h3>
+                </div>
+                <ul>
+                    <li><b>sindresorhus@gmail.com</b></li>
+                    <li><b>luke.edwards05@gmail.com</b></li>
+                    <li><b>hello@matteocollina.com</b></li>
+                </ul>
+            </div>
+        </div>
+        <div class="box-stats-container">
+            <div class="box-stats">
+                <div class="box-title">
+                    <i class="fas fa-file-code"></i>
+                    <h3>Extensions</h3>
+                </div>
+                <ul>
+                    <li><b>.yml:<span> 2</span></b></li>
+                    <li><b>.md:<span> 14</span></b></li>
+                    <li><b>.js:<span> 14</span></b></li>
+                    <li><b>.json:<span> 14</span></b></li>
+                    <li><b>.ts:<span> 9</span></b></li>
+                    <li><b>.toml:<span> 2</span></b></li>
+                </ul>
+            </div>
+            <div class="box-stats">
+                <div class="box-title">
+                    <i class="fas fa-file-alt"></i>
+                    <h3>Licenses:</h3>
+                </div>
+                <ul>
+                    <li><b>Unknown: 0</b></li>
+                    <li><b>MIT: 14</b></li>
+                </ul>
+            </div>
 
-</html>
+        </div>
+    </section>
+    <section>
+        <h2>Dependency</h2>
+        <div class="box-stats-container">
+            <div class="box-stats">
+                <div class="box-title">
+                    <i class="fas fa-boxes"></i>
+                    <h3>SlimIO Dependency</h3>
+                </div>
+                <ul>
+                    <li><b>@slimio/scheduler</b></li>
+                    <li><b>@slimio/is</b></li>
+                    <li><b>@slimio/safe-emitter</b></li>
+                    <li><b>@slimio/error</b></li>
+                    <li><b>@slimio/timer</b></li>
+                    <li><b>@slimio/logger</b></li>
+                    <li><b>@slimio/addon</b></li>
+                </ul>
+            </div>
+            <div class="box-stats">
+                <div class="box-title">
+                    <i class="fas fa-boxes"></i>
+                    <h3>Third Dependency</h3>
+                </div>
+                <ul>
+                    <li><b>is-snake-case</b></li>
+                    <li><b>zen-observable</b></li>
+                    <li><b>clean-stack</b></li>
+                    <li><b>sonic-boom</b></li>
+                </ul>
+            </div>
+        </div>
+    </section>
+</div>
