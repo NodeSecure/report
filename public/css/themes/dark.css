@@ -1,0 +1,27 @@
+:root {
+    --primary-text-color: whitesmoke;
+    --secondary-text-color: rgb(182, 244, 255);
+    --primary-border-color: rgba(55, 71, 79, 0.733);
+    --faded-border-color: rgb(78, 99, 109, 0.25);
+    --head-paragraph-color: #546E7A;
+    --main-color: #FFEA00;
+    --default-margin: 15px;
+    --avatar-border-color: #FFF;
+    --li-hover-color: #00B0FF;
+    --h2-h3-text-color: #FFFDE7;
+    --h2-shadow: rgba(49, 46, 38, 0.609);
+    --h3-shadow: rgba(173, 131, 16, 0.609);
+    --charts-background: rgba(20, 20, 20, 0.1);
+}
+
+body {
+    background: rgb(38,50,56);
+    background: radial-gradient(ellipse at center,  rgba(38,50,56,1) 0%,rgba(19,25,30,1) 100%);
+}
+
+@media print {
+    html, body {
+        background: rgb(38,50,56);
+        background: radial-gradient(ellipse at center,  rgba(38,50,56,1) 0%,rgba(19,25,30,1) 100%);
+    }
+}

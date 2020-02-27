@@ -46,3 +46,9 @@ q:before, q:after {
 table {
 	border-spacing: 0;
 }
+
+@font-face{
+    font-family: "mononoki";
+    src: url("../font/mononoki-Regular.eot");
+    font-style: normal;
+}
