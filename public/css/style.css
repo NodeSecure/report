@@ -22,12 +22,16 @@ div.container {
 .logo img{
     width: 40px;
     height: 40px;
-    margin-right: 10px;
+    margin-left: -50px;
+}
+
+h1 {
+    margin-top: 10px;
 }
 
 div.container header {
     height: 50px;
-    border: solid 1px;
+    border: solid 1px rgb(78, 99, 109);
     border-radius: 5px;
     display: flex;
     align-items: center;
@@ -36,10 +40,6 @@ div.container header {
     background-image: linear-gradient(rgba(2, 28, 63, 0.4) 0%, rgba(2, 28, 62, 0.4) 1%, rgba(0, 0, 0, 0) 100%);
     background-color: initial;
     text-shadow: rgba(18, 19, 20, 0.5) 1px 1px 5px;
-    border-top-color: rgb(78, 99, 109);
-    border-right-color: rgb(78, 99, 109);
-    border-bottom-color: rgb(78, 99, 109);
-    border-left-color: rgb(78, 99, 109);
 }
     div.container header > h1 {
         font-size: 26px;
@@ -110,7 +110,7 @@ div.container > section h2 {
 h2, h3 {
     font-size: 1.5em;
     text-align: center;
-    border: solid 1px;
+    border: solid 1px rgb(78, 99, 109);
     border-radius: 5px;
     margin: 5px;
     padding: 5px;
@@ -118,10 +118,6 @@ h2, h3 {
     background-image: linear-gradient(rgba(2, 28, 63, 0.4) 0%, rgba(2, 28, 62, 0.4) 1%, rgba(0, 0, 0, 0) 100%);
     background-color: initial;
     text-shadow: rgba(18, 19, 20, 0.5) 1px 1px 5px;
-    border-top-color: rgb(78, 99, 109);
-    border-right-color: rgb(78, 99, 109);
-    border-bottom-color: rgb(78, 99, 109);
-    border-left-color: rgb(78, 99, 109);
 }
 
 h3 {
@@ -139,14 +135,11 @@ span {
 }
 
 ul {
-    border: solid 1px;
+    border: solid 1px rgb(78, 99, 109);
     border-radius: 5px;
-    border-top-color: rgb(78, 99, 109);
-    border-right-color: rgb(78, 99, 109);
-    border-bottom-color: rgb(78, 99, 109);
-    border-left-color: rgb(78, 99, 109);
     margin-top: var(--default-margin);
 }
+
 li {
     border-color: var(--primary-border-color);
     height: 25px;
@@ -154,6 +147,7 @@ li {
     display: flex;
     align-items: center;
 }
+
 li + li {
     border-top: 1px solid;
 }
@@ -177,10 +171,12 @@ b {
     margin-top: 5px;
     border-radius: 4px;
 }
+
 .box-avatar .avatar img {
     width: 50px;
     height: 50px;
 }
+
 .box-avatar .avatar p {
     font-size: 12px;
     border-radius: 2px;
