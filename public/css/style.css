@@ -1,9 +1,11 @@
 :root {
-    --primary-border-color: #607d8b;
+    --primary-border-color: rgb(78, 99, 109);
     --default-margin: 15px;
 }
 
 body {
+    background-color: #37474F;
+    color: white;
     font-family: "Roboto", sans-serif;
     display: flex;
     justify-content: center;
@@ -16,13 +18,28 @@ hr {
 div.container {
     width: 900px;
 }
+
+.logo img{
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+}
+
 div.container header {
     height: 50px;
-    background-color: var(--primary-border-color);
+    border: solid 1px;
     border-radius: 5px;
     display: flex;
     align-items: center;
     justify-content: center;
+    color: rgb(247, 245, 241);
+    background-image: linear-gradient(rgba(2, 28, 63, 0.4) 0%, rgba(2, 28, 62, 0.4) 1%, rgba(0, 0, 0, 0) 100%);
+    background-color: initial;
+    text-shadow: rgba(18, 19, 20, 0.5) 1px 1px 5px;
+    border-top-color: rgb(78, 99, 109);
+    border-right-color: rgb(78, 99, 109);
+    border-bottom-color: rgb(78, 99, 109);
+    border-left-color: rgb(78, 99, 109);
 }
     div.container header > h1 {
         font-size: 26px;
@@ -52,13 +69,30 @@ div.container > section h2 {
         flex-basis: 200px;
         flex-shrink: 0;
         display: flex;
+        flex-wrap: wrap;
         flex-direction: column;
     }
+
     .box-stats-container > .box-stats > .box-title {
-        
         display: flex;
         flex-direction: column;
         align-items: center;
+    }
+
+    .box-stats-container > .box-stats > .box-stats-resume {
+        display: flex;
+        justify-content: center ;
+        flex-wrap: wrap;
+        align-items: center;
+        align-content: center;
+    }
+    .box-stats-container > .box-stats > .box-stats-resume > .box-title {
+        display: flex;
+        flex-basis: 40%;
+        flex-wrap: wrap;
+        flex-direction: column;
+        align-items: center;
+        margin: 10px;
     }
     .box-stats-container > .box-stats > .box-title i {
         margin-bottom: 5px;
@@ -69,28 +103,48 @@ div.container > section h2 {
     }
 
 .box-stats-container + .box-stats-container {
-    border-top: 2px dashed #607d8b;
+    border-top: 2px solid rgb(78, 99, 109);
     margin-top: var(--default-margin);
 }
 
-h2 {
+h2, h3 {
     font-size: 1.5em;
+    text-align: center;
+    border: solid 1px;
+    border-radius: 5px;
+    margin: 5px;
+    padding: 5px;
+    color: rgb(247, 245, 241);
+    background-image: linear-gradient(rgba(2, 28, 63, 0.4) 0%, rgba(2, 28, 62, 0.4) 1%, rgba(0, 0, 0, 0) 100%);
+    background-color: initial;
+    text-shadow: rgba(18, 19, 20, 0.5) 1px 1px 5px;
+    border-top-color: rgb(78, 99, 109);
+    border-right-color: rgb(78, 99, 109);
+    border-bottom-color: rgb(78, 99, 109);
+    border-left-color: rgb(78, 99, 109);
 }
 
 h3 {
     font-size: 1.2em;
-    text-align: center;
 }
 
 span {
     color: var(--primary-border-color);
+    color: rgb(206, 216, 95);
 }
 
 .fas {
     color: var(--primary-border-color);
+    color: whitesmoke;
 }
 
 ul {
+    border: solid 1px;
+    border-radius: 5px;
+    border-top-color: rgb(78, 99, 109);
+    border-right-color: rgb(78, 99, 109);
+    border-bottom-color: rgb(78, 99, 109);
+    border-left-color: rgb(78, 99, 109);
     margin-top: var(--default-margin);
 }
 li {
@@ -105,28 +159,35 @@ li + li {
 }
 
 b {
-    color: black;
+    color: white;
 }
 
 .box-stats-container > .box-stats > .box-avatar {
-    column-count: 4;
     margin-top: var(--default-margin);
+    display: flex;
+    flex-wrap: wrap;
 }
 
-.avatar img {
-    width: 90%;
-    border-radius: 5px;
-}
-
-.avatar {
+.box-avatar .avatar {
     position: relative;
+    flex-basis: 50px;
+    height: 50px;
+    overflow: hidden;
+    margin-left: 5px;
+    margin-top: 5px;
+    border-radius: 4px;
 }
-
-.avatar p {
+.box-avatar .avatar img {
+    width: 50px;
+    height: 50px;
+}
+.box-avatar .avatar p {
     font-size: 12px;
-    border-radius: 2%;
-    background-color: black;
+    border-radius: 2px;
+    padding: 2px;
+    background-color: rgba(20, 20, 20, 0.5);
     color: white;
     position: absolute;
-    top: 70% ; left: 60%;
+    bottom: 2px;
+    right: 2px;
 }
