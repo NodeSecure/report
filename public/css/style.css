@@ -4,6 +4,7 @@ body {
     font-family: "Roboto", sans-serif;
     display: flex;
     justify-content: center;
+    position: relative;
 }
 
 @media print {
@@ -11,16 +12,11 @@ body {
         width: 220mm;
         margin: 0;
         padding: 0;
-        background: rgb(38,50,56);
-        background: -moz-radial-gradient(center, ellipse cover,  rgba(38,50,56,1) 0%, rgba(19,25,30,1) 100%);
-        background: -webkit-radial-gradient(center, ellipse cover,  rgba(38,50,56,1) 0%,rgba(19,25,30,1) 100%);
-        background: radial-gradient(ellipse at center,  rgba(38,50,56,1) 0%,rgba(19,25,30,1) 100%);
-        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#263238', endColorstr='#13191e',GradientType=1 );
     }
 
-    @page {
-        size: A4;
-        padding: 0;
+    .box-stats-container {
+        break-after: always;
+        break-inside: avoid;
     }
 }
 
@@ -76,7 +72,7 @@ i ~ h2, i ~ h3 {
 
 div.page {
     width: 21cm;
-    min-height: 25.7cm;
+    position: relative;
 }
 
 div.page header {
@@ -125,6 +121,7 @@ div.page header {
     flex-wrap: wrap;
     padding: var(--default-margin);
     padding-top: calc(var(--default-margin) * 2);
+    position: relative;
 }
 .box-stats-container + .box-stats-container {
     border-top: 3px dashed var(--faded-border-color);
