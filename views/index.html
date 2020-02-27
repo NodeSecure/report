@@ -7,7 +7,10 @@
     href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,700,700i&display=swap" />
 <link href="../public/css/reset.css" rel="stylesheet" type="text/css">
 <link href="../public/css/style.css" rel="stylesheet" type="text/css">
-<script defer src="../public/lib/chart.js"></script>
+<script src="../public/lib/chart.js" defer></script>
+<script src="https://d3js.org/d3-color.v1.min.js" defer></script>
+<script src="https://d3js.org/d3-interpolate.v1.min.js" defer></script>
+<script src="https://d3js.org/d3-scale-chromatic.v1.min.js" defer></script>
 <script src="https://kit.fontawesome.com/24e8bd11b7.js" crossorigin="anonymous"></script>
 <title>Security</title>
 
@@ -16,41 +19,80 @@
         <div class="logo">
             <img src="https://avatars0.githubusercontent.com/u/29552883?s=200&v=4" />
         </div>
-        <h1>SLIMIO REPORT</h1>
+        <h1>SLIMIO SECURITY REPORT</h1>
+        <p>Generated the 27/02/2020 at 14pm</p>
     </header>
 
     <section>
-        <h2>Statistics</h2>
+        <h2>NPM Packages Statistics</h2>
+        <div class="box-stats-container">
+            <div class="box-stats-resume">
+                <div class="one-stat">
+                    <i class="fas fa-weight-hanging"></i>
+                    <h3>Internal Packages Size</h3>
+                    <span>137043</span>
+                </div>
+                <div class="one-stat">
+                    <i class="fas fa-weight-hanging"></i>
+                    <h3>Third Packages Size</h3>
+                    <span>174644</span>
+                </div>
+                <div class="one-stat">
+                    <i class="fas fa-weight-hanging"></i>
+                    <h3>All Packages Size</h3>
+                    <span>311687</span>
+                </div>
+            </div>
+        </div>
         <div class="box-stats-container">
             <div class="box-stats">
-                <div class="box-stats-resume">
-                    <div class="box-title">
-                        <i class="fas fa-boxes"></i>
-                        <h3>Internal Packages Count</h3>
-                        <span>7</span>
-                    </div>
-                    <div class="box-title">
-                        <i class="fas fa-boxes"></i>
-                        <h3>Third Party Packages Count</h3>
-                        <span>7</span>
-                    </div>
-                    <div class="box-title">
-                        <i class="fas fa-weight-hanging"></i>
-                        <h3>Internal Packages Size</h3>
-                        <span>137043</span>
-                    </div>
-                    <div class="box-title">
-                        <i class="fas fa-weight-hanging"></i>
-                        <h3>Third Packages Size</h3>
-                        <span>174644</span>
-                    </div>
-                    <div class="box-title">
-                        <i class="fas fa-weight-hanging"></i>
-                        <h3>All Packages Size</h3>
-                        <span>311687</span>
-                    </div>
-                    
+                <div class="box-title">
+                    <i class="fas fa-boxes"></i>
+                    <h3><span>7</span>Internal Dependencies</h3>
                 </div>
+                <ul>
+                    <li>
+                        <p>@slimio/scheduler</p>
+                    </li>
+                    <li>
+                        <p>@slimio/is</p>
+                    </li>
+                    <li>
+                        <p>@slimio/safe-emitter</p>
+                    </li>
+                    <li>
+                        <p>@slimio/error</p>
+                    </li>
+                    <li>
+                        <p>@slimio/timer</p>
+                    </li>
+                    <li>
+                        <p>@slimio/logger</p>
+                    </li>
+                    <li>
+                        <p>@slimio/addon</p>
+                    </li>
+                </ul>
+            </div>
+            <div class="box-stats">
+                <div class="box-title">
+                    <i class="fas fa-boxes"></i>
+                    <h3><span>7</span>Third-party Dependencies</h3>
+                </div>
+                <ul>
+                    <li>
+                        <p>is-snake-case</p>
+                    </li>
+                    <li>
+                        <p>zen-observable</p>
+                    </li>
+                    <li>
+                        <p>clean-stack</p>
+                    </li>
+                    <li>
+                        <p>sonic-boom</p>
+                    </li>
+                </ul>
             </div>
         </div>
         <div class="box-stats-container">
@@ -60,8 +102,12 @@
                     <h3>Transitive Dependencies</h3>
                 </div>
                 <ul>
-                    <li><b>@slimio/logger@0.1.2</b></li>
-                    <li><b>@slimio/addon@0.22.1</b></li>
+                    <li>
+                        <p>@slimio/logger@0.1.2</p>
+                    </li>
+                    <li>
+                        <p>@slimio/addon@0.22.1</p>
+                    </li>
                 </ul>
             </div>
             <div class="box-stats">
@@ -70,17 +116,39 @@
                     <h3>Node.js Core Dependencies</h3>
                 </div>
                 <ul>
-                    <li><b>crypto</b></li>
-                    <li><b>child_process</b></li>
-                    <li><b>os</b></li>
-                    <li><b>timers</b></li>
-                    <li><b>fs</b></li>
-                    <li><b>events</b></li>
-                    <li><b>util</b></li>
-                    <li><b>path</b></li>
-                    <li><b>async_hooks</b></li>
-                    <li><b>perf_hooks</b></li>
-                    <li><b>stream</b></li>
+                    <li>
+                        <p>crypto</p>
+                    </li>
+                    <li>
+                        <p>child_process</p>
+                    </li>
+                    <li>
+                        <p>os</p>
+                    </li>
+                    <li>
+                        <p>timers</p>
+                    </li>
+                    <li>
+                        <p>fs</p>
+                    </li>
+                    <li>
+                        <p>events</p>
+                    </li>
+                    <li>
+                        <p>util</p>
+                    </li>
+                    <li>
+                        <p>path</p>
+                    </li>
+                    <li>
+                        <p>async_hooks</p>
+                    </li>
+                    <li>
+                        <p>perf_hooks</p>
+                    </li>
+                    <li>
+                        <p>stream</p>
+                    </li>
                 </ul>
             </div>
             <div class="box-stats">
@@ -90,132 +158,129 @@
                 </div>
                 <div class="box-avatar">
                     <div class="avatar">
-                        <a href="sindresorhus@gmail.com"><img
-                                src="https://randomuser.me/api/portraits/women/35.jpg" /></a>
-                        <p>10</p>
+                        <a href="sindresorhus@gmail.com" target="_blank">
+                            <img src="https://avatars1.githubusercontent.com/u/4438263?s=460&v=4" />
+                        </a>
+                        <p>7</p>
                     </div>
                     <div class="avatar">
-                        <a href="luke.edwards05@gmail.com"><img
-                                src="https://randomuser.me/api/portraits/men/33.jpg" /></a>
-                        <p>11</p>
+                        <a href="sindresorhus@gmail.com" target="_blank">
+                            <img src="https://avatars2.githubusercontent.com/u/170270?s=460&v=4" />
+                        </a>
+                        <p>2</p>
                     </div>
                     <div class="avatar">
-                        <a href="hello@matteocollina.com"><img
-                                src="https://randomuser.me/api/portraits/women/56.jpg" /></a>
-                        <p>12</p>
+                        <a href="sindresorhus@gmail.com" target="_blank">
+                            <img src="https://avatars2.githubusercontent.com/u/376661?s=460&v=4" />
+                        </a>
+                        <p>2</p>
                     </div>
                     <div class="avatar">
-                        <a href="sindresorhus@gmail.com"><img
-                                src="https://randomuser.me/api/portraits/women/35.jpg" /></a>
+                        <a href="sindresorhus@gmail.com" target="_blank">
+                            <img src="https://avatars2.githubusercontent.com/u/9287?s=460&v=4" />
+                        </a>
                         <p>13</p>
-                    </div>
-                    <div class="avatar">
-                        <a href="luke.edwards05@gmail.com"><img
-                                src="https://randomuser.me/api/portraits/women/35.jpg" /></a>
-                        <p>14</p>
-                    </div>
-                    <div class="avatar">
-                        <a href="hello@matteocollina.com"><img
-                                src="https://randomuser.me/api/portraits/women/35.jpg" /></a>
-                        <p>15</p>
-                    </div>
-                    <div class="avatar">
-                        <a href="sindresorhus@gmail.com"><img
-                                src="https://randomuser.me/api/portraits/women/66.jpg" /></a>
-                        <p>16</p>
-                    </div>
-                    <div class="avatar">
-                        <a href="sindresorhus@gmail.com"><img
-                                src="https://randomuser.me/api/portraits/women/66.jpg" /></a>
-                        <p>17</p>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="box-stats-container">
+        <div class="box-stats-container charts">
             <div class="box-stats">
                 <div class="box-title">
                     <i class="fas fa-file-code"></i>
                     <h3>Extensions</h3>
                 </div>
-                <div>
-                    <canvas id="myChartEx"></canvas>
-                </div>
+                <canvas id="myChartEx" height="380"></canvas>
             </div>
+        </div>
+        <div class="box-stats-container charts">
             <div class="box-stats">
                 <div class="box-title">
                     <i class="fas fa-file-alt"></i>
                     <h3>Licenses</h3>
                 </div>
-                <div>
-                    <canvas id="myChartLi"></canvas>
-                </div>
+                <canvas id="myChartLi" height="380"></canvas>
             </div>
         </div>
-    </section>
-    <section>
-        <h2>Dependencies</h2>
-        <div class="box-stats-container">
-            <div class="box-stats">
-                <div class="box-title">
-                    <i class="fas fa-boxes"></i>
-                    <h3>Internal Dependencies</h3>
-                </div>
-                <ul>
-                    <li><b>@slimio/scheduler</b></li>
-                    <li><b>@slimio/is</b></li>
-                    <li><b>@slimio/safe-emitter</b></li>
-                    <li><b>@slimio/error</b></li>
-                    <li><b>@slimio/timer</b></li>
-                    <li><b>@slimio/logger</b></li>
-                    <li><b>@slimio/addon</b></li>
-                </ul>
-            </div>
-            <div class="box-stats">
-                <div class="box-title">
-                    <i class="fas fa-boxes"></i>
-                    <h3>Third-party Dependencies</h3>
-                </div>
-                <ul>
-                    <li><b>is-snake-case</b></li>
-                    <li><b>zen-observable</b></li>
-                    <li><b>clean-stack</b></li>
-                    <li><b>sonic-boom</b></li>
-                </ul>
-            </div>
-        </div>
+        <br /><br />
+        <h2>GIT Repositories Statistics</h2>
     </section>
 </div>
 
 <script type="text/javascript" defer>
+    function calculatePoint(i, intervalSize, { colorStart, colorEnd, useEndAsStart }) {
+        return (useEndAsStart ? (colorEnd - (i * intervalSize)) : (colorStart + (i * intervalSize)));
+    }
+
+    function* interpolateColors(dataLength, scale, range) {
+        const intervalSize = (range.colorEnd - range.colorStart) / dataLength;
+
+        for (let i = 0; i < dataLength; i++) {
+            yield scale(calculatePoint(i, intervalSize, range));
+        }
+    }
+
     document.addEventListener("DOMContentLoaded", () => {
+        Chart.Legend.prototype.afterFit = function () {
+            this.height = this.height + 10;
+        };
+        const colorRangeInfo = {
+            colorStart: 0.2,
+            colorEnd: 1,
+            useEndAsStart: false
+        };
+
         const chartExtensions = document.getElementById("myChartEx").getContext("2d");
         const chartLicenses = document.getElementById("myChartLi").getContext("2d");
 
-        new Chart(chartLicenses, {
-            type: 'pie',
-            data: {
-                labels: ['MIT:14', 'Unknown:0'],
-                datasets: [{
-                    label: 'Licenses',
-                    backgroundColor: ['#BF91C1', '#F9FF90'],
-                    data: [14, 0]
-                }]
-            },
-            options: {}
-        });
+        const options = {
+            legend: {
+                padding: 20,
+                labels: {
+                    fontColor: "white",
+                    fontFamily: "mononoki",
+                    fontSize: 16,
+                    padding: 10
+                }
+            }
+        };
 
-        new Chart(chartExtensions, {
-            type: 'pie',
-            data: {
-                labels: ['.yml:2', '.md:14', '.js:14', '.json:14', '.ts:9', '.toml:2'],
-                datasets: [{
-                    label: 'Extensions',
-                    backgroundColor: ['#33D5FF', '#33A7FF', '#F9FF90', '#BF91C1', '#83FF84', '#FF83A8'],
-                    data: [2, 14, 14, 14, 9, 2]
-                }]
-            },
-            options: {}
-        });
+        {
+            const labels = ['MIT:14', 'ISC:10', 'BSD-2-Clause:2', 'Unknown:2'];
+            const COLORS = [...interpolateColors(labels.length, d3.interpolateCool, colorRangeInfo)];
+
+            new Chart(chartLicenses, {
+                type: 'pie',
+                data: {
+                    labels,
+                    datasets: [{
+                        label: 'Licenses',
+                        borderWidth: 0,
+                        backgroundColor: COLORS,
+                        data: [14, 10, 2, 2]
+                    }]
+                },
+                options
+            });
+        }
+
+        {
+            const labels = ['.yml:2', '.md:14', '.js:14', '.json:14', '.ts:9', '.toml:2'];
+            const COLORS = [...interpolateColors(labels.length, d3.interpolateInferno, colorRangeInfo)];
+
+            new Chart(chartExtensions, {
+                type: 'pie',
+                data: {
+                    labels,
+                    datasets: [{
+                        label: 'Extensions',
+                        borderWidth: 0,
+                        backgroundColor: COLORS,
+                        data: [2, 14, 14, 14, 9, 2]
+                    }]
+                },
+                options
+            });
+        }
     });
 </script>

@@ -1,14 +1,32 @@
 :root {
-    --primary-border-color: rgb(78, 99, 109);
+    --primary-text-color: whitesmoke;
+    --secondary-text-color: rgb(182, 244, 255);
+    --primary-border-color: rgba(55, 71, 79, 0.733);
+    --faded-border-color: rgb(78, 99, 109, 0.25);
+    --main-color: #FFEA00;
     --default-margin: 15px;
 }
 
+@font-face{
+    font-family: "mononoki";
+    src: url("../font/mononoki-Regular.eot");
+    font-style: normal;
+}
+
 body {
-    background-color: #37474F;
-    color: white;
+    background: rgb(38,50,56);
+    background: -moz-radial-gradient(center, ellipse cover,  rgba(38,50,56,1) 0%, rgba(19,25,30,1) 100%);
+    background: -webkit-radial-gradient(center, ellipse cover,  rgba(38,50,56,1) 0%,rgba(19,25,30,1) 100%);
+    background: radial-gradient(ellipse at center,  rgba(38,50,56,1) 0%,rgba(19,25,30,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#263238', endColorstr='#13191e',GradientType=1 );
+    color: var(--primary-text-color);
     font-family: "Roboto", sans-serif;
     display: flex;
     justify-content: center;
+}
+
+canvas {
+    margin-top: 10px;
 }
 
 hr {
@@ -16,54 +34,109 @@ hr {
 }
 
 div.container {
-    width: 900px;
+    width: 1000px;
+    margin-bottom: 50px;
 }
 
-.logo img{
-    width: 40px;
-    height: 40px;
-    margin-left: -50px;
+h1, h2, h3 {
+    font-family: "mononoki";
 }
 
+h2, h3 {
+    text-align: center;
+    padding: 5px;
+    color: #FFFDE7;
+}
 h1 {
-    margin-top: 10px;
+    font-size: 3em;
+    font-weight: bold;
+}
+h2 {
+    font-size: 1.75em;
+    color: var(--main-color);
+    text-shadow: 1px 1px 10px rgba(49, 46, 38, 0.609);
+}
+h3 {
+    font-size: 1.2em;
+    text-shadow: 1px 1px 10px rgba(173, 131, 16, 0.609);
+}
+    h3 > span {
+        color: var(--main-color);
+        margin-right: 10px;
+    }
+
+i ~ h2, i ~ h3 {
+    margin-top: 2px;
+}
+
+.fas {
+    color: whitesmoke;
+    font-size: 20px;
 }
 
 div.container header {
-    height: 50px;
-    border: solid 1px rgb(78, 99, 109);
+    height: 180px;
     border-radius: 5px;
     display: flex;
     align-items: center;
     justify-content: center;
     color: rgb(247, 245, 241);
-    background-image: linear-gradient(rgba(2, 28, 63, 0.4) 0%, rgba(2, 28, 62, 0.4) 1%, rgba(0, 0, 0, 0) 100%);
-    background-color: initial;
     text-shadow: rgba(18, 19, 20, 0.5) 1px 1px 5px;
+    position: relative;
 }
-    div.container header > h1 {
-        font-size: 26px;
+    div.container header > p {
+        position: absolute;
+        margin: auto;
+        bottom: 40px;
+        font-style: italic;
+        color: #546E7A;
+        letter-spacing: 0.7px;
+        font-size: 15px;
     }
+    div.container header div.logo {
+        margin-right: 10px;
+    }
+        div.container header div.logo > img {
+            width: 30px;
+            height: 30px;
+        }
 
-div.container > section {
-    display: flex;
-    flex-direction: column;
-}
-div.container > section + section {
-    margin-top: var(--default-margin);
-}
-div.container > section h2 {
-    display: flex;
-    margin: var(--default-margin) 0;
-    justify-content: center;
-    font-weight: bold;
-}
+    div.container > section {
+        display: flex;
+        flex-direction: column;
+    }
+    div.container > section + section {
+        margin-top: var(--default-margin);
+    }
+    div.container > section h2 {
+        display: flex;
+        margin: var(--default-margin) 0;
+        justify-content: center;
+        font-weight: bold;
+    }
 
 .box-stats-container {
     display: flex;
     flex-wrap: wrap;
     padding: var(--default-margin);
+    padding-top: 30px;
 }
+.box-stats-container + .box-stats-container {
+    border-top: 2px dashed var(--faded-border-color);
+    margin-top: var(--default-margin);
+}
+.box-stats-container.charts {
+    background: rgba(20, 20, 20, 0.1);
+    border-radius: 4px;
+    border-top: none !important;
+}
+.box-stats-container.charts .fas {
+    font-size: 30px;
+}
+.box-stats-container.charts h3 {
+    font-size: 1.75em;
+}
+
     .box-stats-container > .box-stats {
         flex-grow: 1;
         flex-basis: 200px;
@@ -72,6 +145,9 @@ div.container > section h2 {
         flex-wrap: wrap;
         flex-direction: column;
     }
+    .box-stats-container > .box-stats + .box-stats {
+        margin-left: var(--default-margin);
+    }
 
     .box-stats-container > .box-stats > .box-title {
         display: flex;
@@ -79,111 +155,85 @@ div.container > section h2 {
         align-items: center;
     }
 
-    .box-stats-container > .box-stats > .box-stats-resume {
+    .box-stats-container > .box-stats-resume {
         display: flex;
-        justify-content: center ;
         flex-wrap: wrap;
-        align-items: center;
-        align-content: center;
+        margin-left: -10px;
+        margin-top: -10px;
+        width: 100%;
     }
-    .box-stats-container > .box-stats > .box-stats-resume > .box-title {
+    .box-stats-container > .box-stats-resume > .one-stat {
         display: flex;
-        flex-basis: 40%;
+        flex-basis: 250px;
+        flex-grow: 1;
         flex-wrap: wrap;
         flex-direction: column;
         align-items: center;
-        margin: 10px;
+        justify-content: center;
+        height: 110px;
+        margin-left: 10px;
+        margin-bottom: 10px;
+        border: 1px solid var(--faded-border-color);
+        border-radius: 4px;
     }
-    .box-stats-container > .box-stats > .box-title i {
-        margin-bottom: 5px;
+    .box-stats-container > .box-stats-resume > .one-stat span {
+        color: var(--main-color);
+        font-weight: bold;
+        border-bottom: 3px solid var(--main-color);
+        margin-top: 3px;
+        padding: 7px;
+        border-radius: 2px;
     }
 
-    .box-stats-container > .box-stats + .box-stats {
-        margin-left: var(--default-margin);
-    }
-
-.box-stats-container + .box-stats-container {
-    border-top: 2px solid rgb(78, 99, 109);
-    margin-top: var(--default-margin);
-}
-
-h2, h3 {
-    font-size: 1.5em;
-    text-align: center;
-    border: solid 1px rgb(78, 99, 109);
-    border-radius: 5px;
-    margin: 5px;
-    padding: 5px;
-    color: rgb(247, 245, 241);
-    background-image: linear-gradient(rgba(2, 28, 63, 0.4) 0%, rgba(2, 28, 62, 0.4) 1%, rgba(0, 0, 0, 0) 100%);
-    background-color: initial;
-    text-shadow: rgba(18, 19, 20, 0.5) 1px 1px 5px;
-}
-
-h3 {
-    font-size: 1.2em;
-}
-
-span {
-    color: var(--primary-border-color);
-    color: rgb(206, 216, 95);
-}
-
-.fas {
-    color: var(--primary-border-color);
-    color: whitesmoke;
-}
-
-ul {
-    border: solid 1px rgb(78, 99, 109);
-    border-radius: 5px;
-    margin-top: var(--default-margin);
-}
-
-li {
-    border-color: var(--primary-border-color);
-    height: 25px;
-    padding: 0 10px;
-    display: flex;
-    align-items: center;
-}
-
-li + li {
-    border-top: 1px solid;
-}
-
-b {
-    color: white;
-}
 
 .box-stats-container > .box-stats > .box-avatar {
     margin-top: var(--default-margin);
     display: flex;
     flex-wrap: wrap;
+    max-height: 400px;
+    overflow-y: auto;
+    justify-content: center;
+}
+    .box-avatar .avatar {
+        position: relative;
+        flex-basis: 60px;
+        width: 60px;
+        height: 60px;
+        overflow: hidden;
+        margin-left: 5px;
+        margin-top: 5px;
+        border-radius: 4px;
+        border: 2px solid #FFF;
+        box-sizing: border-box;
+    }
+
+    .box-avatar .avatar img {
+        width: 58px;
+        height: 58px;
+    }
+
+    .box-avatar .avatar p {
+        font-size: 12px;
+        border-radius: 2px;
+        padding: 3px;
+        background-color: #263238;
+        color: #FFF;
+        position: absolute;
+        bottom: 2px;
+        right: 2px;
+        font-weight: bold;
+    }
+
+ul {
+    margin-top: var(--default-margin);
 }
 
-.box-avatar .avatar {
-    position: relative;
-    flex-basis: 50px;
-    height: 50px;
-    overflow: hidden;
-    margin-left: 5px;
-    margin-top: 5px;
-    border-radius: 4px;
-}
-
-.box-avatar .avatar img {
-    width: 50px;
-    height: 50px;
-}
-
-.box-avatar .avatar p {
-    font-size: 12px;
-    border-radius: 2px;
-    padding: 2px;
-    background-color: rgba(20, 20, 20, 0.5);
-    color: white;
-    position: absolute;
-    bottom: 2px;
-    right: 2px;
-}
+    ul > li {
+        height: 35px;
+        padding: 0 10px;
+        display: flex;
+        align-items: center;
+        letter-spacing: 0.7px;
+        color: var(--secondary-text-color);
+        border-bottom: 1px solid var(--primary-border-color);
+    }
