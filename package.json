@@ -31,7 +31,7 @@
         "@slimio/npm-registry": "^0.5.0",
         "dotenv": "^8.2.0",
         "filenamify": "^4.1.0",
-        "isomorphic-git": "^0.78.4",
+        "isomorphic-git": "^1.1.0",
         "kleur": "^3.0.3",
         "make-promises-safe": "^5.1.0",
         "nsecure": "^0.4.1",
