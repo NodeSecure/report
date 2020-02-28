@@ -27,7 +27,7 @@ async function fetchPackagesStats() {
     }).start();
 
     try {
-        const jsonFiles = await Promise.all(config.ADDONS.map(nsecure.onPackage));
+        const jsonFiles = await Promise.all(config.npm_packages.map(nsecure.onPackage));
         const elapsed = `${spinner.elapsedTime.toFixed(2)}ms`;
         spinner.succeed(`Successfully done in ${cyan().bold(elapsed)}`);
 
@@ -45,7 +45,7 @@ async function fetchRepositoriesStats() {
     }).start("clone repositories...");
 
     try {
-        const repos = await Promise.all(config.REPOS.map(cloneGITRepository));
+        const repos = await Promise.all(config.git_repositories.map(cloneGITRepository));
         spinner.text = "Run node-secure analyze";
 
         const jsonFiles = await Promise.all(repos.map(nsecure.onLocalDirectory));

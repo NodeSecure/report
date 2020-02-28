@@ -28,6 +28,7 @@
     "dependencies": {
         "@slimio/async-cli-spinner": "^0.5.1",
         "@slimio/lock": "^0.4.0",
+        "@slimio/npm-registry": "^0.5.0",
         "dotenv": "^8.2.0",
         "isomorphic-git": "^0.78.4",
         "kleur": "^3.0.3",

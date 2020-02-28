@@ -11,18 +11,19 @@ const Lock = require("@slimio/lock");
 const git = require("isomorphic-git");
 const parseAuthor = require("parse-author");
 const { from, cwd } = require("nsecure");
+const NpmRegistry = require("@slimio/npm-registry");
 
 // Require Internal Dependencies
 const config = require("../data/config.json");
 
 // CONSTANTS
-const ORGA_URL = `https://github.com/${config.ORG}`;
 const CLONE_DIR = join(__dirname, "..", "clones");
 const JSON_DIR = join(__dirname, "..", "json");
 
 // VARS
 const token = process.env.GIT_TOKEN;
 const securityLock = new Lock({ maxConcurrent: 2 });
+const registry = new NpmRegistry();
 git.plugins.set("fs", fs);
 
 function formatBytes(bytes, decimals) {
@@ -33,25 +34,27 @@ function formatBytes(bytes, decimals) {
     const sizes = ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
     const id = Math.floor(Math.log(bytes) / Math.log(1024));
 
-    // eslint-disable-next-line
-    return parseFloat((bytes / Math.pow(1024, id)).toFixed(dm)) + ' ' + sizes[id];
+    return parseFloat((bytes / Math.pow(1024, id)).toFixed(dm)) + " " + sizes[id];
 }
 
 async function fetchStatsFromNsecurePayloads(payloadFiles = []) {
     const stats = {
-        slimioPackagesCount: 0,
-        thirdPartyPackagesCount: 0,
-        allPackagesSize: 0,
-        thirdSize: 0,
-        slimioSize: 0,
-        hasTransitiveDeps: new Set(),
-        nodeCoreDep: new Set(),
+        size: {
+            all: 0, internal: 0, external: 0
+        },
+        deps: {
+            transitive: new Set(),
+            node: new Set()
+        },
         licenses: {
             Unknown: 0
         },
         extensions: {},
         authors: new Set(),
-        packages: {}
+        packages: {},
+        packages_count: {
+            all: 0, internal: 0, external: 0
+        }
     };
 
     for (const file of payloadFiles) {
@@ -62,11 +65,11 @@ async function fetchStatsFromNsecurePayloads(payloadFiles = []) {
 
         for (const [name, descriptor] of Object.entries(nsecurePayload)) {
             const { versions } = descriptor;
-            const isThird = !name.startsWith("@slimio/");
+            const isThird = config.npm_org_prefix === null ? true : !name.startsWith(`${config.npm_org_prefix}/`);
 
             if (!(name in stats.packages)) {
                 if (isThird) {
-                    stats.thirdPartyPackagesCount++;
+                    stats.packages_count.external++;
                 }
                 stats.packages[name] = { isThird, versions: new Set() };
             }
@@ -78,9 +81,9 @@ async function fetchStatsFromNsecurePayloads(payloadFiles = []) {
                 }
                 const { size, composition, license, author } = descriptor[localVersion];
 
-                stats.allPackagesSize += size;
-                stats[isThird ? "thirdSize" : "slimioSize"] += size;
-                composition.required_builtin.forEach((dep) => stats.nodeCoreDep.add(dep));
+                stats.size.all += size;
+                stats.size[isThird ? "external" : "internal"] += size;
+                composition.required_builtin.forEach((dep) => stats.deps.node.add(dep));
                 for (const extName of composition.extensions.filter((extName) => extName !== "")) {
                     stats.extensions[extName] = Reflect.has(stats.extensions, extName) ? ++stats.extensions[extName] : 1;
                 }
@@ -103,15 +106,23 @@ async function fetchStatsFromNsecurePayloads(payloadFiles = []) {
                 curr.versions.add(localVersion);
                 const hasIndirectDependencies = descriptor[localVersion].flags.hasIndirectDependencies;
                 if (hasIndirectDependencies) {
-                    stats.hasTransitiveDeps.add(`${name}@${localVersion}`);
+                    stats.deps.transitive.add(`${name}@${localVersion}`);
                 }
                 curr[localVersion] = { hasIndirectDependencies };
             }
         }
     }
 
-    // Calcule the number of internal dep!
-    stats.slimioPackagesCount = Object.keys(stats.packages).length - stats.thirdPartyPackagesCount;
+    const regStats = await Promise.all(Object.keys(stats.packages).map((pkgName) => registry.package(pkgName)));
+    regStats
+        .map((row) => row.maintainers)
+        .forEach((humans) => humans.forEach((human) => stats.authors.add(human.email)));
+
+    stats.packages_count.all = Object.keys(stats.packages).length;
+    stats.packages_count.internal = stats.packages_count.all - stats.packages_count.external;
+    stats.size.all = formatBytes(stats.size.all);
+    stats.size.internal = formatBytes(stats.size.internal);
+    stats.size.external = formatBytes(stats.size.external);
 
     return stats;
 }
@@ -139,7 +150,7 @@ function parseNsecureAuthor(author) {
  */
 async function cloneGITRepository(repositoryName) {
     const dir = join(CLONE_DIR, repositoryName);
-    const url = `${ORGA_URL}/${repositoryName}`;
+    const url = `${config.git_url}/${repositoryName}`;
 
     await git.clone({
         dir, url, token, singleBranch: true, oauth2format: "github"
