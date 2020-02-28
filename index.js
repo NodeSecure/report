@@ -66,10 +66,22 @@ async function main() {
     ]);
 
     try {
-        const pkgStats = await fetchPackagesStats();
+        // eslint-disable-next-line new-cap
+        const generationDate = Intl.DateTimeFormat("en-GB", {
+            day: "2-digit",
+            month: "short",
+            year: "numeric",
+            hour: "numeric",
+            minute: "numeric",
+            second: "numeric"
+        }).format(new Date());
+
+        console.log(generationDate);
+        //
+        // const pkgStats = await fetchPackagesStats();
         // const repoStats = await fetchRepositoriesStats();
 
-        console.log(pkgStats);
+        // console.log(pkgStats);
         // console.log(JSON.stringify(repoStats, null, 4));
     }
     finally {
