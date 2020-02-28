@@ -1,4 +1,5 @@
 {
+    "theme": "dark",
     "report_title": "SlimIO Security Report",
     "report_logo": "https://avatars0.githubusercontent.com/u/29552883?s=200&v=4",
     "npm_org_prefix": "@slimio",

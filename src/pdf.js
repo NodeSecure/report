@@ -23,7 +23,8 @@ async function generatePDF(reportHTMLPath, name = config.report_title) {
         const page = await browser.newPage();
         await page.emulateMedia("print");
 
-        await page.goto(`file:${String(reportHTMLPath)}`, { waitUntil: "networkidle2" });
+        await page.goto(`file:${String(reportHTMLPath)}`);
+        await page.waitForFunction("window.isReadyForPDF");
 
         const path = join(kDistDir, extname(cleanName) === ".pdf" ? cleanName : `${cleanName}.pdf`);
         await page.pdf({

@@ -77,11 +77,10 @@ async function main() {
         }).format(new Date());
 
         console.log(generationDate);
-        //
-        // const pkgStats = await fetchPackagesStats();
+        const pkgStats = await fetchPackagesStats();
         // const repoStats = await fetchRepositoriesStats();
 
-        // console.log(pkgStats);
+        console.log(pkgStats);
         // console.log(JSON.stringify(repoStats, null, 4));
     }
     finally {

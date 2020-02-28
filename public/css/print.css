@@ -1,0 +1,30 @@
+@media print {
+    html {
+        background: red !important;
+    }
+    html, body {
+        width: 220mm;
+        margin: 0;
+        padding: 0;
+        -webkit-print-color-adjust: exact;
+    }
+
+    h2 {
+        break-before: always;
+        break-after: always;
+    }
+
+    .box-stats-container + .box-stats-container {
+        border-top: none !important;
+    }
+
+    .box-stats-container:not(.charts) {
+        break-inside: avoid;
+    }
+
+    .box-stats-container.charts {
+        break-inside: avoid;
+        align-items: center;
+        background: none !important;
+    }
+}

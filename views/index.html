@@ -6,8 +6,9 @@
 <link rel="stylesheet"
     href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,700,700i&display=swap" />
 <link href="../public/css/reset.css" rel="stylesheet" type="text/css">
-<link href="../public/css/themes/dark.css" rel="stylesheet" type="text/css">
+<link href="../public/css/themes/light.css" rel="stylesheet" type="text/css">
 <link href="../public/css/style.css" rel="stylesheet" type="text/css">
+<link href="../public/css/print.css" rel="stylesheet" type="text/css">
 <script src="../public/lib/chart.js"></script>
 <script src="https://d3js.org/d3-color.v1.min.js"></script>
 <script src="https://d3js.org/d3-interpolate.v1.min.js"></script>
@@ -193,7 +194,7 @@
                     <i class="fas fa-file-code"></i>
                     <h3>Extensions</h3>
                 </div>
-                <canvas id="myChartEx" height="380"></canvas>
+                <canvas id="myChartEx"></canvas>
             </div>
         </div>
         <div class="box-stats-container charts">
@@ -202,10 +203,11 @@
                     <i class="fas fa-file-alt"></i>
                     <h3>Licenses</h3>
                 </div>
-                <canvas id="myChartLi" height="380"></canvas>
+                <canvas id="myChartLi"></canvas>
             </div>
         </div>
-        <br /><br />
+    </section>
+    <section>
         <h2><i class="fab fa-git-alt"></i>GIT Repositories Statistics</h2>
     </section>
 </div>
@@ -286,5 +288,9 @@
                 options
             });
         }
+
+        setTimeout(() => {
+            window.isReadyForPDF = true;
+        }, 1000);
     });
 </script>

@@ -7,20 +7,8 @@ body {
     position: relative;
 }
 
-@media print {
-    html, body {
-        width: 220mm;
-        margin: 0;
-        padding: 0;
-    }
-
-    .box-stats-container {
-        break-after: always;
-        break-inside: avoid;
-    }
-}
-
 canvas {
+    height: 380px;
     margin-top: var(--default-margin);
 }
 
@@ -73,6 +61,7 @@ i ~ h2, i ~ h3 {
 div.page {
     width: 21cm;
     position: relative;
+    display: block;
 }
 
 div.page header {
@@ -102,18 +91,14 @@ div.page header {
             height: 64px;
         }
 
-    div.page > section {
-        display: flex;
-        flex-direction: column;
-    }
     div.page > section + section {
         margin-top: var(--default-margin);
     }
     div.page > section h2 {
-        display: flex;
         margin: var(--default-margin) 0;
         justify-content: center;
         font-weight: bold;
+        position: relative;
     }
 
 .box-stats-container {
