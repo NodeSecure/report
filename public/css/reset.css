@@ -49,6 +49,18 @@ table {
 
 @font-face{
     font-family: "mononoki";
-    src: url("../font/mononoki-Regular.eot");
+    src: url("../font/mononoki-Regular.woff");
     font-style: normal;
+}
+
+@font-face{
+    font-family: "mononoki";
+    src: url("../font/mononoki-Bold.woff");
+    font-style: bold;
+}
+
+@font-face{
+    font-family: "mononoki";
+    src: url("../font/mononoki-Italic.woff");
+    font-style: italic;
 }
