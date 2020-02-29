@@ -3,15 +3,15 @@
 
 // Require Node.js Dependencies
 const { join, dirname, basename } = require("path");
-const fs = require("fs");
 const { mkdir, writeFile, readFile } = require("fs").promises;
+const fs = require("fs");
 
 // Require Third-party Dependencies
 const Lock = require("@slimio/lock");
 const git = require("isomorphic-git");
+const http = require("isomorphic-git/http/node");
 const parseAuthor = require("parse-author");
 const { from, cwd } = require("nsecure");
-const NpmRegistry = require("@slimio/npm-registry");
 
 // Require Internal Dependencies
 const config = require("../data/config.json");
@@ -23,8 +23,6 @@ const JSON_DIR = join(__dirname, "..", "json");
 // VARS
 const token = process.env.GIT_TOKEN;
 const securityLock = new Lock({ maxConcurrent: 2 });
-const registry = new NpmRegistry();
-git.plugins.set("fs", fs);
 
 function formatBytes(bytes, decimals) {
     if (bytes === 0) {
@@ -113,11 +111,6 @@ async function fetchStatsFromNsecurePayloads(payloadFiles = []) {
         }
     }
 
-    const regStats = await Promise.all(Object.keys(stats.packages).map((pkgName) => registry.package(pkgName)));
-    regStats
-        .map((row) => row.maintainers)
-        .forEach((humans) => humans.forEach((human) => stats.authors.add(human.email)));
-
     stats.packages_count.all = Object.keys(stats.packages).length;
     stats.packages_count.internal = stats.packages_count.all - stats.packages_count.external;
     stats.size.all = formatBytes(stats.size.all);
@@ -150,10 +143,10 @@ function parseNsecureAuthor(author) {
  */
 async function cloneGITRepository(repositoryName) {
     const dir = join(CLONE_DIR, repositoryName);
-    const url = `${config.git_url}/${repositoryName}`;
+    const url = `${config.git_url}/${repositoryName}.git`;
 
     await git.clone({
-        dir, url, token, singleBranch: true, oauth2format: "github"
+        fs, http, dir, url, token, singleBranch: true, oauth2format: "github"
     });
 
     return dir;

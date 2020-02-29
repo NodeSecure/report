@@ -77,11 +77,11 @@ async function main() {
         }).format(new Date());
 
         console.log(generationDate);
-        const pkgStats = await fetchPackagesStats();
-        // const repoStats = await fetchRepositoriesStats();
+        // const pkgStats = await fetchPackagesStats();
+        const repoStats = await fetchRepositoriesStats();
 
-        console.log(pkgStats);
-        // console.log(JSON.stringify(repoStats, null, 4));
+        // console.log(JSON.stringify(pkgStats, null, 4));
+        console.log(repoStats);
     }
     finally {
         await new Promise((resolve) => setTimeout(resolve, 100));
