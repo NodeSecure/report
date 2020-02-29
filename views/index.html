@@ -13,6 +13,7 @@
 <script src="https://d3js.org/d3-color.v1.min.js"></script>
 <script src="https://d3js.org/d3-interpolate.v1.min.js"></script>
 <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+<script src="../public/scripts/main.js"></script>
 <script src="https://kit.fontawesome.com/24e8bd11b7.js" crossorigin="anonymous"></script>
 <title>Security</title>
 
@@ -211,86 +212,3 @@
         <h2><i class="fab fa-git-alt"></i>GIT Repositories Statistics</h2>
     </section>
 </div>
-
-<script type="text/javascript" defer>
-    // https://github.com/d3/d3-scale-chromatic/blob/master/README.md
-    function calculatePoint(i, intervalSize, { colorStart, colorEnd, useEndAsStart }) {
-        return (useEndAsStart ? (colorEnd - (i * intervalSize)) : (colorStart + (i * intervalSize)));
-    }
-
-    function* interpolateColors(dataLength, scale, range) {
-        const intervalSize = (range.colorEnd - range.colorStart) / dataLength;
-
-        for (let i = 0; i < dataLength; i++) {
-            yield scale(calculatePoint(i, intervalSize, range));
-        }
-    }
-
-    document.addEventListener("DOMContentLoaded", () => {
-        Chart.Legend.prototype.afterFit = function () {
-            this.height = this.height + 15;
-        };
-        const colorRangeInfo = {
-            colorStart: 0.2,
-            colorEnd: 1,
-            useEndAsStart: false
-        };
-
-        const chartExtensions = document.getElementById("myChartEx").getContext("2d");
-        const chartLicenses = document.getElementById("myChartLi").getContext("2d");
-
-        const options = {
-            legend: {
-                padding: 20,
-                labels: {
-                    fontColor: "white",
-                    fontFamily: "mononoki",
-                    fontSize: 16,
-                    padding: 10
-                }
-            }
-        };
-
-        {
-            const labels = ['MIT:14', 'ISC:10', 'BSD-2-Clause:2', 'Unknown:2'];
-            const COLORS = [...interpolateColors(labels.length, d3.interpolateCool, colorRangeInfo)];
-
-            new Chart(chartLicenses, {
-                type: 'pie',
-                data: {
-                    labels,
-                    datasets: [{
-                        label: 'Licenses',
-                        borderWidth: 0,
-                        backgroundColor: COLORS,
-                        data: [14, 10, 2, 2]
-                    }]
-                },
-                options
-            });
-        }
-
-        {
-            const labels = ['.yml:2', '.md:14', '.js:14', '.json:14', '.ts:9', '.toml:2'];
-            const COLORS = [...interpolateColors(labels.length, d3.interpolateInferno, colorRangeInfo)];
-
-            new Chart(chartExtensions, {
-                type: 'pie',
-                data: {
-                    labels,
-                    datasets: [{
-                        label: 'Extensions',
-                        borderWidth: 0,
-                        backgroundColor: COLORS,
-                        data: [2, 14, 14, 14, 9, 2]
-                    }]
-                },
-                options
-            });
-        }
-
-        setTimeout(() => {
-            window.isReadyForPDF = true;
-        }, 1000);
-    });
-</script>
