@@ -10,6 +10,7 @@
 <link href="../public/css/style.css" rel="stylesheet" type="text/css">
 <link href="../public/css/print.css" rel="stylesheet" type="text/css">
 <script src="../public/lib/chart.js"></script>
+<script src="../public/lib/md5.js"></script>
 <script src="https://d3js.org/d3-color.v1.min.js"></script>
 <script src="https://d3js.org/d3-interpolate.v1.min.js"></script>
 <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
@@ -34,17 +35,17 @@
                 <div class="one-stat">
                     <i class="fas fa-weight-hanging"></i>
                     <h3>Internal Packages Size</h3>
-                    <span>[[=z.size.internal]]</span>
+                    <span>[[=z.npm_stats.size.internal]]</span>
                 </div>
                 <div class="one-stat">
                     <i class="fas fa-weight-hanging"></i>
                     <h3>Third Packages Size</h3>
-                    <span>[[=z.size.external]]</span>
+                    <span>[[=z.npm_stats.size.external]]</span>
                 </div>
                 <div class="one-stat">
                     <i class="fas fa-boxes"></i>
                     <h3>All Packages Size</h3>
-                    <span>[[=z.size.all]]</span>
+                    <span>[[=z.npm_stats.size.all]]</span>
                 </div>
             </div>
         </div>
@@ -52,30 +53,30 @@
             <div class="box-stats">
                 <div class="box-title">
                     <i class="fas fa-box"></i>
-                    <h3><span>[[=z.packages_count.internal]]</span>Internal Dependencies</h3>
+                    <h3><span>[[=z.npm_stats.packages_count.internal]]</span>Internal Dependencies</h3>
                 </div>
-                <ul>
-                    [[ for (const [name, option] of Object.entries(z.packages)) { ]]
-                        [[ if (!option.isThird) { ]]
-                            <li>
-                                <p>[[=name]]</p>
-                            </li>
-                        [[ } ]]
+                <ul class="npm-packages-list">
+                    [[ for (const [name, option] of Object.entries(z.npm_stats.packages)) { ]]
+                    [[ if (!option.isThird) { ]]
+                    <li data-value="[[=name]]">
+                        <p>[[=name]]</p>
+                    </li>
+                    [[ } ]]
                     [[ } ]]
                 </ul>
             </div>
             <div class="box-stats">
                 <div class="box-title">
                     <i class="fas fa-globe"></i>
-                    <h3><span>[[=z.packages_count.external]]</span>Third-party Dependencies</h3>
+                    <h3><span>[[=z.npm_stats.packages_count.external]]</span>Third-party Dependencies</h3>
                 </div>
-                <ul>
-                    [[ for (const [name, option] of Object.entries(z.packages)) { ]]
-                        [[ if (option.isThird) { ]]
-                            <li>
-                                <p>[[=name]]</p>
-                            </li>
-                        [[ } ]]
+                <ul class="npm-packages-list">
+                    [[ for (const [name, option] of Object.entries(z.npm_stats.packages)) { ]]
+                    [[ if (option.isThird) { ]]
+                    <li data-value="[[=name]]">
+                        <p>[[=name]]</p>
+                    </li>
+                    [[ } ]]
                     [[ } ]]
                 </ul>
             </div>
@@ -84,30 +85,26 @@
             <div class="box-stats">
                 <div class="box-title">
                     <i class="fas fa-project-diagram"></i>
-                    <h3>Transitive Dependencies</h3>
+                    <h3><span>[[=z.npm_stats.deps.transitive.size]]</span>Transitive Dependencies</h3>
                 </div>
-                <ul>
-                    [[ let transDeps = '' ]]
-                    [[ for (const name of (z.deps.transitive)) { ]]
-                        [[ transDeps = name ]]
-                        <li>
-                            <p>[[=transDeps]]</p>
-                        </li>
+                <ul class="npm-packages-list">
+                    [[ for (const name of z.npm_stats.deps.transitive) { ]]
+                    <li data-value="[[=name]]">
+                        <p>[[=name]]</p>
+                    </li>
                     [[ } ]]
                 </ul>
             </div>
             <div class="box-stats">
                 <div class="box-title">
                     <i class="fab fa-node-js"></i>
-                    <h3>Node.js Core Dependencies</h3>
+                    <h3><span>[[=z.npm_stats.deps.node.size]]</span>Node.js Core Dependencies</h3>
                 </div>
-                <ul>
-                    [[ let nodeDeps = '' ]]
-                    [[ for (const name of (z.deps.node)) { ]]
-                        [[ nodeDeps = name ]]
-                        <li>
-                            <p>[[=nodeDeps]]</p>
-                        </li>
+                <ul class="node-list">
+                    [[ for (const name of z.npm_stats.deps.node) { ]]
+                    <li data-value="[[=name]]">
+                        <p>[[=name]]</p>
+                    </li>
                     [[ } ]]
                 </ul>
             </div>
@@ -116,20 +113,15 @@
             <div class="box-stats">
                 <div class="box-title">
                     <i class="fas fa-user"></i>
-                    <h3>Authors</h3>
+                    <h3>Authors & Maintainers</h3>
                 </div>
                 <div class="box-avatar">
-                    <div class="avatar">
-                       <ul>
-                        [[ let emailAuthors = '' ]]
-                        [[ for (const email of (z.authors)) { ]]
-                            [[ emailAuthors = email ]]
-                            <li>
-                                <p>[[=emailAuthors]]</p>
-                            </li>
-                        [[ } ]]
-                       </ul>
+                    [[ for (const [email, count] of Object.entries(z.npm_stats.authors)) { ]]
+                    <div class="avatar" data-email="[[=email]]">
+                        <a href="#" target="_blank" rel="noopener"></a>
+                        <p>[[=count]]</p>
                     </div>
+                    [[ } ]]
                 </div>
             </div>
         </div>
@@ -139,7 +131,7 @@
                     <i class="fas fa-file-code"></i>
                     <h3>Extensions</h3>
                 </div>
-                <canvas id="myChartEx"></canvas>
+                <canvas id="npm_extension_canvas"></canvas>
             </div>
         </div>
         <div class="box-stats-container charts">
@@ -148,11 +140,126 @@
                     <i class="fas fa-file-alt"></i>
                     <h3>Licenses</h3>
                 </div>
-                <canvas id="myChartLi"></canvas>
+                <canvas id="npm_license_canvas"></canvas>
             </div>
         </div>
     </section>
-    <section>
+    [[ if (z.git_stats !== null ) { ]]
+    <section style="margin-top: 40px;">
         <h2><i class="fab fa-git-alt"></i>GIT Repositories Statistics</h2>
+        <div class="box-stats-container">
+            <div class="box-stats-resume">
+                <div class="one-stat">
+                    <i class="fas fa-weight-hanging"></i>
+                    <h3>Internal Packages Size</h3>
+                    <span>[[=z.git_stats.size.internal]]</span>
+                </div>
+                <div class="one-stat">
+                    <i class="fas fa-weight-hanging"></i>
+                    <h3>Third Packages Size</h3>
+                    <span>[[=z.git_stats.size.external]]</span>
+                </div>
+                <div class="one-stat">
+                    <i class="fas fa-boxes"></i>
+                    <h3>All Packages Size</h3>
+                    <span>[[=z.git_stats.size.all]]</span>
+                </div>
+            </div>
+        </div>
+        <div class="box-stats-container">
+            <div class="box-stats">
+                <div class="box-title">
+                    <i class="fas fa-box"></i>
+                    <h3><span>[[=z.git_stats.packages_count.internal]]</span>Internal Dependencies</h3>
+                </div>
+                <ul class="npm-packages-list">
+                    [[ for (const [name, option] of Object.entries(z.git_stats.packages)) { ]]
+                    [[ if (!option.isThird) { ]]
+                    <li data-value="[[=name]]">
+                        <p>[[=name]]</p>
+                    </li>
+                    [[ } ]]
+                    [[ } ]]
+                </ul>
+            </div>
+            <div class="box-stats">
+                <div class="box-title">
+                    <i class="fas fa-globe"></i>
+                    <h3><span>[[=z.git_stats.packages_count.external]]</span>Third-party Dependencies</h3>
+                </div>
+                <ul class="npm-packages-list">
+                    [[ for (const [name, option] of Object.entries(z.git_stats.packages)) { ]]
+                    [[ if (option.isThird) { ]]
+                    <li data-value="[[=name]]">
+                        <p>[[=name]]</p>
+                    </li>
+                    [[ } ]]
+                    [[ } ]]
+                </ul>
+            </div>
+        </div>
+        <div class="box-stats-container">
+            <div class="box-stats">
+                <div class="box-title">
+                    <i class="fas fa-project-diagram"></i>
+                    <h3><span>[[=z.git_stats.deps.transitive.size]]</span>Transitive Dependencies</h3>
+                </div>
+                <ul>
+                    [[ for (const name of z.git_stats.deps.transitive) { ]]
+                    <li>
+                        <p>[[=name]]</p>
+                    </li>
+                    [[ } ]]
+                </ul>
+            </div>
+            <div class="box-stats">
+                <div class="box-title">
+                    <i class="fab fa-node-js"></i>
+                    <h3><span>[[=z.git_stats.deps.node.size]]</span>Node.js Core Dependencies</h3>
+                </div>
+                <ul>
+                    [[ for (const name of z.git_stats.deps.node) { ]]
+                    <li>
+                        <p>[[=name]]</p>
+                    </li>
+                    [[ } ]]
+                </ul>
+            </div>
+        </div>
+        <div class="box-stats-container">
+            <div class="box-stats">
+                <div class="box-title">
+                    <i class="fas fa-user"></i>
+                    <h3>Authors & Maintainers</h3>
+                </div>
+                <div class="box-avatar">
+                    [[ for (const [email, count] of Object.entries(z.git_stats.authors)) { ]]
+                    <div class="avatar" data-email="[[=email]]">
+                        <a href="#" target="_blank" rel="noopener"></a>
+                        <p>[[=count]]</p>
+                    </div>
+                    [[ } ]]
+                </div>
+            </div>
+        </div>
+        <div class="box-stats-container charts">
+            <div class="box-stats">
+                <div class="box-title">
+                    <i class="fas fa-file-code"></i>
+                    <h3>Extensions</h3>
+                </div>
+                <canvas id="git_extension_canvas"></canvas>
+            </div>
+        </div>
+        <div class="box-stats-container charts">
+            <div class="box-stats">
+                <div class="box-title">
+                    <i class="fas fa-file-alt"></i>
+                    <h3>Licenses</h3>
+                </div>
+                <canvas id="git_license_canvas"></canvas>
+            </div>
+        </div>
     </section>
+    [[ } ]]
 </div>

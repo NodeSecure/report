@@ -10,7 +10,6 @@ const fs = require("fs");
 const Lock = require("@slimio/lock");
 const git = require("isomorphic-git");
 const http = require("isomorphic-git/http/node");
-const parseAuthor = require("parse-author");
 const { from, cwd } = require("nsecure");
 
 // Require Internal Dependencies
@@ -48,7 +47,7 @@ async function fetchStatsFromNsecurePayloads(payloadFiles = []) {
             Unknown: 0
         },
         extensions: {},
-        authors: new Set(),
+        authors: {},
         packages: {},
         packages_count: {
             all: 0, internal: 0, external: 0
@@ -62,8 +61,12 @@ async function fetchStatsFromNsecurePayloads(payloadFiles = []) {
         const nsecurePayload = JSON.parse(buf.toString());
 
         for (const [name, descriptor] of Object.entries(nsecurePayload)) {
-            const { versions } = descriptor;
+            const { versions, metadata } = descriptor;
             const isThird = config.npm_org_prefix === null ? true : !name.startsWith(`${config.npm_org_prefix}/`);
+
+            for (const human of metadata.maintainers) {
+                stats.authors[human.email] = Reflect.has(stats.authors, human.email) ? ++stats.authors[human.email] : 1;
+            }
 
             if (!(name in stats.packages)) {
                 if (isThird) {
@@ -98,7 +101,8 @@ async function fetchStatsFromNsecurePayloads(payloadFiles = []) {
 
                 const parsedAuthor = parseNsecureAuthor(author);
                 if (parsedAuthor !== null && "email" in parsedAuthor) {
-                    stats.authors.add(parsedAuthor.email);
+                    stats.authors[parsedAuthor.email] = Reflect.has(stats.authors, parsedAuthor.email) ?
+                        ++stats.authors[parsedAuthor.email] : 1;
                 }
 
                 curr.versions.add(localVersion);
@@ -132,6 +136,43 @@ function parseNsecureAuthor(author) {
     }
 
     return { name: author.name, email: author.email || null, url: author.url || null };
+}
+
+function authorRegex() {
+    return /^([^<(]+?)?[ \t]*(?:<([^>(]+?)>)?[ \t]*(?:\(([^)]+?)\)|$)/gm;
+}
+
+function parseAuthor(str) {
+    if (typeof str !== "string") {
+        throw new TypeError("expected author to be a string");
+    }
+
+    if (!str || !/\w/.test(str)) {
+        return {};
+    }
+
+    const match = authorRegex().exec(str);
+    if (!match) {
+        return {};
+    }
+    const author = Object.create(null);
+
+    if (match[1]) {
+        author.name = match[1];
+    }
+
+    for (let id = 2; id < match.length; id++) {
+        const val = match[id] || "";
+
+        if (val.includes("@")) {
+            author.email = val;
+        }
+        else if (val.includes("http")) {
+            author.url = val;
+        }
+    }
+
+    return author;
 }
 
 /**

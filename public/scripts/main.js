@@ -1,3 +1,4 @@
+/* eslint-disable no-invalid-this */
 "use strict";
 
 const kChartOptions = {
@@ -13,7 +14,7 @@ const kChartOptions = {
 };
 
 const colorRangeInfo = {
-    colorStart: 0.2, colorEnd: 1, useEndAsStart: false
+    colorStart: 0.2, colorEnd: 0.8, useEndAsStart: false
 };
 
 // https://github.com/d3/d3-scale-chromatic/blob/master/README.md
@@ -47,21 +48,43 @@ function createChart(elementId, chartTitle, payload = {}) {
     });
 }
 
+function liPackageClick() {
+    const dataValue = this.getAttribute("data-value");
+    window.open(`https://www.npmjs.com/package/${dataValue}`, "_blank");
+}
+
+function nodeDepClick() {
+    const dataValue = this.getAttribute("data-value");
+    window.open(`https://nodejs.org/dist/latest/docs/api/${dataValue}.html`, "_blank");
+}
+
 document.addEventListener("DOMContentLoaded", () => {
     Chart.Legend.prototype.afterFit = function afterFit() {
         this.height += 15;
     };
 
-    createChart("myChartEx", "Extensions", {
-        labels: [".yml:2", ".md:14", ".js:14", ".json:14", ".ts:9", ".toml:2"],
-        interpolate: d3.interpolateInferno,
-        data: [2, 14, 14, 14, 9, 2]
-    });
+    const avatarsElements = document.querySelectorAll(".avatar");
+    for (const avatar of avatarsElements) {
+        const email = avatar.getAttribute("data-email");
+        const aElement = avatar.querySelector("a");
 
-    createChart("myChartLi", "Licenses", {
-        labels: ["MIT:14", "ISC:10", "BSD-2-Clause:2", "Unknown:2"],
-        data: [14, 10, 2, 2]
-    });
+        const imgEl = document.createElement("img");
+        imgEl.src = `https://gravatar.com/avatar/${md5(email)}?&d=404`;
+        imgEl.onerror = () => {
+            imgEl.src = "../public/img/avatar-default.png";
+        };
+        aElement.appendChild(imgEl);
+    }
+
+    const packagesList = document.querySelectorAll("ul.npm-packages-list li");
+    for (const liElement of packagesList) {
+        liElement.addEventListener("click", liPackageClick);
+    }
+
+    const nodeList = document.querySelectorAll("ul.node-list li");
+    for (const liElement of nodeList) {
+        liElement.addEventListener("click", nodeDepClick);
+    }
 
     setTimeout(() => {
         window.isReadyForPDF = true;

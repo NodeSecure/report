@@ -179,7 +179,6 @@ div.page header {
     margin-top: var(--default-margin);
     display: flex;
     flex-wrap: wrap;
-    max-height: 400px;
     overflow-y: auto;
     justify-content: center;
 }

@@ -5,10 +5,25 @@
     "npm_org_prefix": "@slimio",
     "npm_packages": [
         "@slimio/addon",
-        "@slimio/scheduler"
+        "@slimio/scheduler",
+        "@slimio/config",
+        "@slimio/core",
+        "@slimio/arg-parser",
+        "@slimio/profiles",
+        "@slimio/queue",
+        "@slimio/sqlite-transaction",
+        "@slimio/alert",
+        "@slimio/metrics",
+        "@slimio/units",
+        "@slimio/ipc",
+        "@slimio/safe-emitter"
     ],
     "git_url": "https://github.com/SlimIO",
     "git_repositories": [
-        "Aggregator"
+        "Aggregator",
+        "Alerting",
+        "Socket",
+        "Gate",
+        "ihm"
     ]
 }
