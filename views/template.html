@@ -21,10 +21,10 @@
 <div class="page">
     <header>
         <div class="logo">
-            <img src="https://avatars0.githubusercontent.com/u/29552883?s=200&v=4" />
+            <img src="[[=z.report_logo]]" />
         </div>
-        <h1>[[-z.report_title]]</h1>
-        <p>[[-z.generationDate]] </p>
+        <h1>[[=z.report_title]]</h1>
+        <p>[[=z.report_date]]</p>
     </header>
 
     <section>
@@ -34,17 +34,17 @@
                 <div class="one-stat">
                     <i class="fas fa-weight-hanging"></i>
                     <h3>Internal Packages Size</h3>
-                    <span>[[-z.size.internal]]</span>
+                    <span>[[=z.size.internal]]</span>
                 </div>
                 <div class="one-stat">
                     <i class="fas fa-weight-hanging"></i>
                     <h3>Third Packages Size</h3>
-                    <span>[[-z.size.external]]</span>
+                    <span>[[=z.size.external]]</span>
                 </div>
                 <div class="one-stat">
                     <i class="fas fa-boxes"></i>
                     <h3>All Packages Size</h3>
-                    <span>[[-z.size.all]]</span>
+                    <span>[[=z.size.all]]</span>
                 </div>
             </div>
         </div>
@@ -52,20 +52,22 @@
             <div class="box-stats">
                 <div class="box-title">
                     <i class="fas fa-box"></i>
-                    <h3><span>[[-z.packages_count.internal]]</span>Internal Dependencies</h3>
+                    <h3><span>[[=z.packages_count.internal]]</span>Internal Dependencies</h3>
                 </div>
-                    <ul>
-                        [[ for (const packageName of Object.keys(z.packages)) { ]]
+                <ul>
+                    [[ for (const [name, option] of Object.entries(z.packages)) { ]]
+                        [[ if (!option.isThird) { ]]
                             <li>
-                                <p>[[=packageName]</p>
+                                <p>[[=name]]</p>
                             </li>
                         [[ } ]]
-                    </ul>
+                    [[ } ]]
+                </ul>
             </div>
             <div class="box-stats">
                 <div class="box-title">
                     <i class="fas fa-globe"></i>
-                    <h3><span>[[-z.packages_count.external]]</span>Third-party Dependencies</h3>
+                    <h3><span>[[=z.packages_count.external]]</span>Third-party Dependencies</h3>
                 </div>
                 <ul>
                     <li>

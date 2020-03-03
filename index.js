@@ -6,7 +6,7 @@ require("make-promises-safe");
 
 // Require Node.js Dependencies
 const { join } = require("path");
-const { mkdir, rmdir, readFile } = require("fs").promises;
+const { mkdir, rmdir, readFile, writeFile } = require("fs").promises;
 
 // Require Third-party Dependencies
 const { cyan, white } = require("kleur");
@@ -21,6 +21,8 @@ const config = require("./data/config.json");
 // CONSTANTS
 const CLONE_DIR = join(__dirname, "clones");
 const JSON_DIR = join(__dirname, "json");
+const VIEWS_DIR = join(__dirname, "views");
+const REPORTS_DIR = join(__dirname, "reports");
 
 async function fetchPackagesStats() {
     const spinner = new Spinner({
@@ -77,23 +79,26 @@ async function main() {
             second: "numeric"
         }).format(new Date());
 
-        console.log(generationDate);
-        // const pkgStats = await fetchPackagesStats();
-        const repoStats = await fetchRepositoriesStats();
+        // console.log(generationDate);
+        const pkgStats = await fetchPackagesStats();
+        // const repoStats = await fetchRepositoriesStats();
 
         // console.log(JSON.stringify(pkgStats, null, 4));
-        console.log(repoStats);
+        // console.log(repoStats);
 
-        const data = await readFile(join(__dirname, "views/template.html"), "utf8");
+        const HTMLTemplateStr = await readFile(join(VIEWS_DIR, "template.html"), "utf8");
 
-        const fn = compile(data);
+        const templateGenerator = compile(HTMLTemplateStr);
+        const templatePayload = {
+            report_title: config.report_title,
+            report_logo: config.report_logo,
+            report_date: generationDate,
+            ...pkgStats
+        };
+        console.log(templatePayload);
+        const HTMLReport = templateGenerator(templatePayload);
 
-        const result = fn({ report_title: config.report_title,
-            generationDate,
-            ...repoStats
-        });
-
-        console.log(result);
+        await writeFile(join(REPORTS_DIR, "report.html"), HTMLReport);
     }
     finally {
         await new Promise((resolve) => setTimeout(resolve, 100));
