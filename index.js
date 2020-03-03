@@ -6,12 +6,13 @@ require("make-promises-safe");
 
 // Require Node.js Dependencies
 const { join } = require("path");
-const { mkdir, rmdir } = require("fs").promises;
+const { mkdir, rmdir, readFile } = require("fs").promises;
 
 // Require Third-party Dependencies
 const { cyan, white } = require("kleur");
 const Spinner = require("@slimio/async-cli-spinner");
 Spinner.DEFAULT_SPINNER = "dots";
+const compile = require("zup");
 
 // Require Internal Dependencies
 const { cloneGITRepository, fetchStatsFromNsecurePayloads, nsecure } = require("./src/utils");
@@ -82,6 +83,17 @@ async function main() {
 
         // console.log(JSON.stringify(pkgStats, null, 4));
         console.log(repoStats);
+
+        const data = await readFile(join(__dirname, "views/template.html"), "utf8");
+
+        const fn = compile(data);
+
+        const result = fn({ report_title: config.report_title,
+            generationDate,
+            ...repoStats
+        });
+
+        console.log(result);
     }
     finally {
         await new Promise((resolve) => setTimeout(resolve, 100));
@@ -89,3 +101,4 @@ async function main() {
     }
 }
 main().catch(console.error);
+

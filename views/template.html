@@ -23,8 +23,8 @@
         <div class="logo">
             <img src="https://avatars0.githubusercontent.com/u/29552883?s=200&v=4" />
         </div>
-        <h1>SLIMIO SECURITY REPORT</h1>
-        <p>Generated the 27/02/2020 at 14pm</p>
+        <h1>[[-z.report_title]]</h1>
+        <p>[[-z.generationDate]] </p>
     </header>
 
     <section>
@@ -34,17 +34,17 @@
                 <div class="one-stat">
                     <i class="fas fa-weight-hanging"></i>
                     <h3>Internal Packages Size</h3>
-                    <span>[[-z.stats.size.internal]] [[-z.sizes]]</span>
+                    <span>[[-z.size.internal]]</span>
                 </div>
                 <div class="one-stat">
                     <i class="fas fa-weight-hanging"></i>
                     <h3>Third Packages Size</h3>
-                    <span>[[-z.stats.size.externa]] KB</span>
+                    <span>[[-z.size.external]]</span>
                 </div>
                 <div class="one-stat">
                     <i class="fas fa-boxes"></i>
                     <h3>All Packages Size</h3>
-                    <span>[[-z.stats.size.all]] KB</span>
+                    <span>[[-z.size.all]]</span>
                 </div>
             </div>
         </div>
@@ -52,36 +52,20 @@
             <div class="box-stats">
                 <div class="box-title">
                     <i class="fas fa-box"></i>
-                    <h3><span>[[-z.stats.packages_count.internal]]</span>Internal Dependencies</h3>
+                    <h3><span>[[-z.packages_count.internal]]</span>Internal Dependencies</h3>
                 </div>
-                <ul>
-                    <li>
-                        <p>@slimio/scheduler</p>
-                    </li>
-                    <li>
-                        <p>@slimio/is</p>
-                    </li>
-                    <li>
-                        <p>@slimio/safe-emitter</p>
-                    </li>
-                    <li>
-                        <p>@slimio/error</p>
-                    </li>
-                    <li>
-                        <p>@slimio/timer</p>
-                    </li>
-                    <li>
-                        <p>@slimio/logger</p>
-                    </li>
-                    <li>
-                        <p>@slimio/addon</p>
-                    </li>
-                </ul>
+                    <ul>
+                        [[ for (const packageName of Object.keys(z.packages)) { ]]
+                            <li>
+                                <p>[[=packageName]</p>
+                            </li>
+                        [[ } ]]
+                    </ul>
             </div>
             <div class="box-stats">
                 <div class="box-title">
                     <i class="fas fa-globe"></i>
-                    <h3><span>[[-z.stats.packages_count.external]]</span>Third-party Dependencies</h3>
+                    <h3><span>[[-z.packages_count.external]]</span>Third-party Dependencies</h3>
                 </div>
                 <ul>
                     <li>
