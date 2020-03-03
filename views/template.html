@@ -70,18 +70,13 @@
                     <h3><span>[[=z.packages_count.external]]</span>Third-party Dependencies</h3>
                 </div>
                 <ul>
-                    <li>
-                        <p>is-snake-case</p>
-                    </li>
-                    <li>
-                        <p>zen-observable</p>
-                    </li>
-                    <li>
-                        <p>clean-stack</p>
-                    </li>
-                    <li>
-                        <p>sonic-boom</p>
-                    </li>
+                    [[ for (const [name, option] of Object.entries(z.packages)) { ]]
+                        [[ if (option.isThird) { ]]
+                            <li>
+                                <p>[[=name]]</p>
+                            </li>
+                        [[ } ]]
+                    [[ } ]]
                 </ul>
             </div>
         </div>
@@ -92,12 +87,13 @@
                     <h3>Transitive Dependencies</h3>
                 </div>
                 <ul>
-                    <li>
-                        <p>@slimio/logger@0.1.2</p>
-                    </li>
-                    <li>
-                        <p>@slimio/addon@0.22.1</p>
-                    </li>
+                    [[ let transDeps = '' ]]
+                    [[ for (const name of (z.deps.transitive)) { ]]
+                        [[ transDeps = name ]]
+                        <li>
+                            <p>[[=transDeps]]</p>
+                        </li>
+                    [[ } ]]
                 </ul>
             </div>
             <div class="box-stats">
@@ -106,39 +102,13 @@
                     <h3>Node.js Core Dependencies</h3>
                 </div>
                 <ul>
-                    <li>
-                        <p>crypto</p>
-                    </li>
-                    <li>
-                        <p>child_process</p>
-                    </li>
-                    <li>
-                        <p>os</p>
-                    </li>
-                    <li>
-                        <p>timers</p>
-                    </li>
-                    <li>
-                        <p>fs</p>
-                    </li>
-                    <li>
-                        <p>events</p>
-                    </li>
-                    <li>
-                        <p>util</p>
-                    </li>
-                    <li>
-                        <p>path</p>
-                    </li>
-                    <li>
-                        <p>async_hooks</p>
-                    </li>
-                    <li>
-                        <p>perf_hooks</p>
-                    </li>
-                    <li>
-                        <p>stream</p>
-                    </li>
+                    [[ let nodeDeps = '' ]]
+                    [[ for (const name of (z.deps.node)) { ]]
+                        [[ nodeDeps = name ]]
+                        <li>
+                            <p>[[=nodeDeps]]</p>
+                        </li>
+                    [[ } ]]
                 </ul>
             </div>
         </div>
@@ -150,28 +120,15 @@
                 </div>
                 <div class="box-avatar">
                     <div class="avatar">
-                        <a href="sindresorhus@gmail.com" target="_blank">
-                            <img src="https://avatars1.githubusercontent.com/u/4438263?s=460&v=4" />
-                        </a>
-                        <p>7</p>
-                    </div>
-                    <div class="avatar">
-                        <a href="sindresorhus@gmail.com" target="_blank">
-                            <img src="https://avatars2.githubusercontent.com/u/170270?s=460&v=4" />
-                        </a>
-                        <p>2</p>
-                    </div>
-                    <div class="avatar">
-                        <a href="sindresorhus@gmail.com" target="_blank">
-                            <img src="https://avatars2.githubusercontent.com/u/376661?s=460&v=4" />
-                        </a>
-                        <p>2</p>
-                    </div>
-                    <div class="avatar">
-                        <a href="sindresorhus@gmail.com" target="_blank">
-                            <img src="https://avatars2.githubusercontent.com/u/9287?s=460&v=4" />
-                        </a>
-                        <p>13</p>
+                       <ul>
+                        [[ let emailAuthors = '' ]]
+                        [[ for (const email of (z.authors)) { ]]
+                            [[ emailAuthors = email ]]
+                            <li>
+                                <p>[[=emailAuthors]]</p>
+                            </li>
+                        [[ } ]]
+                       </ul>
                     </div>
                 </div>
             </div>
