@@ -35,7 +35,8 @@
         "make-promises-safe": "^5.1.0",
         "nsecure": "^0.4.1",
         "parse-author": "^2.0.0",
-        "puppeteer": "^2.1.1"
+        "puppeteer": "^2.1.1",
+        "zup": "0.0.1"
     },
     "devDependencies": {
         "@commitlint/cli": "^8.3.5",

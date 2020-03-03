@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,700,700i&display=swap" />
+<link href="../public/css/reset.css" rel="stylesheet" type="text/css">
+<link href="../public/css/themes/dark.css" rel="stylesheet" type="text/css">
+<link href="../public/css/style.css" rel="stylesheet" type="text/css">
+<link href="../public/css/print.css" rel="stylesheet" type="text/css">
+<script src="../public/lib/chart.js"></script>
+<script src="https://d3js.org/d3-color.v1.min.js"></script>
+<script src="https://d3js.org/d3-interpolate.v1.min.js"></script>
+<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+<script src="../public/scripts/main.js"></script>
+<script src="https://kit.fontawesome.com/24e8bd11b7.js" crossorigin="anonymous"></script>
+<title>Security</title>
+
+
+<div class="page">
+    <header>
+        <div class="logo">
+            <img src="https://avatars0.githubusercontent.com/u/29552883?s=200&v=4" />
+        </div>
+        <h1>SLIMIO SECURITY REPORT</h1>
+        <p>Generated the 27/02/2020 at 14pm</p>
+    </header>
+
+    <section>
+        <h2><i class="fab fa-npm"></i>NPM Packages Statistics</h2>
+        <div class="box-stats-container">
+            <div class="box-stats-resume">
+                <div class="one-stat">
+                    <i class="fas fa-weight-hanging"></i>
+                    <h3>Internal Packages Size</h3>
+                    <span>[[-z.stats.size.internal]] [[-z.sizes]]</span>
+                </div>
+                <div class="one-stat">
+                    <i class="fas fa-weight-hanging"></i>
+                    <h3>Third Packages Size</h3>
+                    <span>[[-z.stats.size.externa]] KB</span>
+                </div>
+                <div class="one-stat">
+                    <i class="fas fa-boxes"></i>
+                    <h3>All Packages Size</h3>
+                    <span>[[-z.stats.size.all]] KB</span>
+                </div>
+            </div>
+        </div>
+        <div class="box-stats-container">
+            <div class="box-stats">
+                <div class="box-title">
+                    <i class="fas fa-box"></i>
+                    <h3><span>[[-z.stats.packages_count.internal]]</span>Internal Dependencies</h3>
+                </div>
+                <ul>
+                    <li>
+                        <p>@slimio/scheduler</p>
+                    </li>
+                    <li>
+                        <p>@slimio/is</p>
+                    </li>
+                    <li>
+                        <p>@slimio/safe-emitter</p>
+                    </li>
+                    <li>
+                        <p>@slimio/error</p>
+                    </li>
+                    <li>
+                        <p>@slimio/timer</p>
+                    </li>
+                    <li>
+                        <p>@slimio/logger</p>
+                    </li>
+                    <li>
+                        <p>@slimio/addon</p>
+                    </li>
+                </ul>
+            </div>
+            <div class="box-stats">
+                <div class="box-title">
+                    <i class="fas fa-globe"></i>
+                    <h3><span>[[-z.stats.packages_count.external]]</span>Third-party Dependencies</h3>
+                </div>
+                <ul>
+                    <li>
+                        <p>is-snake-case</p>
+                    </li>
+                    <li>
+                        <p>zen-observable</p>
+                    </li>
+                    <li>
+                        <p>clean-stack</p>
+                    </li>
+                    <li>
+                        <p>sonic-boom</p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="box-stats-container">
+            <div class="box-stats">
+                <div class="box-title">
+                    <i class="fas fa-project-diagram"></i>
+                    <h3>Transitive Dependencies</h3>
+                </div>
+                <ul>
+                    <li>
+                        <p>@slimio/logger@0.1.2</p>
+                    </li>
+                    <li>
+                        <p>@slimio/addon@0.22.1</p>
+                    </li>
+                </ul>
+            </div>
+            <div class="box-stats">
+                <div class="box-title">
+                    <i class="fab fa-node-js"></i>
+                    <h3>Node.js Core Dependencies</h3>
+                </div>
+                <ul>
+                    <li>
+                        <p>crypto</p>
+                    </li>
+                    <li>
+                        <p>child_process</p>
+                    </li>
+                    <li>
+                        <p>os</p>
+                    </li>
+                    <li>
+                        <p>timers</p>
+                    </li>
+                    <li>
+                        <p>fs</p>
+                    </li>
+                    <li>
+                        <p>events</p>
+                    </li>
+                    <li>
+                        <p>util</p>
+                    </li>
+                    <li>
+                        <p>path</p>
+                    </li>
+                    <li>
+                        <p>async_hooks</p>
+                    </li>
+                    <li>
+                        <p>perf_hooks</p>
+                    </li>
+                    <li>
+                        <p>stream</p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="box-stats-container">
+            <div class="box-stats">
+                <div class="box-title">
+                    <i class="fas fa-user"></i>
+                    <h3>Authors</h3>
+                </div>
+                <div class="box-avatar">
+                    <div class="avatar">
+                        <a href="sindresorhus@gmail.com" target="_blank">
+                            <img src="https://avatars1.githubusercontent.com/u/4438263?s=460&v=4" />
+                        </a>
+                        <p>7</p>
+                    </div>
+                    <div class="avatar">
+                        <a href="sindresorhus@gmail.com" target="_blank">
+                            <img src="https://avatars2.githubusercontent.com/u/170270?s=460&v=4" />
+                        </a>
+                        <p>2</p>
+                    </div>
+                    <div class="avatar">
+                        <a href="sindresorhus@gmail.com" target="_blank">
+                            <img src="https://avatars2.githubusercontent.com/u/376661?s=460&v=4" />
+                        </a>
+                        <p>2</p>
+                    </div>
+                    <div class="avatar">
+                        <a href="sindresorhus@gmail.com" target="_blank">
+                            <img src="https://avatars2.githubusercontent.com/u/9287?s=460&v=4" />
+                        </a>
+                        <p>13</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="box-stats-container charts">
+            <div class="box-stats">
+                <div class="box-title">
+                    <i class="fas fa-file-code"></i>
+                    <h3>Extensions</h3>
+                </div>
+                <canvas id="myChartEx"></canvas>
+            </div>
+        </div>
+        <div class="box-stats-container charts">
+            <div class="box-stats">
+                <div class="box-title">
+                    <i class="fas fa-file-alt"></i>
+                    <h3>Licenses</h3>
+                </div>
+                <canvas id="myChartLi"></canvas>
+            </div>
+        </div>
+    </section>
+    <section>
+        <h2><i class="fab fa-git-alt"></i>GIT Repositories Statistics</h2>
+    </section>
+</div>
