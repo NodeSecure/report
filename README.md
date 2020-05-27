@@ -6,7 +6,6 @@
 ![size](https://img.shields.io/github/languages/code-size/SlimIO/Security)
 ![known vulnerabilities](https://img.shields.io/snyk/vulnerabilities/github/SlimIO/Security)
 [![Build Status](https://travis-ci.com/SlimIO/Security.svg?branch=master)](https://travis-ci.com/SlimIO/Security)
-[![Greenkeeper badge](https://badges.greenkeeper.io/SlimIO/Security.svg)](https://greenkeeper.io/)
 
 This project has been created to analyze and detect dependencies security issues with the help of nsecure.
 
