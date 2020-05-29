@@ -240,7 +240,7 @@ async function onLocalDirectory(dir) {
     try {
         const name = `${basename(dir)}.json`;
         const { dependencies } = await cwd(dir, {
-            maxDepth: 4, verbose: false
+            maxDepth: 4, verbose: false, usePackageLock: false
         });
 
         const filePath = join(JSON_DIR, name);
