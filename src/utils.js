@@ -243,7 +243,8 @@ async function onLocalDirectory(dir) {
             maxDepth: 4, verbose: false
         });
 
-        await writeFile(join(JSON_DIR, name), JSON.stringify(dependencies, null, 2));
+        const filePath = join(JSON_DIR, name);
+        await writeFile(filePath, JSON.stringify(dependencies, null, 2));
 
         return filePath;
     }
