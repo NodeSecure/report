@@ -84,7 +84,9 @@ async function fetchStatsFromNsecurePayloads(payloadFiles = []) {
 
                 stats.size.all += size;
                 stats.size[isThird ? "external" : "internal"] += size;
-                composition.required_builtin.forEach((dep) => stats.deps.node.add(dep));
+
+                (composition.required_builtin || composition.required_nodejs)
+                    .forEach((dep) => stats.deps.node.add(dep));
                 for (const extName of composition.extensions.filter((extName) => extName !== "")) {
                     stats.extensions[extName] = Reflect.has(stats.extensions, extName) ? ++stats.extensions[extName] : 1;
                 }
@@ -205,18 +207,19 @@ async function onPackage(packageName) {
 
     try {
         const name = `${packageName}.json`;
-        const payload = await from(packageName, {
+        const { dependencies } = await from(packageName, {
             maxDepth: 4, verbose: false
         });
 
-        const result = JSON.stringify(Object.fromEntries(payload), null, 2);
         const filePath = join(JSON_DIR, name);
         await mkdir(dirname(filePath), { recursive: true });
-        await writeFile(filePath, result);
+        await writeFile(filePath, JSON.stringify(dependencies, null, 2));
 
         return filePath;
     }
     catch (error) {
+        console.log(error);
+
         return null;
     }
     finally {
@@ -236,13 +239,11 @@ async function onLocalDirectory(dir) {
 
     try {
         const name = `${basename(dir)}.json`;
-        const payload = await cwd(dir, {
+        const { dependencies } = await cwd(dir, {
             maxDepth: 4, verbose: false
         });
 
-        const result = JSON.stringify(Object.fromEntries(payload), null, 2);
-        const filePath = join(JSON_DIR, name);
-        await writeFile(filePath, result);
+        await writeFile(join(JSON_DIR, name), JSON.stringify(dependencies, null, 2));
 
         return filePath;
     }

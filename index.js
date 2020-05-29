@@ -39,7 +39,7 @@ async function fetchPackagesStats() {
         const elapsed = `${spinner.elapsedTime.toFixed(2)}ms`;
         spinner.succeed(`Successfully done in ${cyan().bold(elapsed)}`);
 
-        return fetchStatsFromNsecurePayloads(jsonFiles);
+        return fetchStatsFromNsecurePayloads(jsonFiles.filter((value) => value !== null));
     }
     catch (error) {
         spinner.failed(error.message);
