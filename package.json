@@ -35,7 +35,7 @@
         "kleur": "^3.0.3",
         "make-promises-safe": "^5.1.0",
         "nsecure": "^0.7.0",
-        "puppeteer": "^3.2.0",
+        "puppeteer": "^5.2.1",
         "zup": "0.0.1"
     },
     "devDependencies": {
