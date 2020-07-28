@@ -48,6 +48,8 @@ To known how to get a **GIT_TOKEN** or how to register environment variables fol
 
 ## Configuration example (for SlimIO)
 
+To generate your own report just edit the `data/config.json` file.
+
 ```json
 {
     "theme": "dark",
@@ -76,11 +78,35 @@ To known how to get a **GIT_TOKEN** or how to register environment variables fol
         "Socket",
         "Gate",
         "ihm"
+    ],
+    "charts": [
+        {
+            "name": "Extensions",
+            "display": true,
+            "interpolation": "d3.interpolateRainbow"
+        },
+        {
+            "name": "Licenses",
+            "display": true,
+            "interpolation": "d3.interpolateCool"
+        },
+        {
+            "name": "Warnings",
+            "display": true,
+            "interpolation": "d3.interpolateInferno"
+        },
+        {
+            "name": "Flags",
+            "display": true,
+            "interpolation": "d3.interpolateWarm"
+        }
     ]
 }
 ```
 
 The theme can be either `dark` or `light`. Themes are editable in *public/css/themes* (feel free to PR new themes if you want).
+
+> All D3 scale-chromatic can be found [here](https://github.com/d3/d3-scale-chromatic/blob/master/README.md).
 
 ## Dependencies
 

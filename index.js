@@ -16,18 +16,16 @@ const Spinner = require("@slimio/async-cli-spinner");
 Spinner.DEFAULT_SPINNER = "dots";
 
 // Require Internal Dependencies
-const { cloneGITRepository, fetchStatsFromNsecurePayloads, nsecure } = require("./src/utils");
+const { cloneGITRepository, fetchStatsFromNsecurePayloads, nsecure, cleanReportName } = require("./src/utils");
 const { generatePDF } = require("./src/pdf");
 const config = require("./data/config.json");
 
 // CONSTANTS
-const CLONE_DIR = join(__dirname, "clones");
-const JSON_DIR = join(__dirname, "json");
-const VIEWS_DIR = join(__dirname, "views");
-const REPORTS_DIR = join(__dirname, "reports");
-
-// VARS
-const createChart = taggedString`\tcreateChart("${0}", { labels: [${1}], interpolate: ${3}, data: [${2}] });`;
+const kCloneDir = join(__dirname, "clones");
+const kJsonDir = join(__dirname, "json");
+const kViewsDir = join(__dirname, "views");
+const kReportsDir = join(__dirname, "reports");
+const kChartTemplate = taggedString`\tcreateChart("${0}", "${4}", { labels: [${1}], interpolate: ${3}, data: [${2}] });`;
 
 async function fetchPackagesStats() {
     const spinner = new Spinner({
@@ -68,20 +66,38 @@ async function fetchRepositoriesStats() {
     }
 }
 
-function transformGraphData(obj) {
-    return Object.entries(obj).map(([key, value]) => `"${key}:${value}"`).join(",");
+// eslint-disable-next-line max-params
+function toChart(baliseName, data, interpolateName, type = "bar") {
+    const graphLabels = Object.keys(data).map((key) => `"${key}"`).join(",");
+
+    return kChartTemplate(baliseName, graphLabels, Object.values(data).join(","), interpolateName, type);
 }
 
-// eslint-disable-next-line max-params
-function toChart(baliseName, data, interpolateName) {
-    return createChart(baliseName, transformGraphData(data), Object.values(data).join(","), interpolateName);
+function generateChartArray(pkgStats, repoStats) {
+    const charts = [];
+    const displayableCharts = config.charts.filter((chart) => chart.display);
+
+    if (pkgStats !== null) {
+        for (const chart of displayableCharts) {
+            const name = chart.name.toLowerCase();
+            charts.push(toChart(`npm_${name}_canvas`, pkgStats[name], chart.interpolation, chart.type));
+        }
+    }
+    if (repoStats !== null) {
+        for (const chart of displayableCharts) {
+            const name = chart.name.toLowerCase();
+            charts.push(toChart(`git_${name}_canvas`, repoStats[name], chart.interpolation, chart.type));
+        }
+    }
+
+    return charts;
 }
 
 async function main() {
     await Promise.all([
-        mkdir(JSON_DIR, { recursive: true }),
-        mkdir(CLONE_DIR, { recursive: true }),
-        mkdir(REPORTS_DIR, { recursive: true })
+        mkdir(kJsonDir, { recursive: true }),
+        mkdir(kCloneDir, { recursive: true }),
+        mkdir(kReportsDir, { recursive: true })
     ]);
 
     try {
@@ -97,37 +113,24 @@ async function main() {
             process.exit(0);
         }
 
-        const HTMLTemplateStr = await readFile(join(VIEWS_DIR, "template.html"), "utf8");
+        console.log("Start generating template!");
+        const HTMLTemplateStr = await readFile(join(kViewsDir, "template.html"), "utf8");
         const templateGenerator = compile(HTMLTemplateStr);
-        const charts = [];
-        if (pkgStats !== null) {
-            charts.push(
-                toChart("npm_extension_canvas", pkgStats.extensions, "d3.interpolateRainbow"),
-                toChart("npm_license_canvas", pkgStats.licenses, "d3.interpolateCool"),
-                toChart("npm_warnings_canvas", pkgStats.warnings, "d3.interpolateInferno"),
-                toChart("npm_flags_canvas", pkgStats.flags, "d3.interpolateWarm")
-            );
-        }
-        if (repoStats !== null) {
-            charts.push(
-                toChart("git_extension_canvas", repoStats.extensions, "d3.interpolateRainbow"),
-                toChart("git_license_canvas", repoStats.licenses, "d3.interpolateCool"),
-                toChart("git_warnings_canvas", repoStats.warnings, "d3.interpolateInferno"),
-                toChart("git_flags_canvas", repoStats.flags, "d3.interpolateWarm")
-            );
-        }
 
         const templatePayload = {
             report_title: config.report_title,
             report_logo: config.report_logo,
             report_date: generationDate,
             npm_stats: pkgStats,
-            git_stats: repoStats
+            git_stats: repoStats,
+            charts: config.charts.filter((chart) => chart.display).map((chart) => chart.name)
         };
+
+        const charts = generateChartArray(pkgStats, repoStats);
         const HTMLReport = templateGenerator(templatePayload)
             .concat(`\n<script>\ndocument.addEventListener("DOMContentLoaded", () => {\n${charts.join("\n")}\n});\n</script>`);
 
-        const reportHTMLPath = join(REPORTS_DIR, "report.html");
+        const reportHTMLPath = join(kReportsDir, cleanReportName(config.report_title, ".html"));
         await writeFile(reportHTMLPath, HTMLReport);
         await new Promise((resolve) => setTimeout(resolve, 100));
         console.log("HTML Report writted on disk!");
@@ -137,7 +140,8 @@ async function main() {
     }
     finally {
         await new Promise((resolve) => setTimeout(resolve, 100));
-        await rmdir(CLONE_DIR, { recursive: true });
+        await rmdir(kCloneDir, { recursive: true });
+        process.exit(0);
     }
 }
 main().catch(console.error);

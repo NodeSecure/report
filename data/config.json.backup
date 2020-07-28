@@ -25,5 +25,27 @@
         "Socket",
         "Gate",
         "ihm"
+    ],
+    "charts": [
+        {
+            "name": "Extensions",
+            "display": true,
+            "interpolation": "d3.interpolateRainbow"
+        },
+        {
+            "name": "Licenses",
+            "display": true,
+            "interpolation": "d3.interpolateCool"
+        },
+        {
+            "name": "Warnings",
+            "display": true,
+            "interpolation": "d3.interpolateInferno"
+        },
+        {
+            "name": "Flags",
+            "display": true,
+            "interpolation": "d3.interpolateSinebow"
+        }
     ]
 }

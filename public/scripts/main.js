@@ -4,6 +4,20 @@
 const kChartOptions = {
     legend: {
         display: false
+    },
+    plugins: {
+        datalabels: {
+            anchor: "center",
+            textShadowBlur: 1,
+            textShadowColor: "black",
+            labels: {
+                value: { color: "white" }
+            },
+            font: {
+                size: 15,
+                weight: "bold"
+            }
+        }
     }
 };
 
@@ -24,11 +38,13 @@ function* interpolateColors(dataLength, scale, range) {
     }
 }
 
-function createChart(elementId, payload = {}) {
+function createChart(elementId, type = "bar", payload = {}) {
     const { labels, data, interpolate = d3.interpolateCool } = payload;
+    const options = JSON.parse(JSON.stringify(kChartOptions));
+    options.plugins.datalabels.align = type === "bar" ? "top" : "right";
 
     new Chart(document.getElementById(elementId).getContext("2d"), {
-        type: "bar",
+        type,
         data: {
             labels,
             datasets: [{
@@ -37,7 +53,7 @@ function createChart(elementId, payload = {}) {
                 data
             }]
         },
-        options: kChartOptions
+        options
     });
 }
 

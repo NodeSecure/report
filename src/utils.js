@@ -2,7 +2,7 @@
 "use strict";
 
 // Require Node.js Dependencies
-const { join, dirname, basename } = require("path");
+const { join, dirname, basename, extname } = require("path");
 const { mkdir, writeFile, readFile } = require("fs").promises;
 const fs = require("fs");
 
@@ -10,6 +10,7 @@ const fs = require("fs");
 const Lock = require("@slimio/lock");
 const git = require("isomorphic-git");
 const http = require("isomorphic-git/http/node");
+const filenamify = require("filenamify");
 const { from, cwd } = require("nsecure");
 
 // Require Internal Dependencies
@@ -242,8 +243,6 @@ async function onPackage(packageName) {
         return filePath;
     }
     catch (error) {
-        console.log(error);
-
         return null;
     }
     finally {
@@ -280,10 +279,27 @@ async function onLocalDirectory(dir) {
     }
 }
 
+/**
+ * @function cleanReportName
+ * @description clean the report name
+ * @param {!string} name
+ * @param {string} [format=null]
+ * @returns {string}
+ */
+function cleanReportName(name, format = null) {
+    const cleanName = filenamify(name);
+    if (format === null) {
+        return cleanName;
+    }
+
+    return extname(cleanName) === format ? cleanName : `${cleanName}${format}`;
+}
+
 module.exports = {
     fetchStatsFromNsecurePayloads,
     cloneGITRepository,
     formatBytes,
+    cleanReportName,
     nsecure: Object.freeze({
         onPackage, onLocalDirectory
     })

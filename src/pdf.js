@@ -1,22 +1,22 @@
 "use strict";
 
 // Require Node.js Dependencies
-const { join, extname } = require("path");
+const { join } = require("path");
 const { mkdir } = require("fs").promises;
 
 // Require Third-party Dependencies
 const puppeteer = require("puppeteer");
-const filenamify = require("filenamify");
 
 // Require Internal Dependencies
 const config = require("../data/config.json");
+const { cleanReportName } = require("./utils.js");
 
 // CONSTANTS
 const kDistDir = join(__dirname, "..", "reports");
 
 async function generatePDF(reportHTMLPath, name = config.report_title) {
     await mkdir(kDistDir, { recursive: true });
-    const cleanName = filenamify(name);
+    const cleanName = cleanReportName(name, ".pdf");
 
     const browser = await puppeteer.launch();
     try {
@@ -28,11 +28,9 @@ async function generatePDF(reportHTMLPath, name = config.report_title) {
         });
         await page.waitForFunction("window.isReadyForPDF");
 
-        const path = join(kDistDir, extname(cleanName) === ".pdf" ? cleanName : `${cleanName}.pdf`);
+        const path = join(kDistDir, cleanName);
         await page.pdf({
-            path,
-            format: "A4",
-            printBackground: true
+            path, format: "A4", printBackground: true
         });
 
         return path;

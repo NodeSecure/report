@@ -10,6 +10,7 @@
 <link href="../public/css/style.css" rel="stylesheet" type="text/css">
 <link href="../public/css/print.css" rel="stylesheet" type="text/css">
 <script src="../public/lib/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
 <script src="../public/lib/md5.js"></script>
 <script src="https://d3js.org/d3-color.v1.min.js"></script>
 <script src="https://d3js.org/d3-interpolate.v1.min.js"></script>
@@ -125,45 +126,19 @@
                 </div>
             </div>
         </div>
+        [[ for (const name of z.charts) { ]]
         <div class="box-stats-container charts">
             <div class="box-stats">
                 <div class="box-title">
-                    <i class="fas fa-file-code"></i>
-                    <h3>Extensions</h3>
+                    <h3>[[=name]]</h3>
                 </div>
-                <canvas id="npm_extension_canvas"></canvas>
+                <canvas id="npm_[[=name.toLowerCase()]]_canvas"></canvas>
             </div>
         </div>
-        <div class="box-stats-container charts">
-            <div class="box-stats">
-                <div class="box-title">
-                    <i class="fas fa-file-alt"></i>
-                    <h3>Licenses</h3>
-                </div>
-                <canvas id="npm_license_canvas"></canvas>
-            </div>
-        </div>
-        <div class="box-stats-container charts">
-            <div class="box-stats">
-                <div class="box-title">
-                    <i class="fas fa-file-alt"></i>
-                    <h3>Warnings</h3>
-                </div>
-                <canvas id="npm_warnings_canvas"></canvas>
-            </div>
-        </div>
-        <div class="box-stats-container charts">
-            <div class="box-stats">
-                <div class="box-title">
-                    <i class="fas fa-file-alt"></i>
-                    <h3>Flags</h3>
-                </div>
-                <canvas id="npm_flags_canvas"></canvas>
-            </div>
-        </div>
+        [[ } ]]
     </section>
     [[ if (z.git_stats !== null ) { ]]
-    <section style="margin-top: 40px;">
+    <section style="margin-top: 40px; margin-bottom: 40px;">
         <h2><i class="fab fa-git-alt"></i>GIT Repositories Statistics</h2>
         <div class="box-stats-container">
             <div class="box-stats-resume">
@@ -260,42 +235,16 @@
                 </div>
             </div>
         </div>
+        [[ for (const name of z.charts) { ]]
         <div class="box-stats-container charts">
             <div class="box-stats">
                 <div class="box-title">
-                    <i class="fas fa-file-code"></i>
-                    <h3>Extensions</h3>
+                    <h3>[[=name]]</h3>
                 </div>
-                <canvas id="git_extension_canvas"></canvas>
+                <canvas id="git_[[=name.toLowerCase()]]_canvas"></canvas>
             </div>
         </div>
-        <div class="box-stats-container charts">
-            <div class="box-stats">
-                <div class="box-title">
-                    <i class="fas fa-file-alt"></i>
-                    <h3>Licenses</h3>
-                </div>
-                <canvas id="git_license_canvas"></canvas>
-            </div>
-        </div>
-        <div class="box-stats-container charts">
-            <div class="box-stats">
-                <div class="box-title">
-                    <i class="fas fa-file-alt"></i>
-                    <h3>Warnings</h3>
-                </div>
-                <canvas id="git_warnings_canvas"></canvas>
-            </div>
-        </div>
-        <div class="box-stats-container charts">
-            <div class="box-stats">
-                <div class="box-title">
-                    <i class="fas fa-file-alt"></i>
-                    <h3>Flags</h3>
-                </div>
-                <canvas id="git_flags_canvas"></canvas>
-            </div>
-        </div>
+        [[ } ]]
     </section>
     [[ } ]]
 </div>
