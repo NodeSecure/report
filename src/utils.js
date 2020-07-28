@@ -18,6 +18,17 @@ const config = require("../data/config.json");
 // CONSTANTS
 const CLONE_DIR = join(__dirname, "..", "clones");
 const JSON_DIR = join(__dirname, "..", "json");
+const kWantedFlags = new Set([
+    "isDeprecated",
+    "hasMultipleLicenses",
+    "hasMinifiedCode",
+    "hasCustomResolvers",
+    "hasExternalCapacity",
+    "hasMissingOrUnusedDependency",
+    "hasOutdatedDependency",
+    "hasScript",
+    "hasBannedFile"
+]);
 
 // VARS
 const token = process.env.GIT_TOKEN;
@@ -46,6 +57,7 @@ async function fetchStatsFromNsecurePayloads(payloadFiles = []) {
         licenses: {
             Unknown: 0
         },
+        flags: {},
         extensions: {},
         warnings: {},
         authors: {},
@@ -81,13 +93,20 @@ async function fetchStatsFromNsecurePayloads(payloadFiles = []) {
                 if (curr.versions.has(localVersion)) {
                     continue;
                 }
-                const { size, composition, license, author, warnings = [] } = descriptor[localVersion];
+                const { flags, size, composition, license, author, warnings = [] } = descriptor[localVersion];
 
                 stats.size.all += size;
                 stats.size[isThird ? "external" : "internal"] += size;
 
                 for (const { kind } of warnings) {
                     stats.warnings[kind] = Reflect.has(stats.warnings, kind) ? ++stats.warnings[kind] : 1;
+                }
+
+                for (const [flagName, boolValue] of Object.entries(flags)) {
+                    if (!kWantedFlags.has(flagName) || !boolValue) {
+                        continue;
+                    }
+                    stats.flags[flagName] = Reflect.has(stats.flags, flagName) ? ++stats.flags[flagName] : 1;
                 }
 
                 (composition.required_builtin || composition.required_nodejs)

@@ -27,7 +27,7 @@ const VIEWS_DIR = join(__dirname, "views");
 const REPORTS_DIR = join(__dirname, "reports");
 
 // VARS
-const createChart = taggedString`\tcreateChart("${0}", "${1}", { labels: [${2}], interpolate: ${4}, data: [${3}] });`;
+const createChart = taggedString`\tcreateChart("${0}", { labels: [${1}], interpolate: ${3}, data: [${2}] });`;
 
 async function fetchPackagesStats() {
     const spinner = new Spinner({
@@ -73,8 +73,8 @@ function transformGraphData(obj) {
 }
 
 // eslint-disable-next-line max-params
-function toChart(htmlBaliseName, chartName, data, interpolateName) {
-    return createChart(htmlBaliseName, chartName, transformGraphData(data), Object.values(data).join(","), interpolateName);
+function toChart(baliseName, data, interpolateName) {
+    return createChart(baliseName, transformGraphData(data), Object.values(data).join(","), interpolateName);
 }
 
 async function main() {
@@ -87,29 +87,33 @@ async function main() {
     try {
         // eslint-disable-next-line new-cap
         const generationDate = Intl.DateTimeFormat("en-GB", {
-            day: "2-digit",
-            month: "short",
-            year: "numeric",
-            hour: "numeric",
-            minute: "numeric",
-            second: "numeric"
+            day: "2-digit", month: "short", year: "numeric", hour: "numeric", minute: "numeric", second: "numeric"
         }).format(new Date());
 
-        const pkgStats = await fetchPackagesStats();
+        const pkgStats = await (config.npm_packages.length === 0 ? Promise.resolve(null) : fetchPackagesStats());
         const repoStats = await (config.git_repositories.length === 0 ? Promise.resolve(null) : fetchRepositoriesStats());
+        if (pkgStats === null && repoStats === null) {
+            console.log("No git repositories and no npm packages to fetch in the local configuration!");
+            process.exit(0);
+        }
 
         const HTMLTemplateStr = await readFile(join(VIEWS_DIR, "template.html"), "utf8");
         const templateGenerator = compile(HTMLTemplateStr);
-        const charts = [
-            toChart("npm_extension_canvas", "Extensions", pkgStats.extensions, "d3.interpolateInferno"),
-            toChart("npm_license_canvas", "Licenses", pkgStats.licenses, "d3.interpolateCool"),
-            toChart("npm_warnings_canvas", "Warnings", pkgStats.warnings, "d3.interpolateGnBu")
-        ];
+        const charts = [];
+        if (pkgStats !== null) {
+            charts.push(
+                toChart("npm_extension_canvas", pkgStats.extensions, "d3.interpolateRainbow"),
+                toChart("npm_license_canvas", pkgStats.licenses, "d3.interpolateCool"),
+                toChart("npm_warnings_canvas", pkgStats.warnings, "d3.interpolateInferno"),
+                toChart("npm_flags_canvas", pkgStats.flags, "d3.interpolateWarm")
+            );
+        }
         if (repoStats !== null) {
             charts.push(
-                toChart("git_extension_canvas", "Extensions", repoStats.extensions, "d3.interpolateInferno"),
-                toChart("git_license_canvas", "Licenses", repoStats.licenses, "d3.interpolateCool"),
-                toChart("git_warnings_canvas", "Warnings", repoStats.warnings, "d3.interpolateGnBu")
+                toChart("git_extension_canvas", repoStats.extensions, "d3.interpolateRainbow"),
+                toChart("git_license_canvas", repoStats.licenses, "d3.interpolateCool"),
+                toChart("git_warnings_canvas", repoStats.warnings, "d3.interpolateInferno"),
+                toChart("git_flags_canvas", repoStats.flags, "d3.interpolateWarm")
             );
         }
 

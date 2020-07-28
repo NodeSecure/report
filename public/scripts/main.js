@@ -3,13 +3,7 @@
 
 const kChartOptions = {
     legend: {
-        padding: 20,
-        labels: {
-            fontColor: "white",
-            fontFamily: "mononoki",
-            fontSize: 16,
-            padding: 10
-        }
+        display: false
     }
 };
 
@@ -30,15 +24,14 @@ function* interpolateColors(dataLength, scale, range) {
     }
 }
 
-function createChart(elementId, chartTitle, payload = {}) {
+function createChart(elementId, payload = {}) {
     const { labels, data, interpolate = d3.interpolateCool } = payload;
 
     new Chart(document.getElementById(elementId).getContext("2d"), {
-        type: "pie",
+        type: "bar",
         data: {
             labels,
             datasets: [{
-                label: chartTitle,
                 borderWidth: 0,
                 backgroundColor: [...interpolateColors(labels.length, interpolate, colorRangeInfo)],
                 data
