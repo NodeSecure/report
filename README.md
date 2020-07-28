@@ -68,25 +68,6 @@ To known how to get a **GIT_TOKEN** or how to register environment variables fol
         "@slimio/units",
         "@slimio/ipc",
         "@slimio/safe-emitter"
-    ],{
-    "theme": "dark",
-    "report_title": "SlimIO Security Report",
-    "report_logo": "https://avatars0.githubusercontent.com/u/29552883?s=200&v=4",
-    "npm_org_prefix": "@slimio",
-    "npm_packages": [
-        "@slimio/addon",
-        "@slimio/scheduler",
-        "@slimio/config",
-        "@slimio/core",
-        "@slimio/arg-parser",
-        "@slimio/profiles",
-        "@slimio/queue",
-        "@slimio/sqlite-transaction",
-        "@slimio/alert",
-        "@slimio/metrics",
-        "@slimio/units",
-        "@slimio/ipc",
-        "@slimio/safe-emitter"
     ],
     "git_url": "https://github.com/SlimIO",
     "git_repositories": [
