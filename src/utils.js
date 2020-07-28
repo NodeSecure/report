@@ -47,6 +47,7 @@ async function fetchStatsFromNsecurePayloads(payloadFiles = []) {
             Unknown: 0
         },
         extensions: {},
+        warnings: {},
         authors: {},
         packages: {},
         packages_count: {
@@ -80,10 +81,14 @@ async function fetchStatsFromNsecurePayloads(payloadFiles = []) {
                 if (curr.versions.has(localVersion)) {
                     continue;
                 }
-                const { size, composition, license, author } = descriptor[localVersion];
+                const { size, composition, license, author, warnings = [] } = descriptor[localVersion];
 
                 stats.size.all += size;
                 stats.size[isThird ? "external" : "internal"] += size;
+
+                for (const { kind } of warnings) {
+                    stats.warnings[kind] = Reflect.has(stats.warnings, kind) ? ++stats.warnings[kind] : 1;
+                }
 
                 (composition.required_builtin || composition.required_nodejs)
                     .forEach((dep) => stats.deps.node.add(dep));

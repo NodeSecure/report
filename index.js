@@ -72,6 +72,11 @@ function transformGraphData(obj) {
     return Object.entries(obj).map(([key, value]) => `"${key}:${value}"`).join(",");
 }
 
+// eslint-disable-next-line max-params
+function toChart(htmlBaliseName, chartName, data, interpolateName) {
+    return createChart(htmlBaliseName, chartName, transformGraphData(data), Object.values(data).join(","), interpolateName);
+}
+
 async function main() {
     await Promise.all([
         mkdir(JSON_DIR, { recursive: true }),
@@ -94,27 +99,18 @@ async function main() {
         const repoStats = await (config.git_repositories.length === 0 ? Promise.resolve(null) : fetchRepositoriesStats());
 
         const HTMLTemplateStr = await readFile(join(VIEWS_DIR, "template.html"), "utf8");
-
         const templateGenerator = compile(HTMLTemplateStr);
         const charts = [
-            createChart("npm_extension_canvas", "Extensions",
-                transformGraphData(pkgStats.extensions),
-                Object.values(pkgStats.extensions).join(","),
-                "d3.interpolateInferno"),
-            createChart("npm_license_canvas", "Licenses",
-                transformGraphData(pkgStats.licenses),
-                Object.values(pkgStats.licenses).join(","),
-                "d3.interpolateCool")
+            toChart("npm_extension_canvas", "Extensions", pkgStats.extensions, "d3.interpolateInferno"),
+            toChart("npm_license_canvas", "Licenses", pkgStats.licenses, "d3.interpolateCool"),
+            toChart("npm_warnings_canvas", "Warnings", pkgStats.warnings, "d3.interpolateGnBu")
         ];
         if (repoStats !== null) {
-            charts.push(createChart("git_extension_canvas", "Extensions",
-                transformGraphData(repoStats.extensions),
-                Object.values(repoStats.extensions).join(","),
-                "d3.interpolateInferno"),
-            createChart("git_license_canvas", "Licenses",
-                transformGraphData(repoStats.licenses),
-                Object.values(repoStats.licenses).join(","),
-                "d3.interpolateCool"));
+            charts.push(
+                toChart("git_extension_canvas", "Extensions", repoStats.extensions, "d3.interpolateInferno"),
+                toChart("git_license_canvas", "Licenses", repoStats.licenses, "d3.interpolateCool"),
+                toChart("git_warnings_canvas", "Warnings", repoStats.warnings, "d3.interpolateGnBu")
+            );
         }
 
         const templatePayload = {

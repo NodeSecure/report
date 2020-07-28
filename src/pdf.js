@@ -21,7 +21,7 @@ async function generatePDF(reportHTMLPath, name = config.report_title) {
     const browser = await puppeteer.launch();
     try {
         const page = await browser.newPage();
-        await page.emulateMedia("print");
+        await page.emulateMediaType("print");
 
         await page.goto(`file:${reportHTMLPath}`, {
             waitUntil: "networkidle2"
