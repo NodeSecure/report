@@ -1,8 +1,8 @@
 :root {
     --primary-text-color: whitesmoke;
-    --secondary-text-color: rgb(182, 244, 255);
-    --primary-border-color: rgba(55, 71, 79, 0.733);
-    --faded-border-color: rgb(78, 99, 109, 0.25);
+    --secondary-text-color: rgb(119, 161, 170);
+    --primary-border-color: rgba(55, 71, 79, 0.25);
+    --faded-border-color: rgb(78, 99, 109, 0.1);
     --head-paragraph-color: #546E7A;
     --main-color: #FFEA00;
     --default-margin: 15px;

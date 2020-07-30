@@ -8,8 +8,10 @@ const kChartOptions = {
     plugins: {
         datalabels: {
             anchor: "center",
-            textShadowBlur: 1,
+            textShadowBlur: 4,
             textShadowColor: "black",
+            textStrokeColor: "black",
+            textStrokeWidth: 1,
             labels: {
                 value: { color: "white" }
             },

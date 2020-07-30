@@ -8,7 +8,7 @@ body {
 }
 
 canvas {
-    height: 380px;
+    max-height: 380px !important;
     margin-top: var(--default-margin);
 }
 
@@ -151,7 +151,7 @@ div.page header {
     }
     .box-stats-container > .box-stats-resume > .one-stat {
         display: flex;
-        flex-basis: 250px;
+        flex-basis: 210px;
         flex-grow: 1;
         flex-wrap: wrap;
         flex-direction: column;
@@ -184,9 +184,9 @@ div.page header {
 }
     .box-avatar .avatar {
         position: relative;
-        flex-basis: 60px;
-        width: 60px;
-        height: 60px;
+        flex-basis: 50px;
+        width: 50px;
+        height: 50px;
         overflow: hidden;
         margin-left: 5px;
         margin-top: 5px;
@@ -216,8 +216,8 @@ ul {
     margin-top: var(--default-margin);
 }
     ul > li {
-        height: 35px;
-        padding: 0 10px;
+        height: 25px;
+        padding: 0 20px;
         display: flex;
         align-items: center;
         letter-spacing: 0.7px;

@@ -14,6 +14,10 @@
         break-after: always;
     }
 
+    .page > section {
+        break-after: always;
+    }
+
     .box-stats-container + .box-stats-container {
         border-top: none !important;
     }

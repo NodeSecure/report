@@ -106,7 +106,7 @@ To generate your own report just edit the `data/config.json` file.
 
 The theme can be either `dark` or `light`. Themes are editable in *public/css/themes* (feel free to PR new themes if you want).
 
-> All D3 scale-chromatic can be found [here](https://github.com/d3/d3-scale-chromatic/blob/master/README.md).
+> All D3 scale-chromatic for charts can be found [here](https://github.com/d3/d3-scale-chromatic/blob/master/README.md).
 
 ## Dependencies
 

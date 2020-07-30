@@ -30,6 +30,17 @@ const kWantedFlags = new Set([
     "hasScript",
     "hasBannedFile"
 ]);
+const kFlagConverter = Object.freeze({
+    isDeprecated: "⛔️",
+    hasMultipleLicenses: "📚",
+    hasMinifiedCode: "🔬",
+    hasCustomResolvers: "💎",
+    hasExternalCapacity: "🌍",
+    hasMissingOrUnusedDependency: "👀",
+    hasOutdatedDependency: "⌚️",
+    hasScript: "📦",
+    hasBannedFile: "⚔️"
+});
 
 // VARS
 const token = process.env.GIT_TOKEN;
@@ -107,7 +118,8 @@ async function fetchStatsFromNsecurePayloads(payloadFiles = []) {
                     if (!kWantedFlags.has(flagName) || !boolValue) {
                         continue;
                     }
-                    stats.flags[flagName] = Reflect.has(stats.flags, flagName) ? ++stats.flags[flagName] : 1;
+                    const cFlagName = kFlagConverter[flagName];
+                    stats.flags[cFlagName] = Reflect.has(stats.flags, cFlagName) ? ++stats.flags[cFlagName] : 1;
                 }
 
                 (composition.required_builtin || composition.required_nodejs)

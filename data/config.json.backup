@@ -40,11 +40,13 @@
         {
             "name": "Warnings",
             "display": true,
+            "type": "horizontalBar",
             "interpolation": "d3.interpolateInferno"
         },
         {
             "name": "Flags",
             "display": true,
+            "type": "horizontalBar",
             "interpolation": "d3.interpolateSinebow"
         }
     ]
