@@ -5,8 +5,8 @@ require("dotenv").config();
 require("make-promises-safe");
 
 // Require Node.js Dependencies
-const { join } = require("path");
-const { mkdir, rmdir, readFile, writeFile } = require("fs").promises;
+const { join, basename } = require("path");
+const { readdirSync, promises: { mkdir, rmdir, readFile, writeFile } } = require("fs");
 
 // Require Third-party Dependencies
 const { cyan, white } = require("kleur");
@@ -26,6 +26,7 @@ const kJsonDir = join(__dirname, "json");
 const kViewsDir = join(__dirname, "views");
 const kReportsDir = join(__dirname, "reports");
 const kChartTemplate = taggedString`\tcreateChart("${0}", "${4}", { labels: [${1}], interpolate: ${3}, data: [${2}] });`;
+const kAvailableThemes = new Set(readdirSync(join(__dirname, "public", "css", "themes")).map((file) => basename(file, ".css")));
 
 async function fetchPackagesStats() {
     const spinner = new Spinner({
@@ -118,12 +119,15 @@ async function main() {
         const templateGenerator = compile(HTMLTemplateStr);
 
         const templatePayload = {
+            report_theme: kAvailableThemes.has(config.theme) ? config.theme : "dark",
             report_title: config.report_title,
             report_logo: config.report_logo,
             report_date: generationDate,
             npm_stats: pkgStats,
             git_stats: repoStats,
-            charts: config.charts.filter((chart) => chart.display).map((chart) => chart.name)
+            charts: config.charts.filter((chart) => chart.display).map(({ name, help = null }) => {
+                return { name, help };
+            })
         };
 
         const charts = generateChartArray(pkgStats, repoStats);

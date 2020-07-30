@@ -1,17 +1,18 @@
 :root {
     --primary-text-color: #263238;
-    --secondary-text-color: #607D8B;
-    --primary-border-color: rgba(55, 71, 79, 0.35);
-    --faded-border-color: rgba(78, 99, 109, 0.137);
+    --secondary-text-color: #607d8be5;
+    --primary-border-color: rgba(55, 71, 79, 0.1);
+    --faded-border-color: rgba(78, 99, 109, 0.1);
     --head-paragraph-color: #90A4AE;
-    --main-color: #4527A0;
+    --main-color: #304FFE;
     --default-margin: 15px;
     --avatar-border-color: #FFF;
-    --li-hover-color: #234d62;
-    --h2-h3-text-color: #3F51B5;
+    --li-hover-color: #338199;
+    --h2-h3-text-color: #1976D2;
     --h2-shadow: rgba(3, 8, 17, 0.137);
     --h3-shadow: rgba(51, 63, 70, 0.26);
     --charts-background: rgba(230, 230, 230, 0.1);
+    --info-box-background: #448AFF;
 }
 
 .fas, .fab {
@@ -30,8 +31,12 @@ body {
     }
 }
 
-header, h2, h3 {
+header, h2, h3{
     text-shadow: none !important;
+}
+
+h3 > span {
+    color: #304FFE !important;
 }
 
 .box-stats-container.charts {
@@ -42,5 +47,5 @@ header, h2, h3 {
     box-shadow: 1px 1px 2px rgba(20, 20, 20, 0.2);
 }
 .avatar > p {
-    background-color: #263238 !important;
+    background-color: #0D47A1 !important;
 }

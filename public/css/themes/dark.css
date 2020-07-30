@@ -12,6 +12,7 @@
     --h2-shadow: rgba(49, 46, 38, 0.609);
     --h3-shadow: rgba(173, 131, 16, 0.609);
     --charts-background: rgba(20, 20, 20, 0.1);
+    --info-box-background: #673AB7;
 }
 
 body {

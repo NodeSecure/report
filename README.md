@@ -14,6 +14,7 @@ Screen1             |  Screen2
 ![](https://i.imgur.com/Jhr76Ef.jpg)  |  ![](https://i.imgur.com/OmV7Al6.jpg)
 
 ## Goals
+- Automatically clone GIT projects for you.
 - Have an overview of several projects (git or npm).
 - Ability to visualize changes over weeks.
 - Being able to go back down to a more complete view (**not yet implemented**).

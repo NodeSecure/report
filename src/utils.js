@@ -146,7 +146,11 @@ async function fetchStatsFromNsecurePayloads(payloadFiles = []) {
 
                 curr.versions.add(localVersion);
                 const hasIndirectDependencies = descriptor[localVersion].flags.hasIndirectDependencies;
-                if (hasIndirectDependencies) {
+                id: if (hasIndirectDependencies) {
+                    if (!config.include_transitive_internal && name.startsWith(config.npm_org_prefix)) {
+                        break id;
+                    }
+
                     stats.deps.transitive.add(`${name}@${localVersion}`);
                 }
                 curr[localVersion] = { hasIndirectDependencies };

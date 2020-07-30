@@ -1,7 +1,8 @@
 {
-    "theme": "dark",
+    "theme": "light",
     "report_title": "SlimIO Security Report",
     "report_logo": "https://avatars0.githubusercontent.com/u/29552883?s=200&v=4",
+    "include_transitive_internal": false,
     "npm_org_prefix": "@slimio",
     "npm_packages": [
         "@slimio/addon",
@@ -41,13 +42,15 @@
             "name": "Warnings",
             "display": true,
             "type": "horizontalBar",
-            "interpolation": "d3.interpolateInferno"
+            "interpolation": "d3.interpolateInferno",
+            "help": "Documentation of warnings kinds: https://github.com/fraxken/js-x-ray"
         },
         {
             "name": "Flags",
             "display": true,
             "type": "horizontalBar",
-            "interpolation": "d3.interpolateSinebow"
+            "interpolation": "d3.interpolateSinebow",
+            "help": "Documentation of flags: https://github.com/ES-Community/nsecure/blob/master/FLAGS.md"
         }
     ]
 }

@@ -174,7 +174,6 @@ div.page header {
         font-family: "mononoki";
     }
 
-
 .box-stats-container > .box-stats > .box-avatar {
     margin-top: var(--default-margin);
     display: flex;
@@ -210,6 +209,26 @@ div.page header {
         bottom: 2px;
         right: 2px;
         font-weight: bold;
+    }
+
+.box-info {
+    margin-top: var(--default-margin);
+    margin-bottom: var(--default-margin);
+    display: flex;
+    flex-wrap: wrap;
+    overflow-y: auto;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 15px;
+    letter-spacing: 0.5px;
+    border-radius: 6px;
+    color: var(--info-box-background);
+    border: 2px dashed var(--info-box-background);
+    box-sizing: border-box;
+}
+    .box-info > i {
+        color: inherit !important;
+        margin-right: 15px;
     }
 
 ul {

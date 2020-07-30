@@ -43,7 +43,13 @@ function* interpolateColors(dataLength, scale, range) {
 function createChart(elementId, type = "bar", payload = {}) {
     const { labels, data, interpolate = d3.interpolateCool } = payload;
     const options = JSON.parse(JSON.stringify(kChartOptions));
-    options.plugins.datalabels.align = type === "bar" ? "top" : "right";
+    if (type === "pie") {
+        options.legend.display = true;
+        options.plugins.datalabels.align = "center";
+    }
+    else {
+        options.plugins.datalabels.align = type === "bar" ? "top" : "right";
+    }
 
     new Chart(document.getElementById(elementId).getContext("2d"), {
         type,
