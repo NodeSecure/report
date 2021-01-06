@@ -30,7 +30,7 @@
         "@slimio/lock": "^0.5.0",
         "@slimio/utils": "^0.9.0",
         "dotenv": "^8.2.0",
-        "filenamify": "^4.1.0",
+        "filenamify": "^4.2.0",
         "isomorphic-git": "^1.7.4",
         "kleur": "^4.0.2",
         "make-promises-safe": "^5.1.0",
