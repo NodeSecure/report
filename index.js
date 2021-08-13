@@ -53,7 +53,6 @@ async function fetchRepositoriesStats() {
     prefixText: kleur.white().bold("Clone and analyze built-in addons")
   }).start("clone repositories...");
 
-  // there is a problem here
   try {
     const repos = await Promise.all(config.git_repositories.map(cloneGITRepository));
     spinner.text = "Run node-secure analyze";
