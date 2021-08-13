@@ -1,20 +1,22 @@
-"use strict";
-
 // Require Node.js Dependencies
-const { join } = require("path");
-const { mkdir } = require("fs").promises;
+import { mkdir } from "fs/promises";
+import path from "path";
+import fs from "fs";
+import { fileURLToPath } from "url";
 
 // Require Third-party Dependencies
-const puppeteer = require("puppeteer");
-
+import puppeteer from "puppeteer";
 // Require Internal Dependencies
-const config = require("../data/config.json");
-const { cleanReportName } = require("./utils.js");
+import { cleanReportName } from "./utils.js";
+const config = JSON.parse(
+    fs.readFileSync(new URL("../data/config.json", import.meta.url))
+);
 
 // CONSTANTS
-const kDistDir = join(__dirname, "..", "reports");
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const kDistDir = path.join(__dirname, "..", "reports");
 
-async function generatePDF(reportHTMLPath, name = config.report_title) {
+export async function generatePDF(reportHTMLPath, name = config.report_title) {
     await mkdir(kDistDir, { recursive: true });
     const cleanName = cleanReportName(name, ".pdf");
 
@@ -28,7 +30,7 @@ async function generatePDF(reportHTMLPath, name = config.report_title) {
         });
         await page.waitForFunction("window.isReadyForPDF");
 
-        const path = join(kDistDir, cleanName);
+        const path = path.join(kDistDir, cleanName);
         await page.pdf({
             path, format: "A4", printBackground: true
         });
@@ -40,4 +42,3 @@ async function generatePDF(reportHTMLPath, name = config.report_title) {
     }
 }
 
-module.exports = { generatePDF };

@@ -1,24 +1,26 @@
 /* eslint-disable max-depth */
-"use strict";
-
 // Require Node.js Dependencies
-const { join, dirname, basename, extname } = require("path");
-const { mkdir, writeFile, readFile } = require("fs").promises;
-const fs = require("fs");
+import path from "path";
+import fs, { promises } from "fs";
+import { fileURLToPath } from "url";
 
 // Require Third-party Dependencies
-const Lock = require("@slimio/lock");
-const git = require("isomorphic-git");
-const http = require("isomorphic-git/http/node");
-const filenamify = require("filenamify");
-const { from, cwd } = require("nsecure");
+import Lock from "@slimio/lock";
+import git from "isomorphic-git";
+import http from "isomorphic-git/http/node/index.js";
+import filenamify from "filenamify";
+import { from, cwd } from "nsecure";
 
 // Require Internal Dependencies
-const config = require("../data/config.json");
+const config = JSON.parse(
+    fs.readFileSync(new URL("../data/config.json", import.meta.url))
+);
 
 // CONSTANTS
-const CLONE_DIR = join(__dirname, "..", "clones");
-const JSON_DIR = join(__dirname, "..", "json");
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const CLONE_DIR = path.join(__dirname, "..", "clones");
+const JSON_DIR = path.join(__dirname, "..", "json");
+// TODO get from nodesecure/flags
 const kWantedFlags = new Set([
     "isDeprecated",
     "hasMultipleLicenses",
@@ -57,7 +59,7 @@ function formatBytes(bytes, decimals) {
     return parseFloat((bytes / Math.pow(1024, id)).toFixed(dm)) + " " + sizes[id];
 }
 
-async function fetchStatsFromNsecurePayloads(payloadFiles = []) {
+export async function fetchStatsFromNsecurePayloads(payloadFiles = []) {
     const stats = {
         size: {
             all: 0, internal: 0, external: 0
@@ -80,7 +82,7 @@ async function fetchStatsFromNsecurePayloads(payloadFiles = []) {
     };
 
     for (const file of payloadFiles) {
-        const buf = await readFile(file);
+        const buf = await promises.readFile(file);
 
         /** @type {NodeSecure.Payload} */
         const nsecurePayload = JSON.parse(buf.toString());
@@ -225,8 +227,8 @@ function parseAuthor(str) {
  * @param {!string} repositoryName
  * @returns {Promise<string>}
  */
-async function cloneGITRepository(repositoryName) {
-    const dir = join(CLONE_DIR, repositoryName);
+export async function cloneGITRepository(repositoryName) {
+    const dir = path.join(CLONE_DIR, repositoryName);
     const url = `${config.git_url}/${repositoryName}.git`;
 
     await git.clone({
@@ -243,7 +245,7 @@ async function cloneGITRepository(repositoryName) {
  * @param {!string} packageName
  * @returns {Promise<string>}
  */
-async function onPackage(packageName) {
+export async function onPackage(packageName) {
     await securityLock.acquireOne();
 
     try {
@@ -253,8 +255,8 @@ async function onPackage(packageName) {
         });
 
         const filePath = join(JSON_DIR, name);
-        await mkdir(dirname(filePath), { recursive: true });
-        await writeFile(filePath, JSON.stringify(dependencies, null, 2));
+        await promises.mkdir(dirname(filePath), { recursive: true });
+        await promises.writeFile(filePath, JSON.stringify(dependencies, null, 2));
 
         return filePath;
     }
@@ -273,7 +275,7 @@ async function onPackage(packageName) {
  * @param {!string} dir
  * @returns {Promise<string>}
  */
-async function onLocalDirectory(dir) {
+export async function onLocalDirectory(dir) {
     await securityLock.acquireOne();
 
     try {
@@ -283,7 +285,7 @@ async function onLocalDirectory(dir) {
         });
 
         const filePath = join(JSON_DIR, name);
-        await writeFile(filePath, JSON.stringify(dependencies, null, 2));
+        await promises.writeFile(filePath, JSON.stringify(dependencies, null, 2));
 
         return filePath;
     }
@@ -302,21 +304,15 @@ async function onLocalDirectory(dir) {
  * @param {string} [format=null]
  * @returns {string}
  */
-function cleanReportName(name, format = null) {
+export function cleanReportName(name, format = null) {
     const cleanName = filenamify(name);
     if (format === null) {
         return cleanName;
     }
 
-    return extname(cleanName) === format ? cleanName : `${cleanName}${format}`;
+    return path.extname(cleanName) === format ? cleanName : `${cleanName}${format}`;
 }
 
-module.exports = {
-    fetchStatsFromNsecurePayloads,
-    cloneGITRepository,
-    formatBytes,
-    cleanReportName,
-    nsecure: Object.freeze({
-        onPackage, onLocalDirectory
-    })
-};
+export const nsecure = Object.freeze({
+    onPackage, onLocalDirectory
+});
