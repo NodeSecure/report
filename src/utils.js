@@ -254,8 +254,8 @@ export async function onPackage(packageName) {
       maxDepth: 4, verbose: false
     });
 
-    const filePath = join(JSON_DIR, name);
-    await promises.mkdir(dirname(filePath), { recursive: true });
+    const filePath = path.join(JSON_DIR, name);
+    await promises.mkdir(path.dirname(filePath), { recursive: true });
     await promises.writeFile(filePath, JSON.stringify(dependencies, null, 2));
 
     return filePath;
@@ -278,13 +278,15 @@ export async function onPackage(packageName) {
 export async function onLocalDirectory(dir) {
   await securityLock.acquireOne();
 
+  console.log("hey");
+
   try {
-    const name = `${basename(dir)}.json`;
+    const name = `${path.basename(dir)}.json`;
     const { dependencies } = await cwd(dir, {
       maxDepth: 4, verbose: false, usePackageLock: false
     });
 
-    const filePath = join(JSON_DIR, name);
+    const filePath = path.join(JSON_DIR, name);
     await promises.writeFile(filePath, JSON.stringify(dependencies, null, 2));
 
     return filePath;
