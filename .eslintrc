@@ -1,9 +1,7 @@
 {
-    "extends": "@slimio/eslint-config",
+    "extends": "@nodesecure/eslint-config",
     "parserOptions": {
-        "sourceType": "module"
-    },
-    "rules": {
-        "jsdoc/require-jsdoc": "off"
+        "sourceType": "module",
+        "requireConfigFile": false
     }
 }

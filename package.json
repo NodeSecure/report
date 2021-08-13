@@ -6,6 +6,7 @@
     "scripts": {
         "start": "node index.js",
         "prepublishOnly": "pkg-ok",
+        "lint": "cross-env eslint index.js",
         "doc": "jsdoc -c ./jsdoc.json -r -R ./README.md -P ./package.json --verbose",
         "test": "cross-env psp && jest --coverage"
     },
@@ -55,7 +56,7 @@
     },
     "husky": {
         "hooks": {
-            "pre-push": "cross-env eslint index.js && npm test",
+            "pre-push": "cross-env eslint index.js && npm test"
         }
     },
     "nyc": {
