@@ -109,21 +109,5 @@ The theme can be either `dark` or `light`. Themes are editable in *public/css/th
 
 > All D3 scale-chromatic for charts can be found [here](https://github.com/d3/d3-scale-chromatic/blob/master/README.md).
 
-## Dependencies
-
-|Name|Refactoring|Security Risk|Usage|
-|---|---|---|---|
-|[@slimio/async-cli-spinner](https://github.com/SlimIO/Async-cli-spinner)|Minor|Low|Elegant Asynchronous Terminal (CLI) Spinner|
-|[@slimio/lock](https://github.com/SlimIO/Lock)|Minor|Low|Semaphore for async/await|
-|[@slimio/utils](https://github.com/SlimIO/Utils)|Minor|Low|Bunch of useful functions for SlimIO|
-|[dotenv](https://github.com/motdotla/dotenv)|Minor|Low|Loads environment variables from .env|
-|[filenamify](https://github.com/sindresorhus/filenamify#readme)|Minor|High|Convert a string to a valid safe filename|
-|[isomorphic-git](https://isomorphic-git.org/)|Minor|High|A pure JavaScript implementation of git for node and browsers!|
-|[kleur](https://github.com/lukeed/kleur)|Minor|Low|The fastest Node.js library for formatting terminal text with ANSI colors|
-|[make-promises-safe](https://github.com/mcollina/make-promises-safe)|⚠️Major|Low|Force Node.js [DEP00018](https://nodejs.org/dist/latest-v8.x/docs/api/deprecations.html#deprecations_dep0018_unhandled_promise_rejections)|
-|[nsecure](https://github.com/ES-Community/node-secure#readme)|Minor|High|Node.js security CLI / API that allow you to deeply analyze the dependency tree of a given package / directory|
-|[puppeteer](https://github.com/puppeteer/puppeteer#readme)|Minor|High|Puppeteer is a Node library which provides a high-level API to control Chrome or Chromium|
-|[zup](https://github.com/mscdex/zup#readme)|Minor|Low|A simple and fast template engine for Node.js|
-
 ## License
 MIT

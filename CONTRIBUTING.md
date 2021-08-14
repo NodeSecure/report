@@ -1,23 +1,23 @@
-# Contributing to Slim.io
+# Contributing to NodeSecure
 
-Contributions to Slim.io include code, documentation, answering user questions,
-running the project's infrastructure, and advocating for all types of Slim.io
+Contributions to NodeSecure include code, documentation, answering user questions,
+running the project's infrastructure, and advocating for all types of NodeSecure
 users.
 
-The Slim.io project welcomes all contributions from anyone willing to work in
+The NodeSecure project welcomes all contributions from anyone willing to work in
 good faith with other contributors and the community. No contribution is too
 small and all contributions are valued.
 
-This guide explains the process for contributing to the Slim.io project's.
+This guide explains the process for contributing to the NodeSecure project's.
 
-## [Code of Conduct](https://github.com/SlimIO/Governance/blob/master/CODE_OF_CONDUCT.md)
+## [Code of Conduct](https://github.com/NodeSecure/Governance/blob/main/CONTRIBUTING.md)
 
-The Slim.io project has a
-[Code of Conduct](https://github.com/SlimIO/Governance/blob/master/CODE_OF_CONDUCT.md)
+The NodeSecure project has a
+[Code of Conduct](https://github.com/NodeSecure/Governance/blob/main/CONTRIBUTING.md)
 that *all* contributors are expected to follow. This code describes the
 *minimum* behavior expectations for all contributors.
 
-See [details on our policy on Code of Conduct](https://github.com/SlimIO/Governance/blob/master/COC_POLICY.md).
+See [details on our policy on Code of Conduct](https://github.com/NodeSecure/Governance/blob/main/COC_POLICY.md).
 
 <a id="developers-certificate-of-origin"></a>
 ## Developer's Certificate of Origin 1.1
