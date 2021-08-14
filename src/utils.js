@@ -1,4 +1,5 @@
 /* eslint-disable max-depth */
+
 // Require Node.js Dependencies
 import path from "path";
 import fs, { promises } from "fs";
@@ -11,15 +12,11 @@ import http from "isomorphic-git/http/node/index.js";
 import filenamify from "filenamify";
 import { from, cwd } from "nsecure";
 
-// Require Internal Dependencies
-const config = JSON.parse(
-  fs.readFileSync(new URL("../data/config.json", import.meta.url))
-);
-
 // CONSTANTS
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const CLONE_DIR = path.join(__dirname, "..", "clones");
 const JSON_DIR = path.join(__dirname, "..", "json");
+
 // TODO get from nodesecure/flags
 const kWantedFlags = new Set([
   "isDeprecated",
@@ -47,6 +44,10 @@ const kFlagConverter = Object.freeze({
 // VARS
 const token = process.env.GIT_TOKEN;
 const securityLock = new Lock({ maxConcurrent: 2 });
+
+export const config = JSON.parse(
+  fs.readFileSync(new URL("../data/config.json", import.meta.url))
+);
 
 function formatBytes(bytes, decimals) {
   if (bytes === 0) {

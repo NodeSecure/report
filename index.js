@@ -2,12 +2,10 @@
 // Require Node.js Dependencies
 import path from "path";
 import fs, { promises } from "fs";
+import timers from "timers/promises";
 import { fileURLToPath } from "url";
 
 // Require Third-party Dependencies
-import dotenv from "dotenv";
-dotenv.config();
-
 import kleur from "kleur";
 import { taggedString } from "@slimio/utils";
 import compile from "zup";
@@ -15,11 +13,8 @@ import Spinner from "@slimio/async-cli-spinner";
 Spinner.DEFAULT_SPINNER = "dots";
 
 // Require Internal Dependencies
-import { cloneGITRepository, fetchStatsFromNsecurePayloads, nsecure, cleanReportName } from "./src/utils.js";
+import { cloneGITRepository, fetchStatsFromNsecurePayloads, nsecure, cleanReportName, config } from "./src/utils.js";
 import { generatePDF } from "./src/pdf.js";
-const config = JSON.parse(
-  fs.readFileSync(new URL("./data/config.json", import.meta.url))
-);
 
 // CONSTANTS
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -104,7 +99,6 @@ async function main() {
   ]);
 
   try {
-    // eslint-disable-next-line new-cap
     const generationDate = Intl.DateTimeFormat("en-GB", {
       day: "2-digit", month: "short", year: "numeric", hour: "numeric", minute: "numeric", second: "numeric"
     }).format(new Date());
@@ -134,21 +128,22 @@ async function main() {
     };
 
     const charts = generateChartArray(pkgStats, repoStats);
-
     const HTMLReport = templateGenerator(templatePayload)
       .concat(`\n<script>\ndocument.addEventListener("DOMContentLoaded", () => {\n${charts.join("\n")}\n});\n</script>`);
 
     const reportHTMLPath = path.join(kReportsDir, cleanReportName(config.report_title, ".html"));
     await promises.writeFile(reportHTMLPath, HTMLReport);
-    await new Promise((resolve) => setTimeout(resolve, 100));
+
+    await timers.setTimeout(100);
     console.log("HTML Report writted on disk!");
 
     await generatePDF(reportHTMLPath);
     console.log("Report sucessfully generated!");
   }
   finally {
-    await new Promise((resolve) => setTimeout(resolve, 100));
-    await promises.rm(kCloneDir, { recursive: true });
+    await timers.setTimeout(100);
+    await promises.rm(kCloneDir, { recursive: true, force: true });
+
     process.exit(0);
   }
 }

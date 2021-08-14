@@ -1,24 +1,25 @@
 {
     "name": "@nodesecure/report",
     "version": "1.0.0",
-    "description": "Security Global Reports",
+    "description": "NodeSecure HTML & PDF graphic security report",
     "main": "index.js",
     "scripts": {
-        "start": "node index.js",
+        "start": "node -r dotenv/config index.js",
         "prepublishOnly": "pkg-ok",
-        "lint": "cross-env eslint index.js",
-        "doc": "jsdoc -c ./jsdoc.json -r -R ./README.md -P ./package.json --verbose",
-        "test": "cross-env jest --coverage"
+        "lint": "eslint index.js",
+        "test": "jest --coverage"
     },
     "repository": {
         "type": "git",
         "url": "git+https://github.com/NodeSecure/report.git"
     },
     "keywords": [
-        "security"
-    ],
-    "files": [
-        "index.js"
+        "security",
+        "report",
+        "nodesecure",
+        "pdf",
+        "html",
+        "chart"
     ],
     "author": "NodeSecure",
     "type": "module",
@@ -48,6 +49,6 @@
         "pkg-ok": "^2.3.0"
     },
     "engines": {
-        "node": ">=15"
+        "node": ">=16"
     }
 }
