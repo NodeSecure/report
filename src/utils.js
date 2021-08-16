@@ -10,36 +10,15 @@ import Lock from "@slimio/lock";
 import git from "isomorphic-git";
 import http from "isomorphic-git/http/node/index.js";
 import filenamify from "filenamify";
-import { from, cwd } from "nsecure";
+import { from, cwd } from "@nodesecure/scanner";
+import * as Flags from "@nodesecure/flags";
 
 // CONSTANTS
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const CLONE_DIR = path.join(__dirname, "..", "clones");
 const JSON_DIR = path.join(__dirname, "..", "json");
 
-// TODO get from nodesecure/flags
-const kWantedFlags = new Set([
-  "isDeprecated",
-  "hasMultipleLicenses",
-  "hasMinifiedCode",
-  "hasCustomResolvers",
-  "hasExternalCapacity",
-  "hasMissingOrUnusedDependency",
-  "hasOutdatedDependency",
-  "hasScript",
-  "hasBannedFile"
-]);
-const kFlagConverter = Object.freeze({
-  isDeprecated: "⛔️",
-  hasMultipleLicenses: "📚",
-  hasMinifiedCode: "🔬",
-  hasCustomResolvers: "💎",
-  hasExternalCapacity: "🌍",
-  hasMissingOrUnusedDependency: "👀",
-  hasOutdatedDependency: "⌚️",
-  hasScript: "📦",
-  hasBannedFile: "⚔️"
-});
+const kWantedFlags = Flags.getFlags();
 
 // VARS
 const token = process.env.GIT_TOKEN;
@@ -117,12 +96,11 @@ export async function fetchStatsFromNsecurePayloads(payloadFiles = []) {
           stats.warnings[kind] = Reflect.has(stats.warnings, kind) ? ++stats.warnings[kind] : 1;
         }
 
-        for (const [flagName, boolValue] of Object.entries(flags)) {
-          if (!kWantedFlags.has(flagName) || !boolValue) {
+        for (const flag of flags) {
+          if (!kWantedFlags.has(flag)) {
             continue;
           }
-          const cFlagName = kFlagConverter[flagName];
-          stats.flags[cFlagName] = Reflect.has(stats.flags, cFlagName) ? ++stats.flags[cFlagName] : 1;
+          stats.flags[flag] = Reflect.has(stats.flags, flag) ? ++stats.flags[flag] : 1;
         }
 
         (composition.required_builtin || composition.required_nodejs)
@@ -278,8 +256,6 @@ export async function onPackage(packageName) {
  */
 export async function onLocalDirectory(dir) {
   await securityLock.acquireOne();
-
-  console.log("hey");
 
   try {
     const name = `${path.basename(dir)}.json`;
