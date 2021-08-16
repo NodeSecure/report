@@ -43,14 +43,14 @@
             "display": true,
             "type": "horizontalBar",
             "interpolation": "d3.interpolateInferno",
-            "help": "Documentation of warnings kinds: https://github.com/fraxken/js-x-ray"
+            "help": "Documentation of warnings kinds: https://github.com/NodeSecure/js-x-ray"
         },
         {
             "name": "Flags",
             "display": true,
             "type": "horizontalBar",
             "interpolation": "d3.interpolateSinebow",
-            "help": "Documentation of flags: https://github.com/ES-Community/nsecure/blob/master/FLAGS.md"
+            "help": "Documentation of flags: https://github.com/NodeSecure/Governance/blob/main/docs/Flags.md"
         }
     ]
 }
