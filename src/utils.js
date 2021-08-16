@@ -10,7 +10,7 @@ import Lock from "@slimio/lock";
 import git from "isomorphic-git";
 import http from "isomorphic-git/http/node/index.js";
 import filenamify from "filenamify";
-import { from, cwd } from "nsecure";
+import { from, cwd } from "@nodesecure/scanner";
 
 // CONSTANTS
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -278,8 +278,6 @@ export async function onPackage(packageName) {
  */
 export async function onLocalDirectory(dir) {
   await securityLock.acquireOne();
-
-  console.log("hey");
 
   try {
     const name = `${path.basename(dir)}.json`;
