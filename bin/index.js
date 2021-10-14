@@ -31,13 +31,5 @@ async function runNodesecureReport() {
     text: kleur.white().bold("Nodesecure/report started", kleur.yellow().bold("nodesecure/report"))
   }).start();
 
-  try {
-    await nreport.main();
-
-    const elapsedTime = kleur.cyan(ms(Number(spinner.elapsedTime.toFixed(2))));
-    spinner.succeed(white().bold("Nodesecure succeed", elapsedTime));
-  }
-  catch (err) {
-    spinner.failed(err.message);
-  }
+  await nreport.main();
 }
