@@ -30,10 +30,14 @@ This package is available in the Node Package Repository and can be easily insta
 $ git clone https://github.com/SlimIO/Security.git
 $ cd Security
 $ npm ci
-$ npm start
+$ npm link
 ```
 
-The report will be generated in the root folder `reports`.
+Then the nodesecure/report binary will be available in your terminal. Give it a try with our preconfigured configuration, this will automatically generate pdf/html in your current working directory.
+
+```bash
+nreport
+```
 
 ## Environment Variables
 
