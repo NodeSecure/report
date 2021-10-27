@@ -36,7 +36,7 @@ $ npm link
 Then the nodesecure/report binary will be available in your terminal. Give it a try with our preconfigured configuration, this will automatically generate pdf/html in your current working directory.
 
 ```bash
-nreport
+nreport run
 ```
 
 ## Environment Variables
