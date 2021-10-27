@@ -91,7 +91,7 @@ function generateChartArray(pkgStats, repoStats) {
   return charts;
 }
 
-async function main() {
+export async function main() {
   await Promise.all([
     promises.mkdir(kJsonDir, { recursive: true }),
     promises.mkdir(kCloneDir, { recursive: true }),
@@ -147,5 +147,3 @@ async function main() {
     process.exit(0);
   }
 }
-main().catch(console.error);
-
