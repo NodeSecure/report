@@ -6,10 +6,8 @@ import fs from "fs";
 // Import Third-party Dependencies
 import sade from "sade";
 import kleur from "kleur";
-import Spinner from "@slimio/async-cli-spinner";
 
 // Import internal dependencies
-import * as i18n from "@nodesecure/i18n";
 import * as nreport from "../index.js";
 
 // Constants
