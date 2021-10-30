@@ -32,7 +32,7 @@
     },
     "homepage": "https://github.com/NodeSecure/report#readme",
     "dependencies": {
-        "@nodesecure/flags": "^1.0.0",
+        "@nodesecure/flags": "^1.2.0",
         "@nodesecure/scanner": "^1.1.0",
         "@slimio/async-cli-spinner": "^0.5.2",
         "@slimio/lock": "^0.5.0",
