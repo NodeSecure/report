@@ -3,6 +3,9 @@
     "version": "1.0.0",
     "description": "NodeSecure HTML & PDF graphic security report",
     "main": "index.js",
+    "bin": {
+        "nreport": "./bin/index.js"
+    },
     "scripts": {
         "start": "node -r dotenv/config index.js",
         "prepublishOnly": "pkg-ok",
@@ -39,6 +42,7 @@
         "isomorphic-git": "^1.10.0",
         "kleur": "^4.1.3",
         "puppeteer": "10.2.0",
+        "sade": "^1.7.4",
         "zup": "0.0.1"
     },
     "devDependencies": {
