@@ -9,6 +9,7 @@ import kleur from "kleur";
 
 // Import internal dependencies
 import * as nreport from "../index.js";
+import { createConfigFile } from "./config.js";
 
 // Constants
 const version = JSON.parse(
@@ -29,10 +30,27 @@ async function runNodesecureReport() {
   }
 }
 
+async function createConfig() {
+  console.log(kleur.grey().bold(`\n > Nreport create a default configuration file at: ${kleur.yellow().bold(process.cwd())}\n`));
+
+  try {
+    await createConfigFile();
+  }
+  catch (err) {
+    console.error(err);
+  }
+}
+
 prog
   .command("run")
   .describe("Run nodesecure/report")
   .example("nreport run")
   .action(runNodesecureReport);
+
+prog
+  .command("generate-config")
+  .describe("Create nodesecure/report configuration file")
+  .example("nreport config")
+  .action(createConfig);
 
 prog.parse(process.argv);
