@@ -9,7 +9,7 @@ import kleur from "kleur";
 
 // Import internal dependencies
 import * as nreport from "../index.js";
-import { createConfigFile } from "./config.js";
+import { createConfigFile, isValidConfiguration } from "./config.js";
 
 // Constants
 const version = JSON.parse(
@@ -23,6 +23,7 @@ async function runNodesecureReport() {
   console.log(kleur.grey().bold(`\n > Nreport starting at: ${kleur.yellow().bold(process.cwd())}\n`));
 
   try {
+    isValidConfiguration();
     await nreport.main();
   }
   catch (err) {
