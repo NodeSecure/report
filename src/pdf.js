@@ -22,7 +22,6 @@ export async function generatePDF(reportHTMLPath, name = config.report_title) {
     await page.goto(`file:${reportHTMLPath}`, {
       waitUntil: "networkidle2"
     });
-    await page.waitForFunction("window.isReadyForPDF");
 
     await page.pdf({
       path: path.join(kDistDir, cleanName),
