@@ -21,7 +21,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const kCloneDir = path.join(__dirname, "clones");
 const kJsonDir = path.join(__dirname, "json");
 const kViewsDir = path.join(__dirname, "views");
-const kReportsDir = path.join(__dirname, "reports");
+const kReportsDir = path.join(process.cwd(), "reports");
 const kChartTemplate = taggedString`\tcreateChart("${0}", "${4}", { labels: [${1}], interpolate: ${3}, data: [${2}] });`;
 const kAvailableThemes = new Set(fs.readdirSync(path.join(__dirname, "public", "css", "themes")).map((file) => path.basename(file, ".css")));
 
