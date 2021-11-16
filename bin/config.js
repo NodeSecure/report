@@ -1,18 +1,17 @@
-/* eslint-disable no-sync */
 // Require Node.js Dependencies
-import fs, { promises } from "fs";
+import { readFileSync, existsSync, promises as fs } from "fs";
 import Ajv from "ajv";
 
 const ajv = new Ajv();
 
-const config = fs.readFileSync(new URL("../data/config.json", import.meta.url));
-const schema = JSON.parse(fs.readFileSync(new URL("../src/schema/config.json", import.meta.url)));
+const config = readFileSync(new URL("../data/config.json", import.meta.url));
+const schema = JSON.parse(readFileSync(new URL("../src/schema/config.json", import.meta.url)));
 
 const KConfigName = "nreport-config.json";
 
 export async function createConfigFile() {
   try {
-    promises.writeFile(`${process.cwd()}/${KConfigName}`, config);
+    fs.writeFile(`${process.cwd()}/${KConfigName}`, config);
   }
   catch (err) {
     console.error(err);
@@ -21,7 +20,7 @@ export async function createConfigFile() {
 
 export function isValidConfiguration() {
   // check if there is a config file
-  if (!fs.existsSync(`${process.cwd()}/${KConfigName}`)) {
+  if (!existsSync(`${process.cwd()}/${KConfigName}`)) {
     throw new Error("There is no config file, please run `nreport generate-config`");
   }
 
