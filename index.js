@@ -7,7 +7,7 @@ import { fileURLToPath } from "url";
 
 // Require Third-party Dependencies
 import kleur from "kleur";
-import { taggedString } from "@slimio/utils";
+import { taggedString } from "@nodesecure/utils";
 import compile from "zup";
 import Spinner from "@slimio/async-cli-spinner";
 Spinner.DEFAULT_SPINNER = "dots";
