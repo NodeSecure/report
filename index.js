@@ -1,4 +1,3 @@
-/* eslint-disable max-depth, max-len */
 // Require Node.js Dependencies
 import path from "path";
 import fs, { promises } from "fs";
@@ -7,9 +6,10 @@ import { fileURLToPath } from "url";
 
 // Require Third-party Dependencies
 import kleur from "kleur";
-import { taggedString } from "@nodesecure/utils";
+import esbuild from "esbuild";
 import compile from "zup";
 import Spinner from "@slimio/async-cli-spinner";
+import { taggedString } from "@nodesecure/utils";
 Spinner.DEFAULT_SPINNER = "dots";
 
 // Require Internal Dependencies
@@ -18,12 +18,17 @@ import { generatePDF } from "./src/pdf.js";
 
 // CONSTANTS
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+const kPublicDir = path.join(__dirname, "public");
 const kCloneDir = path.join(__dirname, "clones");
 const kJsonDir = path.join(__dirname, "json");
 const kViewsDir = path.join(__dirname, "views");
 const kReportsDir = path.join(process.cwd(), "reports");
+
 const kChartTemplate = taggedString`\tcreateChart("${0}", "${4}", { labels: [${1}], interpolate: ${3}, data: [${2}] });`;
-const kAvailableThemes = new Set(fs.readdirSync(path.join(__dirname, "public", "css", "themes")).map((file) => path.basename(file, ".css")));
+const kAvailableThemes = new Set(
+  fs.readdirSync(path.join(__dirname, "public", "css", "themes")).map((file) => path.basename(file, ".css"))
+);
 
 async function fetchPackagesStats() {
   const spinner = new Spinner({
@@ -114,7 +119,6 @@ export async function main() {
     const HTMLTemplateStr = await promises.readFile(path.join(kViewsDir, "template.html"), "utf8");
     const templateGenerator = compile(HTMLTemplateStr);
 
-
     const templatePayload = {
       report_theme: kAvailableThemes.has(config.theme) ? config.theme : "dark",
       report_title: config.report_title,
@@ -133,6 +137,28 @@ export async function main() {
 
     const reportHTMLPath = path.join(kReportsDir, cleanReportName(config.report_title, ".html"));
     await promises.writeFile(reportHTMLPath, HTMLReport);
+
+    await esbuild.build({
+      entryPoints: [
+        path.join(kPublicDir, "scripts", "main.js"),
+        path.join(kPublicDir, "css", "style.css"),
+        path.join(kPublicDir, "css", "themes", `${templatePayload.report_theme}.css`)
+      ],
+      loader: {
+        ".jpg": "file",
+        ".png": "file",
+        ".woff": "file",
+        ".woff2": "file",
+        ".eot": "file",
+        ".ttf": "file",
+        ".svg": "file"
+      },
+      platform: "browser",
+      bundle: true,
+      sourcemap: true,
+      treeShaking: true,
+      outdir: path.join(process.cwd(), "public")
+    });
 
     await timers.setTimeout(100);
     console.log("HTML Report writted on disk!");
