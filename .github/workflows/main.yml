@@ -1,0 +1,19 @@
+name: Report CI
+
+on:
+  push:
+    branches: master
+  pull_request:
+
+jobs:
+  nsci:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.x]
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v2
+      - uses: NodeSecure/ci-action@v1
+        with: 
+          warnings: warning
