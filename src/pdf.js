@@ -1,7 +1,6 @@
 // Require Node.js Dependencies
 import fs from "fs/promises";
 import path from "path";
-import { fileURLToPath } from "url";
 
 // Require Third-party Dependencies
 import puppeteer from "puppeteer";
@@ -10,8 +9,7 @@ import puppeteer from "puppeteer";
 import { config, cleanReportName } from "./utils.js";
 
 // CONSTANTS
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const kDistDir = path.join(__dirname, "..", "reports");
+const kDistDir = path.join(process.cwd(), "reports");
 
 export async function generatePDF(reportHTMLPath, name = config.report_title) {
   await fs.mkdir(kDistDir, { recursive: true });
@@ -21,11 +19,9 @@ export async function generatePDF(reportHTMLPath, name = config.report_title) {
   try {
     const page = await browser.newPage();
     await page.emulateMediaType("print");
-
     await page.goto(`file:${reportHTMLPath}`, {
       waitUntil: "networkidle2"
     });
-    await page.waitForFunction("window.isReadyForPDF");
 
     await page.pdf({
       path: path.join(kDistDir, cleanName),

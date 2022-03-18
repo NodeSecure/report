@@ -160,7 +160,7 @@ function hex(x) {
     return x.join('');
 }
 
-function md5(s) {
+export function md5(s) {
     return hex(md51(s));
 }
 

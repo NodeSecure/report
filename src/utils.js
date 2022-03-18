@@ -11,6 +11,7 @@ import git from "isomorphic-git";
 import http from "isomorphic-git/http/node/index.js";
 import filenamify from "filenamify";
 import { from, cwd } from "@nodesecure/scanner";
+import { formatBytes } from "@nodesecure/utils";
 import * as Flags from "@nodesecure/flags";
 
 // CONSTANTS
@@ -27,17 +28,6 @@ const securityLock = new Lock({ maxConcurrent: 2 });
 export const config = JSON.parse(
   fs.readFileSync(new URL("../data/config.json", import.meta.url))
 );
-
-function formatBytes(bytes, decimals) {
-  if (bytes === 0) {
-    return "0 B";
-  }
-  const dm = decimals <= 0 ? 0 : decimals || 2;
-  const sizes = ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
-  const id = Math.floor(Math.log(bytes) / Math.log(1024));
-
-  return parseFloat((bytes / Math.pow(1024, id)).toFixed(dm)) + " " + sizes[id];
-}
 
 export async function fetchStatsFromNsecurePayloads(payloadFiles = []) {
   const stats = {
