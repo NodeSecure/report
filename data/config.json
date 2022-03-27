@@ -5,18 +5,7 @@
     "include_transitive_internal": false,
     "npm_org_prefix": "@nodesecure",
     "npm_packages": [
-        "@nodesecure/scanner",
-        "@nodesecure/js-x-ray",
-        "@nodesecure/vuln",
-        "@nodesecure/flags",
-        "@nodesecure/i18n",
-        "@nodesecure/eslint-config",
-        "@nodesecure/sec-literal",
-        "@nodesecure/npm-registry-sdk",
-        "@nodesecure/licenses-conformance",
-        "@nodesecure/ntlp",
-        "@nodesecure/fs-walk",
-        "@nodesecure/size-satisfies"
+        "@nodesecure/js-x-ray"
     ],
     "git_url": "https://github.com/NodeSecure",
     "git_repositories": [],

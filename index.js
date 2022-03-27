@@ -31,6 +31,7 @@ const kAvailableThemes = new Set(
 );
 
 async function fetchPackagesStats() {
+  console.log(config.npm_packages);
   const spinner = new Spinner({
     prefixText: kleur.white().bold("Fetching packages stats on nsecure")
   }).start();
@@ -165,6 +166,9 @@ export async function main() {
 
     await generatePDF(reportHTMLPath);
     console.log("Report sucessfully generated!");
+  }
+  catch (error) {
+    console.log(error);
   }
   finally {
     await timers.setTimeout(100);
