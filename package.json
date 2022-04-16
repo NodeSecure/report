@@ -39,7 +39,7 @@
         "@slimio/lock": "^1.0.0",
         "ajv": "^8.10.0",
         "dotenv": "^16.0.0",
-        "esbuild": "^0.14.27",
+        "esbuild": "^0.14.28",
         "filenamify": "^5.1.0",
         "isomorphic-git": "^1.14.0",
         "kleur": "^4.1.3",
