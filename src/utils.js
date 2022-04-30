@@ -1,7 +1,6 @@
 // Import Node.js Dependencies
 import path from "path";
 import fs from "fs";
-import { fileURLToPath } from "url";
 
 // Import Third-party Dependencies
 import git from "isomorphic-git";
@@ -9,24 +8,19 @@ import http from "isomorphic-git/http/node/index.js";
 import filenamify from "filenamify";
 
 // Import Internal Dependencies
-import * as localStorage from "./localStorage.js";
-
-// CONSTANTS
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const CLONE_DIR = path.join(__dirname, "..", "clones");
+import * as CONSTANTS from "./constants.js";
 
 /**
  * @async
  * @function cloneGITRepository
  * @description clone a given repository from github
  * @param {!string} repositoryName
+ * @param {!string} organizationUrl
  * @returns {Promise<string>}
  */
-export async function cloneGITRepository(repositoryName) {
-  const config = localStorage.getConfig().report;
-
-  const dir = path.join(CLONE_DIR, repositoryName);
-  const url = `${config.git.organizationUrl}/${repositoryName}.git`;
+export async function cloneGITRepository(repositoryName, organizationUrl) {
+  const dir = path.join(CONSTANTS.DIRS.CLONES, repositoryName);
+  const url = `${organizationUrl}/${repositoryName}.git`;
 
   await git.clone({
     fs, http, dir, url, token: process.env.GIT_TOKEN, singleBranch: true, oauth2format: "github"

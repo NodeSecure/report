@@ -1,21 +1,15 @@
 // Require Node.js Dependencies
-import fs from "fs/promises";
 import path from "path";
 
 // Require Third-party Dependencies
 import puppeteer from "puppeteer";
 
 // Require Internal Dependencies
-import { cleanReportName } from "./utils.js";
-
-// CONSTANTS
-const kDistDir = path.join(process.cwd(), "reports");
+import * as CONSTANTS from "../constants.js";
 
 export async function generatePDF(reportHTMLPath, name) {
-  await fs.mkdir(kDistDir, { recursive: true });
-  const cleanName = cleanReportName(name, ".pdf");
-
   const browser = await puppeteer.launch();
+
   try {
     const page = await browser.newPage();
     await page.emulateMediaType("print");
@@ -24,7 +18,7 @@ export async function generatePDF(reportHTMLPath, name) {
     });
 
     await page.pdf({
-      path: path.join(kDistDir, cleanName),
+      path: path.join(CONSTANTS.DIRS.REPORTS, name),
       format: "A4",
       printBackground: true
     });

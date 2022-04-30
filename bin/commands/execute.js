@@ -3,7 +3,7 @@ import * as rc from "@nodesecure/rc";
 
 // Import Internal Dependencies
 import * as localStorage from "../../src/localStorage.js";
-import * as nreport from "../../index.js";
+import * as nreport from "../../src/index.js";
 
 export async function execute() {
   const configLocation = process.cwd();
@@ -16,5 +16,5 @@ export async function execute() {
 }
 
 async function executeInAsyncHooks() {
-  await nreport.main();
+  await nreport.execute();
 }
