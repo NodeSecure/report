@@ -1,13 +1,19 @@
 /* eslint-disable max-depth */
+// Import Node.js Dependencies
+import fs from "fs/promises";
 
 // Import Third-party Dependencies
 import { formatBytes } from "@nodesecure/utils";
 import * as Flags from "@nodesecure/flags";
 
+// Import Internal Dependencies
+import * as localStorage from "../../localStorage.js";
+
 // CONSTANTS
 const kWantedFlags = Flags.getFlags();
 
 export async function fetchStatsFromNsecurePayloads(payloadFiles = []) {
+  const config = localStorage.getConfig().report;
   const stats = {
     size: {
       all: 0, internal: 0, external: 0
@@ -30,14 +36,14 @@ export async function fetchStatsFromNsecurePayloads(payloadFiles = []) {
   };
 
   for (const file of payloadFiles) {
-    const buf = await promises.readFile(file);
+    const buf = await fs.readFile(file);
 
     /** @type {NodeSecure.Payload} */
     const nsecurePayload = JSON.parse(buf.toString());
 
     for (const [name, descriptor] of Object.entries(nsecurePayload)) {
       const { versions, metadata } = descriptor;
-      const isThird = config.npm_org_prefix === null ? true : !name.startsWith(`${config.npm_org_prefix}/`);
+      const isThird = config.npm.organizationPrefix === null ? true : !name.startsWith(`${config.npm.organizationPrefix}/`);
 
       for (const human of metadata.maintainers) {
         stats.authors[human.email] = Reflect.has(stats.authors, human.email) ? ++stats.authors[human.email] : 1;
@@ -95,7 +101,7 @@ export async function fetchStatsFromNsecurePayloads(payloadFiles = []) {
         curr.versions.add(localVersion);
         const hasIndirectDependencies = flags.includes("hasIndirectDependencies");
         id: if (hasIndirectDependencies) {
-          if (!config.include_transitive_internal && name.startsWith(config.npm_org_prefix)) {
+          if (!config.includeTransitiveInternal && name.startsWith(config.npm.organizationPrefix)) {
             break id;
           }
 

@@ -13,8 +13,10 @@ import { taggedString } from "@nodesecure/utils";
 Spinner.DEFAULT_SPINNER = "dots";
 
 // Require Internal Dependencies
-import { cloneGITRepository, fetchStatsFromNsecurePayloads, nsecure, cleanReportName, config } from "./src/utils.js";
+import { cloneGITRepository, nsecure, cleanReportName, config } from "./src/utils.js";
+import { fetchStatsFromNsecurePayloads } from "./src/analysis/extraction/extract.js";
 import { generatePDF } from "./src/pdf.js";
+import * as localStorage from "./src/localStorage.js";
 
 // CONSTANTS
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -79,6 +81,7 @@ function toChart(baliseName, data, interpolateName, type = "bar") {
 
 function generateChartArray(pkgStats, repoStats) {
   const charts = [];
+  const config = localStorage.getConfig().report;
   const displayableCharts = config.charts.filter((chart) => chart.display);
 
   if (pkgStats !== null) {
@@ -98,6 +101,8 @@ function generateChartArray(pkgStats, repoStats) {
 }
 
 export async function main() {
+  const config = localStorage.getConfig().report;
+
   await Promise.all([
     promises.mkdir(kJsonDir, { recursive: true }),
     promises.mkdir(kCloneDir, { recursive: true }),
@@ -109,8 +114,8 @@ export async function main() {
       day: "2-digit", month: "short", year: "numeric", hour: "numeric", minute: "numeric", second: "numeric"
     }).format(new Date());
 
-    const pkgStats = await (config.npm_packages.length === 0 ? Promise.resolve(null) : fetchPackagesStats());
-    const repoStats = await (config.git_repositories.length === 0 ? Promise.resolve(null) : fetchRepositoriesStats());
+    const pkgStats = await (config.npm.packages.length === 0 ? Promise.resolve(null) : fetchPackagesStats());
+    const repoStats = await (config.git.repositories.length === 0 ? Promise.resolve(null) : fetchRepositoriesStats());
     if (pkgStats === null && repoStats === null) {
       console.log("No git repositories and no npm packages to fetch in the local configuration!");
       process.exit(0);
@@ -122,8 +127,8 @@ export async function main() {
 
     const templatePayload = {
       report_theme: kAvailableThemes.has(config.theme) ? config.theme : "dark",
-      report_title: config.report_title,
-      report_logo: config.report_logo,
+      report_title: config.title,
+      report_logo: config.logoUrl,
       report_date: generationDate,
       npm_stats: pkgStats,
       git_stats: repoStats,
@@ -136,7 +141,7 @@ export async function main() {
     const HTMLReport = templateGenerator(templatePayload)
       .concat(`\n<script>\ndocument.addEventListener("DOMContentLoaded", () => {\n${charts.join("\n")}\n});\n</script>`);
 
-    const reportHTMLPath = path.join(kReportsDir, cleanReportName(config.report_title, ".html"));
+    const reportHTMLPath = path.join(kReportsDir, cleanReportName(config.title, ".html"));
     await promises.writeFile(reportHTMLPath, HTMLReport);
 
     await esbuild.build({
