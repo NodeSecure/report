@@ -6,12 +6,12 @@ import path from "path";
 import puppeteer from "puppeteer";
 
 // Require Internal Dependencies
-import { config, cleanReportName } from "./utils.js";
+import { cleanReportName } from "./utils.js";
 
 // CONSTANTS
 const kDistDir = path.join(process.cwd(), "reports");
 
-export async function generatePDF(reportHTMLPath, name = config.report_title) {
+export async function generatePDF(reportHTMLPath, name) {
   await fs.mkdir(kDistDir, { recursive: true });
   const cleanName = cleanReportName(name, ".pdf");
 

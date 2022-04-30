@@ -1,10 +1,11 @@
-// Require Node.js Dependencies
+// Import Node.js Dependencies
 import path from "path";
-import fs, { promises } from "fs";
+import { readdirSync } from "fs";
+import fs from "fs/promises";
 import timers from "timers/promises";
 import { fileURLToPath } from "url";
 
-// Require Third-party Dependencies
+// Import Third-party Dependencies
 import kleur from "kleur";
 import esbuild from "esbuild";
 import compile from "zup";
@@ -12,34 +13,32 @@ import Spinner from "@slimio/async-cli-spinner";
 import { taggedString } from "@nodesecure/utils";
 Spinner.DEFAULT_SPINNER = "dots";
 
-// Require Internal Dependencies
-import { cloneGITRepository, nsecure, cleanReportName, config } from "./src/utils.js";
+// Import Internal Dependencies
+import { cloneGITRepository, cleanReportName } from "./src/utils.js";
 import { fetchStatsFromNsecurePayloads } from "./src/analysis/extraction/extract.js";
+import * as scanner from "./src/analysis/scanner.js";
 import { generatePDF } from "./src/pdf.js";
 import * as localStorage from "./src/localStorage.js";
+import * as CONSTANTS from "./src/constants.js";
 
 // CONSTANTS
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-const kPublicDir = path.join(__dirname, "public");
-const kCloneDir = path.join(__dirname, "clones");
-const kJsonDir = path.join(__dirname, "json");
-const kViewsDir = path.join(__dirname, "views");
-const kReportsDir = path.join(process.cwd(), "reports");
-
 const kChartTemplate = taggedString`\tcreateChart("${0}", "${4}", { labels: [${1}], interpolate: ${3}, data: [${2}] });`;
 const kAvailableThemes = new Set(
-  fs.readdirSync(path.join(__dirname, "public", "css", "themes")).map((file) => path.basename(file, ".css"))
+  readdirSync(path.join(__dirname, "public", "css", "themes")).map((file) => path.basename(file, ".css"))
 );
 
 async function fetchPackagesStats() {
-  console.log(config.npm_packages);
+  const config = localStorage.getConfig().report;
+  console.log(config.npm.packages);
+
   const spinner = new Spinner({
     prefixText: kleur.white().bold("Fetching packages stats on nsecure")
   }).start();
 
   try {
-    const jsonFiles = await Promise.all(config.npm_packages.map(nsecure.onPackage));
+    const jsonFiles = await Promise.all(config.npm.packages.map(scanner.from));
     const elapsed = `${spinner.elapsedTime.toFixed(2)}ms`;
     spinner.succeed(`Successfully done in ${kleur.cyan().bold(elapsed)}`);
 
@@ -52,15 +51,17 @@ async function fetchPackagesStats() {
 }
 
 async function fetchRepositoriesStats() {
+  const config = localStorage.getConfig().report;
+
   const spinner = new Spinner({
     prefixText: kleur.white().bold("Clone and analyze built-in addons")
   }).start("clone repositories...");
 
   try {
-    const repos = await Promise.all(config.git_repositories.map(cloneGITRepository));
+    const repos = await Promise.all(config.git.repositories.map(cloneGITRepository));
     spinner.text = "Run node-secure analyze";
 
-    const jsonFiles = await Promise.all(repos.map(nsecure.onLocalDirectory));
+    const jsonFiles = await Promise.all(repos.map(scanner.cwd));
     const elapsed = `${spinner.elapsedTime.toFixed(2)}ms`;
     spinner.succeed(`Successfully done in ${kleur.cyan().bold(elapsed)}`);
 
@@ -104,9 +105,9 @@ export async function main() {
   const config = localStorage.getConfig().report;
 
   await Promise.all([
-    promises.mkdir(kJsonDir, { recursive: true }),
-    promises.mkdir(kCloneDir, { recursive: true }),
-    promises.mkdir(kReportsDir, { recursive: true })
+    fs.mkdir(CONSTANTS.DIRS.JSON, { recursive: true }),
+    fs.mkdir(CONSTANTS.DIRS.CLONES, { recursive: true }),
+    fs.mkdir(CONSTANTS.DIRS.REPORTS, { recursive: true })
   ]);
 
   try {
@@ -122,7 +123,7 @@ export async function main() {
     }
 
     console.log("Start generating template!");
-    const HTMLTemplateStr = await promises.readFile(path.join(kViewsDir, "template.html"), "utf8");
+    const HTMLTemplateStr = await fs.readFile(path.join(CONSTANTS.DIRS.VIEWS, "template.html"), "utf8");
     const templateGenerator = compile(HTMLTemplateStr);
 
     const templatePayload = {
@@ -141,14 +142,14 @@ export async function main() {
     const HTMLReport = templateGenerator(templatePayload)
       .concat(`\n<script>\ndocument.addEventListener("DOMContentLoaded", () => {\n${charts.join("\n")}\n});\n</script>`);
 
-    const reportHTMLPath = path.join(kReportsDir, cleanReportName(config.title, ".html"));
-    await promises.writeFile(reportHTMLPath, HTMLReport);
+    const reportHTMLPath = path.join(CONSTANTS.DIRS.REPORTS, cleanReportName(config.title, ".html"));
+    await fs.writeFile(reportHTMLPath, HTMLReport);
 
     await esbuild.build({
       entryPoints: [
-        path.join(kPublicDir, "scripts", "main.js"),
-        path.join(kPublicDir, "css", "style.css"),
-        path.join(kPublicDir, "css", "themes", `${templatePayload.report_theme}.css`)
+        path.join(CONSTANTS.DIRS.PUBLIC, "scripts", "main.js"),
+        path.join(CONSTANTS.DIRS.PUBLIC, "css", "style.css"),
+        path.join(CONSTANTS.DIRS.PUBLIC, "css", "themes", `${templatePayload.report_theme}.css`)
       ],
       loader: {
         ".jpg": "file",
@@ -169,7 +170,7 @@ export async function main() {
     await timers.setTimeout(100);
     console.log("HTML Report writted on disk!");
 
-    await generatePDF(reportHTMLPath);
+    await generatePDF(reportHTMLPath, config.title);
     console.log("Report sucessfully generated!");
   }
   catch (error) {
@@ -177,7 +178,7 @@ export async function main() {
   }
   finally {
     await timers.setTimeout(100);
-    await promises.rm(kCloneDir, { recursive: true, force: true });
+    await fs.rm(CONSTANTS.DIRS.CLONES, { recursive: true, force: true });
 
     process.exit(0);
   }
