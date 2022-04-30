@@ -6,6 +6,8 @@ import fs from "fs/promises";
 // Import Third-party Dependencies
 import esbuild from "esbuild";
 import compile from "zup";
+import Spinner from "@slimio/async-cli-spinner";
+import kleur from "kleur";
 import { taggedString } from "@nodesecure/utils";
 
 // Import Internal Dependencies
@@ -23,14 +25,16 @@ const kHTMLTemplate = readFileSync(path.join(CONSTANTS.DIRS.VIEWS, "template.htm
 const kTemplateGenerator = compile(kHTMLTemplate);
 
 export async function generateHTML(data) {
-  const { pkgStats, repoStats } = data;
+  const { pkgStats, repoStats, writeOnDisk = true } = data;
+  const spinner = new Spinner({
+    prefixText: kleur.white().bold("Generating HTML report")
+  }).start("Building view with zup");
 
   const config = localStorage.getConfig().report;
   const generationDate = Intl.DateTimeFormat("en-GB", {
     day: "2-digit", month: "short", year: "numeric", hour: "numeric", minute: "numeric", second: "numeric"
   }).format(new Date());
 
-  console.log("Start generating template!");
   const templatePayload = {
     report_theme: kAvailableThemes.has(config.theme) ? config.theme : "dark",
     report_title: config.title,
@@ -48,8 +52,11 @@ export async function generateHTML(data) {
     .concat(`\n<script>\ndocument.addEventListener("DOMContentLoaded", () => {\n${charts.join("\n")}\n});\n</script>`);
 
   const reportHTMLPath = path.join(CONSTANTS.DIRS.REPORTS, cleanReportName(config.title, ".html"));
-  await fs.writeFile(reportHTMLPath, HTMLReport);
+  if (writeOnDisk) {
+    await fs.writeFile(reportHTMLPath, HTMLReport);
+  }
 
+  spinner.text = kleur.yellow().bold("Bundling assets with esbuild");
   await esbuild.build({
     entryPoints: [
       path.join(CONSTANTS.DIRS.PUBLIC, "scripts", "main.js"),
@@ -69,8 +76,12 @@ export async function generateHTML(data) {
     bundle: true,
     sourcemap: true,
     treeShaking: true,
-    outdir: path.join(process.cwd(), "public")
+    outdir: path.join(process.cwd(), "public"),
+    logLevel: "silent"
   });
+
+  const elapsed = `${spinner.elapsedTime.toFixed(2)}ms`;
+  spinner.succeed(kleur.white().bold(`done in ${kleur.cyan().bold(elapsed)}`));
 
   return reportHTMLPath;
 }

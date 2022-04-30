@@ -15,45 +15,56 @@ import * as scanner from "./analysis/scanner.js";
 import * as localStorage from "./localStorage.js";
 import * as CONSTANTS from "./constants.js";
 
+// CONSTANTS
+const kColoredScanner = kleur.magenta().bold("NodeSecure/scanner");
+
 async function fetchPackagesStats(packages) {
   const spinner = new Spinner({
-    prefixText: kleur.white().bold("Fetching packages stats on nsecure")
+    prefixText: kleur.white().bold("Fetching npm packages stats with ") + kColoredScanner
   }).start();
 
   try {
     const jsonFiles = await Promise.all(packages.map(scanner.from));
     const elapsed = `${spinner.elapsedTime.toFixed(2)}ms`;
-    spinner.succeed(`Successfully done in ${kleur.cyan().bold(elapsed)}`);
+    spinner.succeed(kleur.green().bold(`done in ${kleur.cyan().bold(elapsed)}`));
 
     return fetchStatsFromNsecurePayloads(jsonFiles.filter((value) => value !== null));
   }
   catch (error) {
     spinner.failed(error.message);
+
     throw error;
   }
 }
 
 async function fetchRepositoriesStats(repositories, organizationUrl) {
   const spinner = new Spinner({
-    prefixText: kleur.white().bold("Clone and analyze built-in addons")
-  }).start("clone repositories...");
+    prefixText: kleur.white().bold("Fetching git repositories stats with ") + kColoredScanner
+  }).start("Cloning repositories...");
 
   try {
     const repos = await Promise.all(
       repositories.map((repositoryName) => cloneGITRepository(repositoryName, organizationUrl))
     );
-    spinner.text = "Run node-secure analyze";
+    spinner.text = "Runing CWD...";
 
     const jsonFiles = await Promise.all(repos.map(scanner.cwd));
     const elapsed = `${spinner.elapsedTime.toFixed(2)}ms`;
-    spinner.succeed(`Successfully done in ${kleur.cyan().bold(elapsed)}`);
+    spinner.succeed(kleur.green().bold(`done in ${kleur.cyan().bold(elapsed)}`));
 
     return fetchStatsFromNsecurePayloads(jsonFiles.filter((value) => value !== null));
   }
   catch (error) {
     spinner.failed(error.message);
+
     throw error;
   }
+}
+
+function exit(message) {
+  console.log(kleur.bold().red(message));
+
+  process.exit(0);
 }
 
 export async function execute() {
@@ -66,25 +77,49 @@ export async function execute() {
 
   const config = localStorage.getConfig().report;
   const reporters = new Set(config.reporters);
+  if (reporters.size === 0) {
+    exit("At least one reporter must be selected (either 'HTML' or 'PDF')");
+  }
+
   const reportName = cleanReportName(config.title);
+  console.log(`Starting report: ${kleur.cyan().bold(config.title)}`);
+  console.log(`Reporters selected: ${kleur.magenta().bold(config.reporters.join(","))}\n`);
 
   try {
     const fetchNpm = "npm" in config && config.npm.packages.length > 0;
     const fetchGit = "git" in config && config.git.repositories.length > 0;
     if (!fetchGit && !fetchNpm) {
-      console.log("No git repositories and no npm packages to fetch in the local configuration!");
-
-      return;
+      exit("No git repositories and no npm packages to fetch in the local configuration!");
     }
 
     const pkgStats = fetchNpm ? await fetchPackagesStats(config.npm.packages) : null;
     const repoStats = fetchGit ? await fetchRepositoriesStats(config.git.repositories, config.git.organizationUrl) : null;
 
-    const reportHTMLPath = await generateHTML({ pkgStats, repoStats });
+    const reportHTMLPath = await generateHTML({
+      pkgStats,
+      repoStats,
+      writeOnDisk: reporters.has("html")
+    });
 
     if (reporters.has("pdf")) {
-      await generatePDF(reportHTMLPath, reportName);
+      const spinner = new Spinner({
+        prefixText: kleur.white().bold("Generate PDF report with puppeteer")
+      }).start("");
+
+      try {
+        await generatePDF(reportHTMLPath, reportName);
+
+        const elapsed = `${spinner.elapsedTime.toFixed(2)}ms`;
+        spinner.succeed(kleur.green().bold(`done in ${kleur.cyan().bold(elapsed)}`));
+      }
+      catch (err) {
+        spinner.failed(err.message);
+
+        throw err;
+      }
     }
+
+    console.log(kleur.gray().bold("\n >> Security report successfully generated! Enjoy.\n"));
   }
   catch (error) {
     console.log(error);
