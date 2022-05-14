@@ -1,42 +1,41 @@
 # Security
-![version](https://img.shields.io/badge/dynamic/json.svg?url=https://raw.githubusercontent.com/SlimIO/security/master/package.json&query=$.version&label=Version)
-[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/SlimIO/security/commit-activity)
+![version](https://img.shields.io/badge/dynamic/json.svg?url=https://raw.githubusercontent.com/NodeSecure/report/master/package.json&query=$.version&label=Version)
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/NodeSecure/report/commit-activity)
 ![MIT](https://img.shields.io/github/license/mashape/apistatus.svg)
-![dep](https://img.shields.io/david/SlimIO/security)
-![size](https://img.shields.io/github/languages/code-size/SlimIO/Security)
-![known vulnerabilities](https://img.shields.io/snyk/vulnerabilities/github/SlimIO/Security)
-[![Build Status](https://travis-ci.com/SlimIO/Security.svg?branch=master)](https://travis-ci.com/SlimIO/Security)
+![size](https://img.shields.io/github/languages/code-size/NodeSecure/report)
+![known vulnerabilities](https://img.shields.io/snyk/vulnerabilities/github/NodeSecure/report)
+[![Build Status](https://travis-ci.com/NodeSecure/report.svg?branch=master)](https://travis-ci.com/NodeSecure/report)
 
-Project created to generate periodic security reports (HTML and PDF formats). It use [Node-secure](https://github.com/ES-Community/nsecure) under the hood to fetch all required datas.
+Project created to generate periodic security reports (HTML and PDF formats). It use [@nodesecure/scanner](https://github.com/NodeSecure/scanner) under the hood to fetch all required datas.
 
 Screen1             |  Screen2
 :-------------------------:|:-------------------------:
 ![](https://i.imgur.com/Jhr76Ef.jpg)  |  ![](https://i.imgur.com/OmV7Al6.jpg)
 
-## Goals
+## Features
 - Automatically clone GIT projects for you.
 - Have an overview of several projects (git or npm).
 - Ability to visualize changes over weeks.
-- Being able to go back down to a more complete view (**not yet implemented**).
 
 ## Requirements
-- [Node.js](https://nodejs.org/en/) v12 or higher.
+- [Node.js](https://nodejs.org/en/) v16 or higher.
 
 ## Getting Started
 
 This package is available in the Node Package Repository and can be easily installed with [npm](https://docs.npmjs.com/getting-started/what-is-npm) or [yarn](https://yarnpkg.com).
 
 ```bash
-$ git clone https://github.com/SlimIO/Security.git
-$ cd Security
+$ git clone https://github.com/NodeSecure/report.git
+$ cd report
 $ npm ci
 $ npm link
 ```
 
-Then the nodesecure/report binary will be available in your terminal. Give it a try with our preconfigured configuration, this will automatically generate pdf/html in your current working directory.
+Then the nodesecure/report binary will be available in your terminal.
 
 ```bash
-nreport run
+nreport initialize
+nreport execute
 ```
 
 ## Environment Variables
@@ -51,63 +50,139 @@ To known how to get a **GIT_TOKEN** or how to register environment variables fol
 
 > For NODE_SECURE_TOKEN, please check the [nsecure documentation](https://github.com/ES-Community/nsecure#fetching-private-packages).
 
-## Configuration example (for SlimIO)
+## Configuration example
 
-To generate your own report just edit the `data/config.json` file.
+Under the hood it use the official NodeSecure [runtime configuration](https://github.com/NodeSecure/rc).
 
 ```json
 {
-    "theme": "dark",
-    "report_title": "SlimIO Security Report",
-    "report_logo": "https://avatars0.githubusercontent.com/u/29552883?s=200&v=4",
-    "npm_org_prefix": "@slimio",
-    "npm_packages": [
-        "@slimio/addon",
-        "@slimio/scheduler",
-        "@slimio/config",
-        "@slimio/core",
-        "@slimio/arg-parser",
-        "@slimio/profiles",
-        "@slimio/queue",
-        "@slimio/sqlite-transaction",
-        "@slimio/alert",
-        "@slimio/metrics",
-        "@slimio/units",
-        "@slimio/ipc",
-        "@slimio/safe-emitter"
-    ],
-    "git_url": "https://github.com/SlimIO",
-    "git_repositories": [
-        "Aggregator",
-        "Alerting",
-        "Socket",
-        "Gate",
-        "ihm"
-    ],
-    "charts": [
-        {
-            "name": "Extensions",
-            "display": true,
-            "interpolation": "d3.interpolateRainbow"
+    "version": "1.0.0",
+    "i18n": "english",
+    "strategy": "npm",
+    "report": {
+        "theme": "light",
+        "includeTransitiveInternal": false,
+        "reporters": [
+            "html",
+            "pdf"
+        ],
+        "npm": {
+            "organizationPrefix": "@nodesecure",
+            "packages": [
+                "@nodesecure/js-x-ray"
+            ]
         },
-        {
-            "name": "Licenses",
-            "display": true,
-            "interpolation": "d3.interpolateCool"
+        "git": {
+            "organizationUrl": "https://github.com/NodeSecure",
+            "repositories": []
         },
-        {
-            "name": "Warnings",
-            "display": true,
-            "interpolation": "d3.interpolateInferno"
-        },
-        {
-            "name": "Flags",
-            "display": true,
-            "interpolation": "d3.interpolateWarm"
-        }
-    ]
+        "charts": [
+            {
+                "name": "Extensions",
+                "display": true,
+                "interpolation": "d3.interpolateRainbow",
+                "type": "bar"
+            },
+            {
+                "name": "Licenses",
+                "display": true,
+                "interpolation": "d3.interpolateCool",
+                "type": "bar"
+            },
+            {
+                "name": "Warnings",
+                "display": true,
+                "type": "horizontalBar",
+                "interpolation": "d3.interpolateInferno"
+            },
+            {
+                "name": "Flags",
+                "display": true,
+                "type": "horizontalBar",
+                "interpolation": "d3.interpolateSinebow"
+            }
+        ],
+        "title": "NodeSecure Security Report",
+        "logoUrl": "https://avatars.githubusercontent.com/u/85318671?s=200&v=4"
+    }
 }
 ```
+
+<details>
+<summary>TypeScript definition</summary>
+
+```ts
+  /**
+ * Configuration dedicated for NodeSecure Report
+ * @see https://github.com/NodeSecure/report
+ */
+export interface ReportConfiguration {
+  /**
+   * @default `light`
+   */
+  theme?: "light" | "dark";
+  title: string;
+  /**
+   * URL to a logo to show on the final HTML/PDF Report
+   */
+  logoUrl: string;
+  /**
+   * Show/categorize internal dependencies as transitive
+   * @default false
+   */
+  includeTransitiveInternal?: boolean;
+  npm?: {
+    /**
+     * NPM organization prefix starting with @
+     * @example `@nodesecure`
+     */
+    organizationPrefix: string;
+    packages: string[];
+  },
+  git?: {
+    /**
+     * GitHub organization URL
+     * @example `https://github.com/NodeSecure`
+     */
+    organizationUrl: string;
+    /**
+     * List of repositories (name are enough, no need to provide .git url or any equivalent)
+     */
+    repositories: string[];
+  },
+  /**
+   * @default html,pdf
+   */
+  reporters?: ("html" | "pdf")[];
+  charts?: ReportChart[];
+}
+
+export interface ReportChart {
+  /**
+   * List of available charts.
+   */
+  name: "Extensions" | "Licenses" | "Warnings" | "Flags";
+  /**
+   * @default true
+   */
+  display?: boolean;
+  /**
+   * Chart.js chart type.
+   *
+   * @see https://www.chartjs.org/docs/latest/charts
+   * @default `bar`
+   */
+  type?: "bar" | "horizontalBar" | "polarArea" | "doughnut";
+  /**
+   * D3 Interpolation color. Will be picked randomly by default if not provided.
+   * @see https://github.com/d3/d3-scale-chromatic/blob/main/README.md
+   */
+  interpolation?: string;
+}
+```
+</details>
+
+---
 
 The theme can be either `dark` or `light`. Themes are editable in *public/css/themes* (feel free to PR new themes if you want).
 
