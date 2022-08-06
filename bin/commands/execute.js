@@ -2,19 +2,17 @@
 import * as rc from "@nodesecure/rc";
 
 // Import Internal Dependencies
-import * as localStorage from "../../src/localStorage.js";
+import { store } from "../../src/localStorage.js";
 import * as nreport from "../../src/index.js";
 
 export async function execute() {
-  const configLocation = process.cwd();
+  const config = await rc.read(
+    process.cwd()
+  );
 
-  const runtimeConfiguration = (
-    await rc.read(configLocation)
-  ).unwrap();
-
-  localStorage.run(runtimeConfiguration, executeInAsyncHooks);
-}
-
-async function executeInAsyncHooks() {
-  await nreport.execute();
+  store.run(config.unwrap(), () => {
+    nreport
+      .execute()
+      .catch(console.error);
+  });
 }

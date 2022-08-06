@@ -1,7 +1,7 @@
 #!/usr/bin/env node --no-warnings
 
 // Import Node.js Dependencies
-import fs from "fs";
+import fs from "node:fs";
 
 // Import Third-party Dependencies
 import sade from "sade";
@@ -10,14 +10,12 @@ import kleur from "kleur";
 // Import Internal Dependencies
 import * as commands from "./commands/index.js";
 
-// CONSTANTS
-const kManifestFile = JSON.parse(
-  fs.readFileSync(new URL("../package.json", import.meta.url))
-);
-
 console.log(kleur.grey().bold(`\n > Executing nreport at: ${kleur.yellow().bold(process.cwd())}\n`));
 
-const cli = sade("report").version(kManifestFile.version);
+const { version } = JSON.parse(
+  fs.readFileSync(new URL("../package.json", import.meta.url))
+);
+const cli = sade("nreport").version(version);
 
 cli
   .command("execute")

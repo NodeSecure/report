@@ -1,14 +1,18 @@
 // Import Node.js Dependencies
-import path from "path";
-import fs from "fs";
+import path from "node:path";
+import fs from "node:fs";
 
 // Import Third-party Dependencies
 import git from "isomorphic-git";
 import http from "isomorphic-git/http/node/index.js";
 import filenamify from "filenamify";
+import Spinner from "@slimio/async-cli-spinner";
+import kleur from "kleur";
 
 // Import Internal Dependencies
 import * as CONSTANTS from "./constants.js";
+
+Spinner.DEFAULT_SPINNER = "dots";
 
 /**
  * @async
@@ -43,4 +47,26 @@ export function cleanReportName(name, format = null) {
   }
 
   return path.extname(cleanName) === format ? cleanName : `${cleanName}${format}`;
+}
+
+export async function runInSpinner(options, asyncHandler) {
+  const { title, start = void 0 } = options;
+
+  const spinner = new Spinner({
+    prefixText: kleur.gray().bold(title)
+  }).start(start);
+
+  try {
+    const response = await asyncHandler(spinner);
+
+    const elapsed = `${spinner.elapsedTime.toFixed(2)}ms`;
+    spinner.succeed(kleur.white().bold(`successfully executed in ${kleur.green().bold(elapsed)}`));
+
+    return response;
+  }
+  catch (err) {
+    spinner.failed(err.message);
+
+    throw err;
+  }
 }
