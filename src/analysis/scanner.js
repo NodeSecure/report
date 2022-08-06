@@ -9,6 +9,7 @@ import * as scanner from "@nodesecure/scanner";
 // Import Internal Dependencies
 import * as CONSTANTS from "../constants.js";
 
+// CONSTANTS
 const kMaxAnalysisLock = new Lock({ maxConcurrent: 2 });
 
 /**

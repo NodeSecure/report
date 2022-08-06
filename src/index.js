@@ -10,7 +10,7 @@ Spinner.DEFAULT_SPINNER = "dots";
 import { cloneGITRepository, cleanReportName } from "./utils.js";
 import { generatePDF } from "./reporting/pdf.js";
 import { generateHTML } from "./reporting/html.js";
-import { fetchStatsFromNsecurePayloads } from "./analysis/extraction/extract.js";
+import { buildStatsFromNsecurePayloads } from "./analysis/extraction/extract.js";
 import * as scanner from "./analysis/scanner.js";
 import * as localStorage from "./localStorage.js";
 import * as CONSTANTS from "./constants.js";
@@ -28,7 +28,7 @@ async function fetchPackagesStats(packages) {
     const elapsed = `${spinner.elapsedTime.toFixed(2)}ms`;
     spinner.succeed(kleur.green().bold(`done in ${kleur.cyan().bold(elapsed)}`));
 
-    return fetchStatsFromNsecurePayloads(jsonFiles.filter((value) => value !== null));
+    return buildStatsFromNsecurePayloads(jsonFiles.filter((value) => value !== null));
   }
   catch (error) {
     spinner.failed(error.message);
@@ -52,7 +52,7 @@ async function fetchRepositoriesStats(repositories, organizationUrl) {
     const elapsed = `${spinner.elapsedTime.toFixed(2)}ms`;
     spinner.succeed(kleur.green().bold(`done in ${kleur.cyan().bold(elapsed)}`));
 
-    return fetchStatsFromNsecurePayloads(jsonFiles.filter((value) => value !== null));
+    return buildStatsFromNsecurePayloads(jsonFiles.filter((value) => value !== null));
   }
   catch (error) {
     spinner.failed(error.message);

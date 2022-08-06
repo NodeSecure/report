@@ -12,7 +12,7 @@ import * as localStorage from "../../localStorage.js";
 // CONSTANTS
 const kWantedFlags = Flags.getFlags();
 
-export async function fetchStatsFromNsecurePayloads(payloadFiles = []) {
+export async function buildStatsFromNsecurePayloads(payloadFiles = []) {
   const config = localStorage.getConfig().report;
   const stats = {
     size: {
@@ -46,7 +46,7 @@ export async function fetchStatsFromNsecurePayloads(payloadFiles = []) {
       const isThird = config.npm.organizationPrefix === null ? true : !name.startsWith(`${config.npm.organizationPrefix}/`);
 
       for (const human of metadata.maintainers) {
-        stats.authors[human.email] = Reflect.has(stats.authors, human.email) ? ++stats.authors[human.email] : 1;
+        stats.authors[human.email] = human.email in stats.authors ? ++stats.authors[human.email] : 1;
       }
 
       if (!(name in stats.packages)) {
@@ -67,20 +67,20 @@ export async function fetchStatsFromNsecurePayloads(payloadFiles = []) {
         stats.size[isThird ? "external" : "internal"] += size;
 
         for (const { kind } of warnings) {
-          stats.warnings[kind] = Reflect.has(stats.warnings, kind) ? ++stats.warnings[kind] : 1;
+          stats.warnings[kind] = kind in stats.warnings ? ++stats.warnings[kind] : 1;
         }
 
         for (const flag of flags) {
           if (!kWantedFlags.has(flag)) {
             continue;
           }
-          stats.flags[flag] = Reflect.has(stats.flags, flag) ? ++stats.flags[flag] : 1;
+          stats.flags[flag] = flag in stats.flags ? ++stats.flags[flag] : 1;
         }
 
         (composition.required_builtin || composition.required_nodejs)
           .forEach((dep) => stats.deps.node.add(dep));
         for (const extName of composition.extensions.filter((extName) => extName !== "")) {
-          stats.extensions[extName] = Reflect.has(stats.extensions, extName) ? ++stats.extensions[extName] : 1;
+          stats.extensions[extName] = extName in stats.extensions ? ++stats.extensions[extName] : 1;
         }
 
         if (typeof license === "string") {
@@ -88,13 +88,13 @@ export async function fetchStatsFromNsecurePayloads(payloadFiles = []) {
         }
         else {
           for (const licenseName of license.uniqueLicenseIds) {
-            stats.licenses[licenseName] = Reflect.has(stats.licenses, licenseName) ?
+            stats.licenses[licenseName] = licenseName in stats.licenses ?
               ++stats.licenses[licenseName] : 1;
           }
         }
 
         if ("email" in author) {
-          stats.authors[author.email] = Reflect.has(stats.authors, author.email) ?
+          stats.authors[author.email] = author.email in stats.authors ?
             ++stats.authors[author.email] : 1;
         }
 
