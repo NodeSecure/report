@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/bin/env node --no-warnings
 
 // Import Node.js Dependencies
 import fs from "fs";
@@ -7,51 +7,30 @@ import fs from "fs";
 import sade from "sade";
 import kleur from "kleur";
 
-// Import internal dependencies
-import * as nreport from "../index.js";
-import { createConfigFile, isValidConfiguration } from "./config.js";
+// Import Internal Dependencies
+import * as commands from "./commands/index.js";
 
-// Constants
-const version = JSON.parse(
+// CONSTANTS
+const kManifestFile = JSON.parse(
   fs.readFileSync(new URL("../package.json", import.meta.url))
 );
 
-// Process scripts args
-const prog = sade("nodesecure/report").version(version);
+console.log(kleur.grey().bold(`\n > Executing nreport at: ${kleur.yellow().bold(process.cwd())}\n`));
 
-async function runNodesecureReport() {
-  console.log(kleur.grey().bold(`\n > Nreport starting at: ${kleur.yellow().bold(process.cwd())}\n`));
+const cli = sade("report").version(kManifestFile.version);
 
-  try {
-    isValidConfiguration();
-    await nreport.main();
-  }
-  catch (err) {
-    console.error(err);
-  }
-}
+cli
+  .command("execute")
+  .alias("exec")
+  .describe("Execute report at the current working dir with current configuration.")
+  .example("nreport exec")
+  .action(commands.execute);
 
-async function createConfig() {
-  console.log(kleur.grey().bold(`\n > Nreport create a default configuration file at: ${kleur.yellow().bold(process.cwd())}\n`));
+cli
+  .command("initialize")
+  .alias("init")
+  .describe("Initialize default report configuration")
+  .example("nreport init")
+  .action(commands.init);
 
-  try {
-    await createConfigFile();
-  }
-  catch (err) {
-    console.error(err);
-  }
-}
-
-prog
-  .command("run")
-  .describe("Run nodesecure/report")
-  .example("nreport run")
-  .action(runNodesecureReport);
-
-prog
-  .command("generate-config")
-  .describe("Create nodesecure/report configuration file")
-  .example("nreport config")
-  .action(createConfig);
-
-prog.parse(process.argv);
+cli.parse(process.argv);
