@@ -38,7 +38,7 @@
         "@nodesecure/utils": "^1.0.0",
         "@slimio/async-cli-spinner": "^0.5.2",
         "@slimio/lock": "^1.0.0",
-        "dotenv": "^16.0.1",
+        "dotenv": "^16.0.2",
         "esbuild": "^0.14.53",
         "filenamify": "^5.1.1",
         "frequency-set": "^1.0.1",
