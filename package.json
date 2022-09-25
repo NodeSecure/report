@@ -41,7 +41,7 @@
         "dotenv": "^16.0.1",
         "esbuild": "^0.14.53",
         "filenamify": "^5.1.1",
-        "frequency-set": "^1.0.1",
+        "frequency-set": "^1.0.2",
         "isomorphic-git": "^1.19.1",
         "kleur": "^4.1.5",
         "puppeteer": "^16.1.0",
