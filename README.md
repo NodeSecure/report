@@ -1,10 +1,11 @@
 # Security
 ![version](https://img.shields.io/badge/dynamic/json.svg?url=https://raw.githubusercontent.com/NodeSecure/report/master/package.json&query=$.version&label=Version)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/NodeSecure/report/commit-activity)
+[![OpenSSF
+Scorecard](https://api.securityscorecards.dev/projects/github.com/NodeSecure/report/badge)](https://api.securityscorecards.dev/projects/github.com/NodeSecure/report)
 ![MIT](https://img.shields.io/github/license/mashape/apistatus.svg)
 ![size](https://img.shields.io/github/languages/code-size/NodeSecure/report)
 ![known vulnerabilities](https://img.shields.io/snyk/vulnerabilities/github/NodeSecure/report)
-[![Build Status](https://travis-ci.com/NodeSecure/report.svg?branch=master)](https://travis-ci.com/NodeSecure/report)
 
 Project created to generate periodic security reports (HTML and PDF formats). It use [@nodesecure/scanner](https://github.com/NodeSecure/scanner) under the hood to fetch all required datas.
 
