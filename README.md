@@ -1,24 +1,27 @@
 # Security
-![version](https://img.shields.io/badge/dynamic/json.svg?url=https://raw.githubusercontent.com/NodeSecure/report/master/package.json&query=$.version&label=Version)
-[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/NodeSecure/report/commit-activity)
+
+![version](https://img.shields.io/badge/dynamic/json.svg?style=for-the-badge&url=https://raw.githubusercontent.com/NodeSecure/report/master/package.json&query=$.version&label=Version)
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg?style=for-the-badge)](https://github.com/NodeSecure/report/commit-activity)
 [![OpenSSF
-Scorecard](https://api.securityscorecards.dev/projects/github.com/NodeSecure/report/badge)](https://api.securityscorecards.dev/projects/github.com/NodeSecure/report)
-![MIT](https://img.shields.io/github/license/mashape/apistatus.svg)
-![size](https://img.shields.io/github/languages/code-size/NodeSecure/report)
-![known vulnerabilities](https://img.shields.io/snyk/vulnerabilities/github/NodeSecure/report)
+Scorecard](https://api.securityscorecards.dev/projects/github.com/NodeSecure/report/badge?style=for-the-badge)](https://api.securityscorecards.dev/projects/github.com/NodeSecure/report)
+![MIT](https://img.shields.io/github/license/mashape/apistatus.svg?style=for-the-badge)
+![size](https://img.shields.io/github/languages/code-size/NodeSecure/report?style=for-the-badge)
+![known vulnerabilities](https://img.shields.io/snyk/vulnerabilities/github/NodeSecure/report?style=for-the-badge)
 
 Project created to generate periodic security reports (HTML and PDF formats). It use [@nodesecure/scanner](https://github.com/NodeSecure/scanner) under the hood to fetch all required datas.
 
-Screen1             |  Screen2
-:-------------------------:|:-------------------------:
-![](https://i.imgur.com/Jhr76Ef.jpg)  |  ![](https://i.imgur.com/OmV7Al6.jpg)
+|               Screen1                |               Screen2                |
+| :----------------------------------: | :----------------------------------: |
+| ![](https://i.imgur.com/Jhr76Ef.jpg) | ![](https://i.imgur.com/OmV7Al6.jpg) |
 
 ## Features
+
 - Automatically clone GIT projects for you.
 - Have an overview of several projects (git or npm).
 - Ability to visualize changes over weeks.
 
 ## Requirements
+
 - [Node.js](https://nodejs.org/en/) v16 or higher.
 
 ## Getting Started
@@ -42,6 +45,7 @@ nreport execute
 ## Environment Variables
 
 To configure the project you have to register (set) environment variables on your system. These variables can be set in a **.env** file (that file must be created at the root of the project).
+
 ```
 GIT_TOKEN=
 NODE_SECURE_TOKEN=
@@ -57,55 +61,50 @@ Under the hood it use the official NodeSecure [runtime configuration](https://gi
 
 ```json
 {
-    "version": "1.0.0",
-    "i18n": "english",
-    "strategy": "npm",
-    "report": {
-        "theme": "light",
-        "includeTransitiveInternal": false,
-        "reporters": [
-            "html",
-            "pdf"
-        ],
-        "npm": {
-            "organizationPrefix": "@nodesecure",
-            "packages": [
-                "@nodesecure/js-x-ray"
-            ]
-        },
-        "git": {
-            "organizationUrl": "https://github.com/NodeSecure",
-            "repositories": []
-        },
-        "charts": [
-            {
-                "name": "Extensions",
-                "display": true,
-                "interpolation": "d3.interpolateRainbow",
-                "type": "bar"
-            },
-            {
-                "name": "Licenses",
-                "display": true,
-                "interpolation": "d3.interpolateCool",
-                "type": "bar"
-            },
-            {
-                "name": "Warnings",
-                "display": true,
-                "type": "horizontalBar",
-                "interpolation": "d3.interpolateInferno"
-            },
-            {
-                "name": "Flags",
-                "display": true,
-                "type": "horizontalBar",
-                "interpolation": "d3.interpolateSinebow"
-            }
-        ],
-        "title": "NodeSecure Security Report",
-        "logoUrl": "https://avatars.githubusercontent.com/u/85318671?s=200&v=4"
-    }
+  "version": "1.0.0",
+  "i18n": "english",
+  "strategy": "npm",
+  "report": {
+    "theme": "light",
+    "includeTransitiveInternal": false,
+    "reporters": ["html", "pdf"],
+    "npm": {
+      "organizationPrefix": "@nodesecure",
+      "packages": ["@nodesecure/js-x-ray"]
+    },
+    "git": {
+      "organizationUrl": "https://github.com/NodeSecure",
+      "repositories": []
+    },
+    "charts": [
+      {
+        "name": "Extensions",
+        "display": true,
+        "interpolation": "d3.interpolateRainbow",
+        "type": "bar"
+      },
+      {
+        "name": "Licenses",
+        "display": true,
+        "interpolation": "d3.interpolateCool",
+        "type": "bar"
+      },
+      {
+        "name": "Warnings",
+        "display": true,
+        "type": "horizontalBar",
+        "interpolation": "d3.interpolateInferno"
+      },
+      {
+        "name": "Flags",
+        "display": true,
+        "type": "horizontalBar",
+        "interpolation": "d3.interpolateSinebow"
+      }
+    ],
+    "title": "NodeSecure Security Report",
+    "logoUrl": "https://avatars.githubusercontent.com/u/85318671?s=200&v=4"
+  }
 }
 ```
 
@@ -113,7 +112,7 @@ Under the hood it use the official NodeSecure [runtime configuration](https://gi
 <summary>TypeScript definition</summary>
 
 ```ts
-  /**
+/**
  * Configuration dedicated for NodeSecure Report
  * @see https://github.com/NodeSecure/report
  */
@@ -139,7 +138,7 @@ export interface ReportConfiguration {
      */
     organizationPrefix: string;
     packages: string[];
-  },
+  };
   git?: {
     /**
      * GitHub organization URL
@@ -150,7 +149,7 @@ export interface ReportConfiguration {
      * List of repositories (name are enough, no need to provide .git url or any equivalent)
      */
     repositories: string[];
-  },
+  };
   /**
    * @default html,pdf
    */
@@ -181,18 +180,21 @@ export interface ReportChart {
   interpolation?: string;
 }
 ```
+
 </details>
 
 ---
 
-The theme can be either `dark` or `light`. Themes are editable in *public/css/themes* (feel free to PR new themes if you want).
+The theme can be either `dark` or `light`. Themes are editable in _public/css/themes_ (feel free to PR new themes if you want).
 
 > All D3 scale-chromatic for charts can be found [here](https://github.com/d3/d3-scale-chromatic/blob/master/README.md).
 
 ## Contributors ✨
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+
 [![All Contributors](https://img.shields.io/badge/all_contributors-4-orange.svg?style=flat-square)](#contributors-)
+
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
@@ -215,4 +217,5 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 ## License
+
 MIT
