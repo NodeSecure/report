@@ -33,7 +33,7 @@ async function fetchPackagesStats(packages) {
   const jsonFiles = await utils.runInSpinner(
     {
       title: `[Fetcher: ${kleur.yellow().bold("NPM")}]`,
-      start: "Fetching data on the NPM Registry using NodeSecure scanner"
+      start: "Fetching NPM packages metadata on the NPM Registry"
     },
     async() => Promise.all(packages.map(scanner.from))
   );
@@ -53,7 +53,7 @@ async function fetchRepositoriesStats(repositories, organizationUrl) {
       const repos = await Promise.all(
         repositories.map((repositoryName) => cloneGITRepository(repositoryName, organizationUrl))
       );
-      spinner.text = "Fetching data on the NPM Registry using NodeSecure scanner";
+      spinner.text = "Fetching repositories metadata on the NPM Registry";
 
       return Promise.all(repos.map(scanner.cwd));
     }

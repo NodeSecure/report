@@ -20,7 +20,7 @@ const kMaxAnalysisLock = new Mutex({ concurrency: 2 });
  * @returns {Promise<string>}
  */
 export async function from(packageName) {
-  const free = await kMaxAnalysisLock.acquire();
+  const release = await kMaxAnalysisLock.acquire();
 
   try {
     const name = `${packageName}.json`;
@@ -38,7 +38,7 @@ export async function from(packageName) {
     return null;
   }
   finally {
-    free();
+    release();
   }
 }
 
@@ -50,7 +50,7 @@ export async function from(packageName) {
  * @returns {Promise<string>}
  */
 export async function cwd(dir) {
-  const free = await kMaxAnalysisLock.acquire();
+  const release = await kMaxAnalysisLock.acquire();
 
   try {
     const name = `${path.basename(dir)}.json`;
@@ -67,6 +67,6 @@ export async function cwd(dir) {
     return null;
   }
   finally {
-    free();
+    release();
   }
 }
