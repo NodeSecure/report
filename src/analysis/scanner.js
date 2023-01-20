@@ -3,14 +3,14 @@ import path from "path";
 import fs from "fs/promises";
 
 // Import Third-party Dependencies
-import Lock from "@slimio/lock";
+import { Mutex } from "@openally/mutex";
 import * as scanner from "@nodesecure/scanner";
 
 // Import Internal Dependencies
 import * as CONSTANTS from "../constants.js";
 
 // CONSTANTS
-const kMaxAnalysisLock = new Lock({ maxConcurrent: 2 });
+const kMaxAnalysisLock = new Mutex({ concurrency: 2 });
 
 /**
  * @async
@@ -20,7 +20,7 @@ const kMaxAnalysisLock = new Lock({ maxConcurrent: 2 });
  * @returns {Promise<string>}
  */
 export async function from(packageName) {
-  await kMaxAnalysisLock.acquireOne();
+  const release = await kMaxAnalysisLock.acquire();
 
   try {
     const name = `${packageName}.json`;
@@ -38,7 +38,7 @@ export async function from(packageName) {
     return null;
   }
   finally {
-    kMaxAnalysisLock.freeOne();
+    release();
   }
 }
 
@@ -50,7 +50,7 @@ export async function from(packageName) {
  * @returns {Promise<string>}
  */
 export async function cwd(dir) {
-  await kMaxAnalysisLock.acquireOne();
+  const release = await kMaxAnalysisLock.acquire();
 
   try {
     const name = `${path.basename(dir)}.json`;
@@ -67,6 +67,6 @@ export async function cwd(dir) {
     return null;
   }
   finally {
-    kMaxAnalysisLock.freeOne();
+    release();
   }
 }

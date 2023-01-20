@@ -1,12 +1,11 @@
 // Import Node.js Dependencies
-import path from "path";
-import { readdirSync, readFileSync } from "fs";
-import fs from "fs/promises";
+import path from "node:path";
+import { readdirSync, readFileSync } from "node:fs";
+import fs from "node:fs/promises";
 
 // Import Third-party Dependencies
 import esbuild from "esbuild";
 import compile from "zup";
-import Spinner from "@slimio/async-cli-spinner";
 import kleur from "kleur";
 import { taggedString } from "@nodesecure/utils";
 
@@ -17,29 +16,28 @@ import * as localStorage from "../localStorage.js";
 
 // CONSTANTS
 const kChartTemplate = taggedString`\tcreateChart("${0}", "${4}", { labels: [${1}], interpolate: ${3}, data: [${2}] });`;
+const kDateFormatter = Intl.DateTimeFormat("en-GB", {
+  day: "2-digit", month: "short", year: "numeric", hour: "numeric", minute: "numeric", second: "numeric"
+});
 
 const kAvailableThemes = new Set(
-  readdirSync(path.join(CONSTANTS.DIRS.PUBLIC, "css", "themes")).map((file) => path.basename(file, ".css"))
+  readdirSync(path.join(CONSTANTS.DIRS.PUBLIC, "css", "themes"))
+    .map((file) => path.basename(file, ".css"))
 );
 const kHTMLTemplate = readFileSync(path.join(CONSTANTS.DIRS.VIEWS, "template.html"), "utf8");
 const kTemplateGenerator = compile(kHTMLTemplate);
 
-export async function generateHTML(data) {
-  const { pkgStats, repoStats, writeOnDisk = true } = data;
-  const spinner = new Spinner({
-    prefixText: kleur.white().bold("Generating HTML report")
-  }).start("Building view with zup");
+export async function HTML(data) {
+  const { pkgStats, repoStats, spinner } = data;
 
+  spinner.text = "Building view with zup";
   const config = localStorage.getConfig().report;
-  const generationDate = Intl.DateTimeFormat("en-GB", {
-    day: "2-digit", month: "short", year: "numeric", hour: "numeric", minute: "numeric", second: "numeric"
-  }).format(new Date());
 
   const templatePayload = {
     report_theme: kAvailableThemes.has(config.theme) ? config.theme : "dark",
     report_title: config.title,
     report_logo: config.logoUrl,
-    report_date: generationDate,
+    report_date: kDateFormatter.format(new Date()),
     npm_stats: pkgStats,
     git_stats: repoStats,
     charts: config.charts.filter((chart) => chart.display).map(({ name, help = null }) => {
@@ -52,9 +50,7 @@ export async function generateHTML(data) {
     .concat(`\n<script>\ndocument.addEventListener("DOMContentLoaded", () => {\n${charts.join("\n")}\n});\n</script>`);
 
   const reportHTMLPath = path.join(CONSTANTS.DIRS.REPORTS, cleanReportName(config.title, ".html"));
-  if (writeOnDisk) {
-    await fs.writeFile(reportHTMLPath, HTMLReport);
-  }
+  await fs.writeFile(reportHTMLPath, HTMLReport);
 
   spinner.text = kleur.yellow().bold("Bundling assets with esbuild");
   await esbuild.build({
@@ -79,9 +75,6 @@ export async function generateHTML(data) {
     outdir: path.join(process.cwd(), "public"),
     logLevel: "silent"
   });
-
-  const elapsed = `${spinner.elapsedTime.toFixed(2)}ms`;
-  spinner.succeed(kleur.white().bold(`done in ${kleur.cyan().bold(elapsed)}`));
 
   return reportHTMLPath;
 }

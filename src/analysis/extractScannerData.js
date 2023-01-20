@@ -7,7 +7,7 @@ import { formatBytes } from "@nodesecure/utils";
 import * as Flags from "@nodesecure/flags";
 
 // Import Internal Dependencies
-import * as localStorage from "../../localStorage.js";
+import * as localStorage from "../localStorage.js";
 
 // CONSTANTS
 const kWantedFlags = Flags.getFlags();
