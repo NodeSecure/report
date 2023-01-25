@@ -39,7 +39,7 @@
         "@openally/mutex": "^1.0.0",
         "@slimio/async-cli-spinner": "^0.5.2",
         "dotenv": "^16.0.3",
-        "esbuild": "^0.16.14",
+        "esbuild": "^0.17.4",
         "filenamify": "^5.1.1",
         "frequency-set": "^1.0.2",
         "isomorphic-git": "^1.21.0",
