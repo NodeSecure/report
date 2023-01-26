@@ -37,7 +37,7 @@
         "@nodesecure/scanner": "^3.8.2",
         "@nodesecure/utils": "^1.0.0",
         "@openally/mutex": "^1.0.0",
-        "@slimio/async-cli-spinner": "^0.5.2",
+        "@topcli/spinner": "^2.0.0",
         "dotenv": "^16.0.3",
         "esbuild": "^0.17.4",
         "filenamify": "^5.1.1",

@@ -6,13 +6,11 @@ import fs from "node:fs";
 import git from "isomorphic-git";
 import http from "isomorphic-git/http/node/index.js";
 import filenamify from "filenamify";
-import Spinner from "@slimio/async-cli-spinner";
+import { Spinner } from "@topcli/spinner";
 import kleur from "kleur";
 
 // Import Internal Dependencies
 import * as CONSTANTS from "./constants.js";
-
-Spinner.DEFAULT_SPINNER = "dots";
 
 /**
  * @async
@@ -52,9 +50,8 @@ export function cleanReportName(name, format = null) {
 export async function runInSpinner(options, asyncHandler) {
   const { title, start = void 0 } = options;
 
-  const spinner = new Spinner({
-    prefixText: kleur.gray().bold(title)
-  }).start(start);
+  const spinner = new Spinner()
+    .start(start, { withPrefix: `${kleur.gray().bold(title)} - ` });
 
   try {
     const response = await asyncHandler(spinner);
