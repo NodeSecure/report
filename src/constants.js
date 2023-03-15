@@ -17,3 +17,7 @@ export const DIRS = Object.freeze({
   VIEWS: path.join(__dirname, "..", "views"),
   REPORTS: path.join(process.cwd(), "reports")
 });
+
+export const EXTENSIONS = Object.freeze({
+  PDF: ".pdf"
+});

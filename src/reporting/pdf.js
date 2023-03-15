@@ -18,7 +18,7 @@ export async function generatePDF(reportHTMLPath, name) {
     });
 
     await page.pdf({
-      path: path.join(CONSTANTS.DIRS.REPORTS, name),
+      path: path.join(CONSTANTS.DIRS.REPORTS, `${name}${CONSTANTS.EXTENSIONS.PDF}`),
       format: "A4",
       printBackground: true
     });
