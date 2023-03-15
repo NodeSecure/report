@@ -31,7 +31,7 @@ This package is available in the Node Package Repository and can be easily insta
 ```bash
 $ git clone https://github.com/NodeSecure/report.git
 $ cd report
-$ npm ci
+$ npm i
 $ npm link
 ```
 
