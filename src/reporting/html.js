@@ -54,6 +54,7 @@ export async function HTML(data) {
 
   spinner.text = kleur.yellow().bold("Bundling assets with esbuild");
   await esbuild.build({
+    allowOverwrite: true,
     entryPoints: [
       path.join(CONSTANTS.DIRS.PUBLIC, "scripts", "main.js"),
       path.join(CONSTANTS.DIRS.PUBLIC, "css", "style.css"),
