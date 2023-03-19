@@ -55,6 +55,16 @@
       "contributions": [
         "maintenance"
       ]
+    },
+    {
+      "login": "halcin",
+      "name": "halcin",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7302407?v=4",
+      "profile": "https://github.com/halcin",
+      "contributions": [
+        "bug",
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
