@@ -1,7 +1,4 @@
 @media print {
-    html {
-        background: red !important;
-    }
     html, body {
         width: 220mm;
         margin: 0;
