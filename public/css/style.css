@@ -249,3 +249,6 @@ ul {
         cursor: pointer;
         color: var(--li-hover-color);
     }
+    li[role=link]:focus {
+      outline: 2px solid black;
+    }
