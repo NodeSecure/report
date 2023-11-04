@@ -1,9 +1,9 @@
 :root {
     --primary-text-color: #263238;
-    --secondary-text-color: #607d8be5;
+    --secondary-text-color: black;
     --primary-border-color: rgba(55, 71, 79, 0.1);
     --faded-border-color: rgba(78, 99, 109, 0.1);
-    --head-paragraph-color: #90A4AE;
+    --head-paragraph-color: black;
     --main-color: #304FFE;
     --default-margin: 15px;
     --avatar-border-color: #FFF;

@@ -91,14 +91,24 @@ function createChart(elementId, type = "bar", payload = {}) {
 }
 window.createChart = createChart;
 
-function liPackageClick() {
+function liPackageNavigateLink(e) {
   const dataValue = this.getAttribute("data-value");
-  window.open(`https://www.npmjs.com/package/${dataValue}`, "_blank");
+  if (e.type === "click" || e.key === "Enter") {
+    const ref = e.target ?? e.srcElement;
+    if (ref) {
+      window.open(`https://www.npmjs.com/package/${dataValue}`, "_blank");
+    }
+  }
 }
 
-function nodeDepClick() {
+function nodeDepNavigateLink(e) {
   const dataValue = this.getAttribute("data-value");
-  window.open(`https://nodejs.org/dist/latest/docs/api/${dataValue}.html`, "_blank");
+  if (e.type === "click" || e.key === "Enter") {
+    const ref = e.target ?? e.srcElement;
+    if (ref) {
+      window.open(`https://nodejs.org/dist/latest/docs/api/${dataValue}.html`, "_blank");
+    }
+  }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -117,12 +127,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const packagesList = document.querySelectorAll("ul.npm-packages-list li");
   for (const liElement of packagesList) {
-    liElement.addEventListener("click", liPackageClick);
+    liElement.addEventListener("click", liPackageNavigateLink);
+    liElement.addEventListener("keydown", liPackageNavigateLink);
   }
 
   const nodeList = document.querySelectorAll("ul.node-list li");
   for (const liElement of nodeList) {
-    liElement.addEventListener("click", nodeDepClick);
+    liElement.addEventListener("click", nodeDepNavigateLink);
+    liElement.addEventListener("keydown", nodeDepNavigateLink);
   }
 
   setTimeout(() => {
