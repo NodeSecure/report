@@ -1,12 +1,16 @@
-# Security
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/4438263/226182740-5da22495-8a32-4d5e-b5b3-95cafcd13d38.jpg" alt="@nodesecure/report">
+</p>
+
+<div align="center">
 
 ![version](https://img.shields.io/badge/dynamic/json.svg?style=for-the-badge&url=https://raw.githubusercontent.com/NodeSecure/report/master/package.json&query=$.version&label=Version)
-[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg?style=for-the-badge)](https://github.com/NodeSecure/report/commit-activity)
 [![OpenSSF
 Scorecard](https://api.securityscorecards.dev/projects/github.com/NodeSecure/report/badge?style=for-the-badge)](https://api.securityscorecards.dev/projects/github.com/NodeSecure/report)
-![MIT](https://img.shields.io/github/license/mashape/apistatus.svg?style=for-the-badge)
+![MIT](https://img.shields.io/github/license/NodeSecure/report.svg?style=for-the-badge)
 ![size](https://img.shields.io/github/languages/code-size/NodeSecure/report?style=for-the-badge)
-![known vulnerabilities](https://img.shields.io/snyk/vulnerabilities/github/NodeSecure/report?style=for-the-badge)
+
+</div>
 
 Project created to generate periodic security reports (HTML and PDF formats). It use [@nodesecure/scanner](https://github.com/NodeSecure/scanner) under the hood to fetch all required datas.
 

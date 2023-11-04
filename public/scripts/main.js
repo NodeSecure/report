@@ -1,7 +1,6 @@
 /* eslint-disable no-invalid-this */
 
 // Import Internal Dependencies
-import "../lib/chart.js";
 import { md5 } from "../lib/md5.js";
 
 // Import ESBUILD Assets
@@ -12,7 +11,15 @@ const kChartOptions = {
   legend: {
     display: false
   },
+  scales: {
+    y: {
+      beginAtZero: true
+    }
+  },
   plugins: {
+    legend: {
+      display: true
+    },
     datalabels: {
       anchor: "center",
       textShadowBlur: 4,
@@ -51,18 +58,28 @@ function* interpolateColors(dataLength, scale, range) {
 function createChart(elementId, type = "bar", payload = {}) {
   const { labels, data, interpolate = d3.interpolateCool } = payload;
   const options = JSON.parse(JSON.stringify(kChartOptions));
+  const chartType = (type === "horizontalBar") ? "bar" : type;
+  if (type === "horizontalBar") {
+    options.indexAxis = "y";
+  }
   if (type === "pie") {
     options.legend.display = true;
     options.plugins.datalabels.align = "center";
   }
   else {
+    options.plugins.legend.display = false;
     options.plugins.datalabels.align = type === "bar" ? "top" : "right";
   }
 
   new Chart(document.getElementById(elementId).getContext("2d"), {
-    type,
+    type: chartType,
+    plugins: [ChartDataLabels],
     data: {
+      label: "",
       labels,
+      legend: {
+        display: false
+      },
       datasets: [{
         borderWidth: 0,
         backgroundColor: [...interpolateColors(labels.length, interpolate, colorRangeInfo)],
@@ -74,21 +91,27 @@ function createChart(elementId, type = "bar", payload = {}) {
 }
 window.createChart = createChart;
 
-function liPackageClick() {
+function liPackageNavigateLink(e) {
   const dataValue = this.getAttribute("data-value");
-  window.open(`https://www.npmjs.com/package/${dataValue}`, "_blank");
+  if (e.type === "click" || e.key === "Enter") {
+    const ref = e.target ?? e.srcElement;
+    if (ref) {
+      window.open(`https://www.npmjs.com/package/${dataValue}`, "_blank");
+    }
+  }
 }
 
-function nodeDepClick() {
+function nodeDepNavigateLink(e) {
   const dataValue = this.getAttribute("data-value");
-  window.open(`https://nodejs.org/dist/latest/docs/api/${dataValue}.html`, "_blank");
+  if (e.type === "click" || e.key === "Enter") {
+    const ref = e.target ?? e.srcElement;
+    if (ref) {
+      window.open(`https://nodejs.org/dist/latest/docs/api/${dataValue}.html`, "_blank");
+    }
+  }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  Chart.Legend.prototype.afterFit = function afterFit() {
-    this.height += 15;
-  };
-
   const avatarsElements = document.querySelectorAll(".avatar");
   for (const avatar of avatarsElements) {
     const email = avatar.getAttribute("data-email");
@@ -104,12 +127,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const packagesList = document.querySelectorAll("ul.npm-packages-list li");
   for (const liElement of packagesList) {
-    liElement.addEventListener("click", liPackageClick);
+    liElement.addEventListener("click", liPackageNavigateLink);
+    liElement.addEventListener("keydown", liPackageNavigateLink);
   }
 
   const nodeList = document.querySelectorAll("ul.node-list li");
   for (const liElement of nodeList) {
-    liElement.addEventListener("click", nodeDepClick);
+    liElement.addEventListener("click", nodeDepNavigateLink);
+    liElement.addEventListener("keydown", nodeDepNavigateLink);
   }
 
   setTimeout(() => {

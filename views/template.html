@@ -7,7 +7,9 @@
     href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,700,700i&display=swap" />
 <link href="../public/css/themes/[[=z.report_theme]].css" rel="stylesheet" type="text/css">
 <link href="../public/css/style.css" rel="stylesheet" type="text/css">
-<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.0.0/dist/chart.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+
 <script src="https://d3js.org/d3-color.v1.min.js"></script>
 <script src="https://d3js.org/d3-interpolate.v1.min.js"></script>
 <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
@@ -18,7 +20,7 @@
 <div class="page">
     <header>
         <div class="logo">
-            <img src="[[=z.report_logo]]" />
+            <img src="[[=z.report_logo]]" alt="logo"/>
         </div>
         <h1>[[=z.report_title]]</h1>
         <p>[[=z.report_date]]</p>
@@ -54,7 +56,7 @@
                 <ul class="npm-packages-list">
                     [[ for (const [name, option] of Object.entries(z.npm_stats.packages)) { ]]
                     [[ if (!option.isThird) { ]]
-                    <li data-value="[[=name]]">
+                    <li data-value="[[=name]]" tabindex="0" role="link" class="link">
                         <p>[[=name]]</p>
                     </li>
                     [[ } ]]
@@ -69,7 +71,7 @@
                 <ul class="npm-packages-list">
                     [[ for (const [name, option] of Object.entries(z.npm_stats.packages)) { ]]
                     [[ if (option.isThird) { ]]
-                    <li data-value="[[=name]]">
+                    <li data-value="[[=name]]" tabindex="0" role="link" class="link">
                         <p>[[=name]]</p>
                     </li>
                     [[ } ]]
@@ -85,7 +87,7 @@
                 </div>
                 <ul class="npm-packages-list">
                     [[ for (const name of z.npm_stats.deps.transitive) { ]]
-                    <li data-value="[[=name]]">
+                    <li data-value="[[=name]]" tabindex="0" role="link" class="link">
                         <p>[[=name]]</p>
                     </li>
                     [[ } ]]
@@ -98,7 +100,7 @@
                 </div>
                 <ul class="node-list">
                     [[ for (const name of z.npm_stats.deps.node) { ]]
-                    <li data-value="[[=name]]">
+                    <li data-value="[[=name]]" tabindex="0" role="link" class="link">
                         <p>[[=name]]</p>
                     </li>
                     [[ } ]]
@@ -169,7 +171,7 @@
                 <ul class="npm-packages-list">
                     [[ for (const [name, option] of Object.entries(z.git_stats.packages)) { ]]
                     [[ if (!option.isThird) { ]]
-                    <li data-value="[[=name]]">
+                    <li data-value="[[=name]]" tabindex="0" role="link" class="link">
                         <p>[[=name]]</p>
                     </li>
                     [[ } ]]
@@ -184,7 +186,7 @@
                 <ul class="npm-packages-list">
                     [[ for (const [name, option] of Object.entries(z.git_stats.packages)) { ]]
                     [[ if (option.isThird) { ]]
-                    <li data-value="[[=name]]">
+                    <li data-value="[[=name]]" tabindex="0" role="link" class="link">
                         <p>[[=name]]</p>
                     </li>
                     [[ } ]]
