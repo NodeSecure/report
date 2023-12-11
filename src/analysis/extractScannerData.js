@@ -93,7 +93,7 @@ export async function buildStatsFromNsecurePayloads(payloadFiles = []) {
           }
         }
 
-        if ("email" in author) {
+        if (author?.email) {
           stats.authors[author.email] = author.email in stats.authors ?
             ++stats.authors[author.email] : 1;
         }
