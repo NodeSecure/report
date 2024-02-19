@@ -39,7 +39,7 @@
         "@openally/mutex": "^1.0.0",
         "@topcli/spinner": "^2.1.2",
         "dotenv": "^16.3.1",
-        "esbuild": "^0.19.9",
+        "esbuild": "^0.20.1",
         "filenamify": "^6.0.0",
         "frequency-set": "^1.0.2",
         "isomorphic-git": "^1.25.1",
