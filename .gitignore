@@ -63,3 +63,5 @@ jsdoc/
 temp/
 json/
 reports/
+dist/
+.nodesecurerc

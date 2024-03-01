@@ -3,9 +3,6 @@
 // Import Internal Dependencies
 import { md5 } from "../lib/md5.js";
 
-// Import ESBUILD Assets
-import defaultAvatarURL from "../img/avatar-default.png";
-
 // CONSTANTS
 const kChartOptions = {
   legend: {
@@ -36,7 +33,7 @@ const kChartOptions = {
     }
   }
 };
-const kDefaultAvatarName = defaultAvatarURL.substring(defaultAvatarURL.lastIndexOf("/") + 1);
+const kDefaultAvatarName = "../public/img/avatar-default.png";
 
 const colorRangeInfo = {
   colorStart: 0.2, colorEnd: 0.8, useEndAsStart: false
@@ -120,7 +117,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const imgEl = document.createElement("img");
     imgEl.src = `https://gravatar.com/avatar/${md5(email)}?&d=404`;
     imgEl.onerror = () => {
-      imgEl.src = `../public/${kDefaultAvatarName}`;
+      imgEl.src = kDefaultAvatarName;
     };
     aElement.appendChild(imgEl);
   }
