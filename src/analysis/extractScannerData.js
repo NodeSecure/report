@@ -5,9 +5,11 @@ import fs from "fs/promises";
 // Import Third-party Dependencies
 import { formatBytes } from "@nodesecure/utils";
 import * as Flags from "@nodesecure/flags";
+import * as scorecard from "@nodesecure/ossf-scorecard-sdk";
 
 // Import Internal Dependencies
 import * as localStorage from "../localStorage.js";
+import { getScoreColor } from "../utils.js";
 
 // CONSTANTS
 const kWantedFlags = Flags.getFlags();
@@ -32,7 +34,8 @@ export async function buildStatsFromNsecurePayloads(payloadFiles = []) {
     packages: {},
     packages_count: {
       all: 0, internal: 0, external: 0
-    }
+    },
+    scorecards: {}
   };
 
   for (const file of payloadFiles) {
@@ -50,10 +53,12 @@ export async function buildStatsFromNsecurePayloads(payloadFiles = []) {
       }
 
       if (!(name in stats.packages)) {
+        const isGiven = config.npm?.packages.includes(name);
+        const fullName = isGiven ? `${config.npm.organizationPrefix}/${name}` : name;
         if (isThird) {
           stats.packages_count.external++;
         }
-        stats.packages[name] = { isThird, versions: new Set() };
+        stats.packages[name] = { isThird, versions: new Set(), fullName, isGiven };
       }
 
       const curr = stats.packages[name];
@@ -111,6 +116,17 @@ export async function buildStatsFromNsecurePayloads(payloadFiles = []) {
       }
     }
   }
+
+  const givenPackages = Object.values(stats.packages).filter((pkg) => pkg.isGiven);
+
+  await Promise.all(givenPackages.map(async(pkg) => {
+    const { fullName } = pkg;
+    const { score } = await scorecard.result(fullName, { resolveOnVersionControl: false });
+    stats.scorecards[fullName] = {
+      score,
+      color: getScoreColor(score)
+    };
+  }));
 
   stats.packages_count.all = Object.keys(stats.packages).length;
   stats.packages_count.internal = stats.packages_count.all - stats.packages_count.external;

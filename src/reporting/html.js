@@ -19,7 +19,8 @@ const kChartTemplate = taggedString`\tcreateChart("${0}", "${4}", { labels: [${1
 const kDateFormatter = Intl.DateTimeFormat("en-GB", {
   day: "2-digit", month: "short", year: "numeric", hour: "numeric", minute: "numeric", second: "numeric"
 });
-
+const kImagesDir = path.join(CONSTANTS.DIRS.PUBLIC, "img");
+const kOutDir = path.join(process.cwd(), "dist");
 const kAvailableThemes = new Set(
   readdirSync(path.join(CONSTANTS.DIRS.PUBLIC, "css", "themes"))
     .map((file) => path.basename(file, ".css"))
@@ -73,9 +74,16 @@ export async function HTML(data) {
     bundle: true,
     sourcemap: true,
     treeShaking: true,
-    outdir: path.join(process.cwd(), "public"),
+    outdir: kOutDir,
     logLevel: "silent"
   });
+  const imagesFiles = await fs.readdir(kImagesDir);
+  await Promise.all([
+    ...imagesFiles.map((name) => fs.copyFile(
+      path.join(kImagesDir, name),
+      path.join(kOutDir, name)
+    )),
+  ]);
 
   return reportHTMLPath;
 }
