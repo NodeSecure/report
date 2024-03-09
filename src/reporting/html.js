@@ -28,11 +28,11 @@ const kAvailableThemes = new Set(
 const kHTMLTemplate = readFileSync(path.join(CONSTANTS.DIRS.VIEWS, "template.html"), "utf8");
 const kTemplateGenerator = compile(kHTMLTemplate);
 
-export async function HTML(data) {
+export async function HTML(data, reportOptions = null) {
   const { pkgStats, repoStats, spinner } = data;
 
   spinner.text = "Building view with zup";
-  const config = localStorage.getConfig().report;
+  const config = reportOptions ?? localStorage.getConfig().report;
 
   const templatePayload = {
     report_theme: kAvailableThemes.has(config.theme) ? config.theme : "dark",
@@ -46,7 +46,7 @@ export async function HTML(data) {
     })
   };
 
-  const charts = [...generateChartArray(pkgStats, repoStats)];
+  const charts = [...generateChartArray(pkgStats, repoStats, config)];
   const HTMLReport = kTemplateGenerator(templatePayload)
     .concat(`\n<script>\ndocument.addEventListener("DOMContentLoaded", () => {\n${charts.join("\n")}\n});\n</script>`);
 
@@ -82,7 +82,7 @@ export async function HTML(data) {
     ...imagesFiles.map((name) => fs.copyFile(
       path.join(kImagesDir, name),
       path.join(kOutDir, name)
-    )),
+    ))
   ]);
 
   return reportHTMLPath;
@@ -95,8 +95,7 @@ function toChart(baliseName, data, interpolateName, type = "bar") {
   return kChartTemplate(baliseName, graphLabels, Object.values(data).join(","), interpolateName, type);
 }
 
-function* generateChartArray(pkgStats, repoStats) {
-  const config = localStorage.getConfig().report;
+function* generateChartArray(pkgStats, repoStats, config) {
   const displayableCharts = config.charts.filter((chart) => chart.display);
 
   if (pkgStats !== null) {

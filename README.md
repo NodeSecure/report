@@ -193,6 +193,15 @@ The theme can be either `dark` or `light`. Themes are editable in _public/css/th
 
 > All D3 scale-chromatic for charts can be found [here](https://github.com/d3/d3-scale-chromatic/blob/master/README.md).
 
+## API
+
+> [!IMPORTANT]
+> The API is ESM only
+
+### `report(reportOptions, scannerPayload): Promise<Buffer>`
+
+Returns a PDF Buffer based on the givens report options and scanner payload.
+
 ## Contributors ✨
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
