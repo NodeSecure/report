@@ -7,6 +7,11 @@
   "bin": {
     "nreport": "./bin/index.js"
   },
+  "exports": {
+    ".": {
+      "import": "./src/api/index.js"
+    }
+  },
   "scripts": {
     "start": "node -r dotenv/config index.js",
     "prepublishOnly": "pkg-ok",

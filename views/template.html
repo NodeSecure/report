@@ -123,7 +123,7 @@
         </div>
       </div>
     </div>
-    [[ if (z.npm_stats.scorecards.length > 0) { ]]
+    [[ if (Object.keys(z.npm_stats.scorecards).length > 0) { ]]
     <div class="box-stats-container">
       <div class="box-stats">
         <div class="box-title">
@@ -255,21 +255,23 @@
         </div>
       </div>
     </div>
-    <div class="box-stats-container">
-      <div class="box-stats">
-        <div class="box-title">
-          <h3>Scorecards</h3>
+    [[ if (Object.keys(z.git_stats.scorecards).length > 0) { ]]
+      <div class="box-stats-container">
+        <div class="box-stats">
+          <div class="box-title">
+            <h3>Scorecards</h3>
+          </div>
+          <ul class="npm-packages-list">
+            [[ for (const [package, { score, color }] of Object.entries(z.git_stats.scorecards)) { ]]
+            <li class="scorecard-item">
+              <span class="package">[[=package]]</span>
+              <span class="score [[=color]]">[[=score]]</span>
+            </li>
+            [[ } ]]
+          </ul>
         </div>
-        <ul class="scorecard-list">
-          [[ for (const [package, score] of Object.entries(z.scorecards)) { ]]
-          <li class="scorecard-item">
-            <span class="package">[[=package]]</span>
-            <span class="score">[[=score]]</span>
-          </li>
-          [[ } ]]
-        </ul>
       </div>
-    </div>
+      [[ } ]]
     [[ for (const { name, help } of z.charts) { ]]
     <div class="box-stats-container charts">
       <div class="box-stats">

@@ -9,7 +9,7 @@ import * as CONSTANTS from "../constants.js";
 import * as utils from "../utils.js";
 
 export async function PDF(reportHTMLPath, options) {
-  const { title } = options;
+  const { title, saveOnDisk = true } = options;
 
   const browser = await puppeteer.launch();
 
@@ -21,16 +21,16 @@ export async function PDF(reportHTMLPath, options) {
       timeout: 60_000
     });
 
-    await page.pdf({
-      path: path.join(
+    const pdfBuffer = await page.pdf({
+      path: saveOnDisk ? path.join(
         CONSTANTS.DIRS.REPORTS,
         utils.cleanReportName(title, ".pdf")
-      ),
+      ) : undefined,
       format: "A4",
       printBackground: true
     });
 
-    return path;
+    return saveOnDisk ? path : pdfBuffer;
   }
   finally {
     await browser.close();

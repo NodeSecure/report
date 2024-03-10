@@ -1,6 +1,6 @@
 /* eslint-disable max-depth */
 // Import Node.js Dependencies
-import fs from "fs/promises";
+import fs from "node:fs";
 
 // Import Third-party Dependencies
 import { formatBytes } from "@nodesecure/utils";
@@ -14,8 +14,17 @@ import { getScoreColor } from "../utils.js";
 // CONSTANTS
 const kWantedFlags = Flags.getFlags();
 
-export async function buildStatsFromNsecurePayloads(payloadFiles = []) {
-  const config = localStorage.getConfig().report;
+/**
+ *
+ * @param {string[] | NodeSecure.Payload | NodeSecure.Payload[]} payloadFiles
+ * @param {object} options
+ * @param {boolean} options.isJson
+ * @returns
+ */
+export async function buildStatsFromNsecurePayloads(payloadFiles = [], options = Object.create(null)) {
+  const { isJson = false, reportOptions } = options;
+
+  const config = reportOptions ?? localStorage.getConfig().report;
   const stats = {
     size: {
       all: 0, internal: 0, external: 0
@@ -38,11 +47,23 @@ export async function buildStatsFromNsecurePayloads(payloadFiles = []) {
     scorecards: {}
   };
 
-  for (const file of payloadFiles) {
-    const buf = await fs.readFile(file);
+  /**
+   * @param {string | NodeSecure.Payload} fileOrJson
+   * @returns {NodeSecure.Payload}
+   */
+  function getJSONPayload(fileOrJson) {
+    if (isJson) {
+      return fileOrJson;
+    }
 
-    /** @type {NodeSecure.Payload} */
-    const nsecurePayload = JSON.parse(buf.toString());
+    const buf = fs.readFileSync(fileOrJson);
+
+    return JSON.parse(buf.toString());
+  }
+
+  const payloads = Array.isArray(payloadFiles) ? payloadFiles : [payloadFiles];
+  for (const fileOrJson of payloads) {
+    const nsecurePayload = getJSONPayload(fileOrJson);
 
     for (const [name, descriptor] of Object.entries(nsecurePayload)) {
       const { versions, metadata } = descriptor;
