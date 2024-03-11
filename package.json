@@ -1,6 +1,6 @@
 {
   "name": "@nodesecure/report",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "NodeSecure HTML & PDF graphic security report",
   "main": "./bin/index.js",
   "type": "module",
