@@ -75,7 +75,8 @@ export async function buildStatsFromNsecurePayloads(payloadFiles = [], options =
 
       if (!(name in stats.packages)) {
         const isGiven = config.npm?.packages.includes(name);
-        const fullName = isGiven ? `${config.npm.organizationPrefix}/${name}` : name;
+        const org = config.npm?.organizationPrefix;
+        const fullName = isGiven && org ? `${org}/${name}` : name;
         if (isThird) {
           stats.packages_count.external++;
         }
