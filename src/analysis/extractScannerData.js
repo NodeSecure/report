@@ -14,6 +14,33 @@ import { getScoreColor } from "../utils.js";
 // CONSTANTS
 const kWantedFlags = Flags.getFlags();
 
+function splitPackageWithOrg(pkg) {
+  // reverse here so if there is no orgPrefix, its value will be undefined
+  const [name, orgPrefix] = pkg.split("/").reverse();
+
+  return { orgPrefix, name };
+}
+
+export function getVCSRepositoryPathAndPlatform(url) {
+  if (!url) {
+    return null;
+  }
+
+  try {
+    const repo = new URL(url);
+
+    const repoPath = repo.pathname.slice(
+      1,
+      repo.pathname.includes(".git") ? -4 : repo.pathname.length
+    );
+
+    return [repoPath, repo.host];
+  }
+  catch {
+    return null;
+  }
+}
+
 /**
  *
  * @param {string[] | NodeSecure.Payload | NodeSecure.Payload[]} payloadFiles
@@ -74,13 +101,12 @@ export async function buildStatsFromNsecurePayloads(payloadFiles = [], options =
       }
 
       if (!(name in stats.packages)) {
-        const isGiven = config.npm?.packages.includes(name);
-        const org = config.npm?.organizationPrefix;
-        const fullName = isGiven && org ? `${org}/${name}` : name;
+        const { orgPrefix, name: splitName } = splitPackageWithOrg(name);
+        const isGiven = config.npm?.packages.includes(splitName) && orgPrefix === config.npm?.organizationPrefix;
         if (isThird) {
           stats.packages_count.external++;
         }
-        stats.packages[name] = { isThird, versions: new Set(), fullName, isGiven };
+        stats.packages[name] = { isThird, versions: new Set(), fullName: name, isGiven };
       }
 
       const curr = stats.packages[name];
@@ -88,7 +114,7 @@ export async function buildStatsFromNsecurePayloads(payloadFiles = [], options =
         if (curr.versions.has(localVersion)) {
           continue;
         }
-        const { flags, size, composition, license, author, warnings = [] } = localDescriptor;
+        const { flags, size, composition, license, author, warnings = [], links } = localDescriptor;
 
         stats.size.all += size;
         stats.size[isThird ? "external" : "internal"] += size;
@@ -135,6 +161,10 @@ export async function buildStatsFromNsecurePayloads(payloadFiles = [], options =
           stats.deps.transitive.add(`${name}@${localVersion}`);
         }
         curr[localVersion] = { hasIndirectDependencies };
+
+        if (!curr.links) {
+          Object.assign(curr, { links });
+        }
       }
     }
   }
@@ -144,9 +174,12 @@ export async function buildStatsFromNsecurePayloads(payloadFiles = [], options =
   await Promise.all(givenPackages.map(async(pkg) => {
     const { fullName } = pkg;
     const { score } = await scorecard.result(fullName, { resolveOnVersionControl: false });
+    const [repo, platform] = getVCSRepositoryPathAndPlatform(pkg.links?.repository) ?? [];
     stats.scorecards[fullName] = {
       score,
-      color: getScoreColor(score)
+      color: getScoreColor(score),
+      repo,
+      platform
     };
   }));
 

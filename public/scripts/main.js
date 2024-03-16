@@ -34,7 +34,7 @@ const kChartOptions = {
   }
 };
 const kDefaultAvatarName = "../public/img/avatar-default.png";
-
+const kScorecardVisualizerUrl = `https://kooltheba.github.io/openssf-scorecard-api-visualizer/#/projects`;
 const colorRangeInfo = {
   colorStart: 0.2, colorEnd: 0.8, useEndAsStart: false
 };
@@ -108,6 +108,22 @@ function nodeDepNavigateLink(e) {
   }
 }
 
+
+function liPackageNavigateScorecardLink(e) {
+  const dataRepo = this.getAttribute("data-repo");
+  const dataPlatform = this.getAttribute("data-platform");
+
+  if (!dataRepo) {
+    return;
+  }
+  else if (e.type === "click" || e.key === "Enter") {
+    const ref = e.target ?? e.srcElement;
+    if (ref) {
+      window.open(`${kScorecardVisualizerUrl}/${dataPlatform}/${dataRepo}`, "_blank");
+    }
+  }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   const avatarsElements = document.querySelectorAll(".avatar");
   for (const avatar of avatarsElements) {
@@ -132,6 +148,12 @@ document.addEventListener("DOMContentLoaded", () => {
   for (const liElement of nodeList) {
     liElement.addEventListener("click", nodeDepNavigateLink);
     liElement.addEventListener("keydown", nodeDepNavigateLink);
+  }
+
+  const scorecardPackagesList = document.querySelectorAll("ul.scorecard-packages-list li");
+  for (const liElement of scorecardPackagesList) {
+    liElement.addEventListener("click", liPackageNavigateScorecardLink);
+    liElement.addEventListener("keydown", liPackageNavigateScorecardLink);
   }
 
   setTimeout(() => {

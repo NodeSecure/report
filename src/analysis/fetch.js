@@ -8,11 +8,26 @@ import * as scanner from "./scanner.js";
 import * as localStorage from "../localStorage.js";
 import * as utils from "../utils.js";
 
+function formatNpmPackages(organizationPrefix, packages) {
+  if (organizationPrefix === "") {
+    return packages;
+  }
+
+  return packages.map((pkg) => {
+    // in case the user has already added the organization prefix
+    if (pkg.startsWith(organizationPrefix)) {
+      return pkg;
+    }
+
+    return `${organizationPrefix}/${pkg}`;
+  });
+}
+
 export async function fetchPackagesAndRepositoriesData() {
   const config = localStorage.getConfig().report;
 
-  const fetchNpm = "npm" in config && config.npm.packages.length > 0;
-  const fetchGit = "git" in config && config.git.repositories.length > 0;
+  const fetchNpm = config.npm?.packages.length > 0;
+  const fetchGit = config.git?.repositories.length > 0;
   if (!fetchGit && !fetchNpm) {
     throw new Error(
       "No git repositories and no npm packages to fetch in the local configuration!"
@@ -20,7 +35,7 @@ export async function fetchPackagesAndRepositoriesData() {
   }
 
   const pkgStats = fetchNpm ?
-    await fetchPackagesStats(config.npm.packages) : null;
+    await fetchPackagesStats(formatNpmPackages(config.npm.organizationPrefix, config.npm.packages)) : null;
 
   const { repositories, organizationUrl } = config.git;
   const repoStats = fetchGit ?
