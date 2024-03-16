@@ -129,9 +129,9 @@
         <div class="box-title">
           <h3>Scorecards</h3>
         </div>
-        <ul class="npm-packages-list">
-          [[ for (const [package, { score, color }] of Object.entries(z.npm_stats.scorecards)) { ]]
-          <li class="scorecard-item">
+        <ul class="scorecard-packages-list">
+          [[ for (const [package, { score, color, repo, platform }] of Object.entries(z.npm_stats.scorecards)) { ]]
+          <li class="scorecard-item" data-repo="[[=repo]]" data-platform="[[=platform]]">
             <span class="package">[[=package]]</span>
             <span class="score [[=color]]">[[=score]]</span>
           </li>
@@ -261,9 +261,9 @@
           <div class="box-title">
             <h3>Scorecards</h3>
           </div>
-          <ul class="npm-packages-list">
-            [[ for (const [package, { score, color }] of Object.entries(z.git_stats.scorecards)) { ]]
-            <li class="scorecard-item">
+          <ul class="scorecard-packages-list">
+            [[ for (const [package, { score, color, repo, platform }] of Object.entries(z.git_stats.scorecards)) { ]]
+              <li class="scorecard-item"  data-repo="[[=repo]]" data-platform="[[=platform]]">
               <span class="package">[[=package]]</span>
               <span class="score [[=color]]">[[=score]]</span>
             </li>
