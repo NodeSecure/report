@@ -65,3 +65,4 @@ json/
 reports/
 dist/
 .nodesecurerc
+.DS_Store
