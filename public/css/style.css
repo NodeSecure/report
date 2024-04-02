@@ -260,16 +260,21 @@ ul {
 }
 
 ul>li {
+  width: 100%;
+}
+
+ul>li>a {
   height: 25px;
   padding: 0 20px;
   display: flex;
   align-items: center;
+  text-decoration: none;
   letter-spacing: 0.7px;
   color: var(--secondary-text-color);
   border-bottom: 1px solid var(--primary-border-color);
 }
 
-ul>li:hover {
+ul>li:hover>a {
   cursor: pointer;
   color: var(--li-hover-color);
 }
@@ -278,8 +283,7 @@ li[role=link]:focus {
   outline: 2px solid black;
 }
 
-.scorecard-item {
-  display: flex;
+.scorecard-item a {
   justify-content: space-between;
 }
 

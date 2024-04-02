@@ -12,6 +12,7 @@ import * as localStorage from "../localStorage.js";
 
 // CONSTANTS
 const kWantedFlags = Flags.getFlags();
+const kScorecardVisualizerUrl = `https://kooltheba.github.io/openssf-scorecard-api-visualizer/#/projects`;
 
 function splitPackageWithOrg(pkg) {
   // reverse here so if there is no orgPrefix, its value will be undefined
@@ -150,15 +151,14 @@ export async function buildStatsFromNsecurePayloads(payloadFiles = [], options =
 
   const givenPackages = Object.values(stats.packages).filter((pkg) => pkg.isGiven);
 
-  await Promise.all(givenPackages.map(async(pkg) => {
+  await Promise.all(givenPackages.map(async (pkg) => {
     const { fullName } = pkg;
     const { score } = await scorecard.result(fullName, { resolveOnVersionControl: false });
     const [repo, platform] = getVCSRepositoryPathAndPlatform(pkg.links?.repository) ?? [];
     stats.scorecards[fullName] = {
       score,
       color: getScoreColor(score),
-      repo,
-      platform
+      visualizerUrl: repo ? `${kScorecardVisualizerUrl}/${platform}/${repo}` : "#"
     };
   }));
 
