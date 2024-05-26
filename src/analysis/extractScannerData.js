@@ -14,6 +14,7 @@ import * as localStorage from "../localStorage.js";
 const kFlagsList = Object.values(Flags.getManifest());
 const kWantedFlags = Flags.getFlags();
 const kScorecardVisualizerUrl = `https://kooltheba.github.io/openssf-scorecard-api-visualizer/#/projects`;
+const kNpmVisualizerUrl = `https://www.npmjs.com/package`;
 
 function splitPackageWithOrg(pkg) {
   // reverse here so if there is no orgPrefix, its value will be undefined
@@ -38,7 +39,7 @@ export async function buildStatsFromNsecurePayloads(payloadFiles = [], options =
       all: 0, internal: 0, external: 0
     },
     deps: {
-      transitive: new Set(),
+      transitive: {},
       node: new Set()
     },
     licenses: {
@@ -142,7 +143,7 @@ export async function buildStatsFromNsecurePayloads(payloadFiles = [], options =
             break id;
           }
 
-          stats.deps.transitive.add(`${name}@${localVersion}`);
+          stats.deps.transitive[`${name}@${localVersion}`] = { visualizerUrl: `${kNpmVisualizerUrl}/${name}@${localVersion}` };
         }
         curr[localVersion] = { hasIndirectDependencies };
 
