@@ -129,7 +129,7 @@ export interface ReportConfiguration {
   /**
    * URL to a logo to show on the final HTML/PDF Report
    */
-  logoUrl: string;
+  logoUrl?: string;
   /**
    * Show/categorize internal dependencies as transitive
    * @default false
