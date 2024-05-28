@@ -263,6 +263,10 @@ ul>li {
   width: 100%;
 }
 
+ul>li:not(:first-child) {
+  margin-top: 3px;
+}
+
 ul>li>a {
   height: 25px;
   padding: 0 20px;
@@ -272,6 +276,15 @@ ul>li>a {
   letter-spacing: 0.7px;
   color: var(--secondary-text-color);
   border-bottom: 1px solid var(--primary-border-color);
+}
+
+ul>li>p {
+  font-size: 20px;
+}
+
+ul>li>p>.emoji {
+  cursor: default;
+  font-size: 17px;
 }
 
 ul>li:hover>a {
@@ -307,4 +320,23 @@ li[role=link]:focus {
 
 .scorecard-item .score.blue {
   color: rgb(39 144 252);
+}
+
+.print-only {
+  display: none;
+}
+
+.emoji-legend {
+  margin-top: 15px;
+}
+
+.emoji-legend li:not(:first-child) {
+  margin-top: 6px;
+}
+
+@media print {
+  .print-only {
+    display: block;
+    display: 100%;
+  }
 }

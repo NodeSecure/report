@@ -11,6 +11,7 @@ import * as scorecard from "@nodesecure/ossf-scorecard-sdk";
 import * as localStorage from "../localStorage.js";
 
 // CONSTANTS
+const kFlagsList = Object.values(Flags.getManifest());
 const kWantedFlags = Flags.getFlags();
 const kScorecardVisualizerUrl = `https://kooltheba.github.io/openssf-scorecard-api-visualizer/#/projects`;
 
@@ -44,6 +45,7 @@ export async function buildStatsFromNsecurePayloads(payloadFiles = [], options =
       Unknown: 0
     },
     flags: {},
+    flagsList: Object.fromEntries(kFlagsList.map((flag) => [flag.title, flag])),
     extensions: {},
     warnings: {},
     authors: {},
@@ -86,7 +88,7 @@ export async function buildStatsFromNsecurePayloads(payloadFiles = [], options =
         if (isThird) {
           stats.packages_count.external++;
         }
-        stats.packages[name] = { isThird, versions: new Set(), fullName: name, isGiven };
+        stats.packages[name] = { isThird, versions: new Set(), fullName: name, isGiven, flags: {} };
       }
 
       const curr = stats.packages[name];
@@ -108,6 +110,7 @@ export async function buildStatsFromNsecurePayloads(payloadFiles = [], options =
             continue;
           }
           stats.flags[flag] = flag in stats.flags ? ++stats.flags[flag] : 1;
+          stats.packages[name].flags[flag] = { ...stats.flagsList[flag] };
         }
 
         (composition.required_builtin || composition.required_nodejs)

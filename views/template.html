@@ -59,7 +59,14 @@
           [[ for (const [name, option] of Object.entries(z.npm_stats.packages)) { ]]
           [[ if (!option.isThird) { ]]
           <li data-value="[[=name]]" tabindex="0" role="link" class="link">
-            <p>[[=name]]</p>
+            <p>
+              [[=name]]
+              [[ for (const flag of Object.values(option.flags)) {]]
+                <span class="emoji" title="[[=flag.tooltipDescription]]">
+                  [[=flag.emoji]]
+                </span>
+              [[ } ]]
+            </p>
           </li>
           [[ } ]]
           [[ } ]]
@@ -74,11 +81,30 @@
           [[ for (const [name, option] of Object.entries(z.npm_stats.packages)) { ]]
           [[ if (option.isThird) { ]]
           <li data-value="[[=name]]" tabindex="0" role="link" class="link">
-            <p>[[=name]]</p>
+            <p>
+              [[=name]]
+              [[ for (const flag of Object.values(option.flags)) {]]
+                <span class="emoji" title="[[=flag.tooltipDescription]]">
+                  [[=flag.emoji]]
+                </span>
+              [[ } ]]
+            </p>
           </li>
           [[ } ]]
           [[ } ]]
         </ul>
+      </div>
+
+      <div class="print-only">
+        <!-- We display the emoji legend on print mode because PDF does not support title attribute -->
+        <ul class="emoji-legend">
+          [[ for (const flag of Object.keys(z.npm_stats.flags)) { ]]
+            <li>
+              [[=z.npm_stats.flagsList[flag].emoji]]
+              [[=z.npm_stats.flagsList[flag].tooltipDescription]]
+            </li>
+          [[ } ]]
+          </ul>
       </div>
     </div>
     <div class="box-stats-container">
@@ -193,7 +219,14 @@
           [[ for (const [name, option] of Object.entries(z.git_stats.packages)) { ]]
           [[ if (!option.isThird) { ]]
           <li data-value="[[=name]]" tabindex="0" role="link" class="link">
-            <p>[[=name]]</p>
+            <p>
+              [[=name]]
+              [[ for (const flag of Object.values(option.flags)) {]]
+                <span class="emoji" title="[[=flag.tooltipDescription]]">
+                  [[=flag.emoji]]
+                </span>
+              [[ } ]]
+            </p>
           </li>
           [[ } ]]
           [[ } ]]
@@ -208,11 +241,30 @@
           [[ for (const [name, option] of Object.entries(z.git_stats.packages)) { ]]
           [[ if (option.isThird) { ]]
           <li data-value="[[=name]]" tabindex="0" role="link" class="link">
-            <p>[[=name]]</p>
+            <p>
+              [[=name]]
+              [[ for (const flag of Object.values(option.flags)) {]]
+                <span class="emoji" title="[[=flag.tooltipDescription]]">
+                  [[=flag.emoji]]
+                </span>
+              [[ } ]]
+            </p>
           </li>
           [[ } ]]
           [[ } ]]
         </ul>
+      </div>
+
+      <div class="print-only">
+        <!-- We display the emoji legend on print mode because PDF does not support title attribute -->
+        <ul class="emoji-legend">
+          [[ for (const flag of Object.keys(z.git_stats.flags)) { ]]
+            <li>
+              [[=z.git_stats.flagsList[flag].emoji]]
+              [[=z.git_stats.flagsList[flag].tooltipDescription]]
+            </li>
+          [[ } ]]
+          </ul>
       </div>
     </div>
     <div class="box-stats-container">
