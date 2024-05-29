@@ -61,10 +61,12 @@
           <li data-value="[[=name]]" tabindex="0" role="link" class="link">
             <p>
               [[=name]]
-              [[ for (const flag of Object.values(option.flags)) {]]
-                <span class="emoji" title="[[=flag.tooltipDescription]]">
-                  [[=flag.emoji]]
-                </span>
+              [[ if (z.npm_stats.showFlags) { ]]
+                [[ for (const flag of Object.values(option.flags)) {]]
+                  <span class="emoji" title="[[=flag.tooltipDescription]]">
+                    [[=flag.emoji]]
+                  </span>
+                [[ } ]]
               [[ } ]]
             </p>
           </li>
@@ -83,10 +85,12 @@
           <li data-value="[[=name]]" tabindex="0" role="link" class="link">
             <p>
               [[=name]]
-              [[ for (const flag of Object.values(option.flags)) {]]
-                <span class="emoji" title="[[=flag.tooltipDescription]]">
-                  [[=flag.emoji]]
-                </span>
+              [[ if (z.npm_stats.showFlags) { ]]
+                [[ for (const flag of Object.values(option.flags)) {]]
+                  <span class="emoji" title="[[=flag.tooltipDescription]]">
+                    [[=flag.emoji]]
+                  </span>
+                [[ } ]]
               [[ } ]]
             </p>
           </li>
@@ -95,17 +99,19 @@
         </ul>
       </div>
 
-      <div class="print-only">
-        <!-- We display the emoji legend on print mode because PDF does not support title attribute -->
-        <ul class="emoji-legend">
-          [[ for (const flag of Object.keys(z.npm_stats.flags)) { ]]
-            <li>
-              [[=z.npm_stats.flagsList[flag].emoji]]
-              [[=z.npm_stats.flagsList[flag].tooltipDescription]]
-            </li>
-          [[ } ]]
+      [[ if (z.npm_stats.showFlags) { ]]
+        <div class="print-only">
+          <!-- We display the emoji legend on print mode because PDF does not support title attribute -->
+          <ul class="emoji-legend">
+            [[ for (const flag of Object.keys(z.npm_stats.flags)) { ]]
+              <li>
+                [[=z.npm_stats.flagsList[flag].emoji]]
+                [[=z.npm_stats.flagsList[flag].tooltipDescription]]
+              </li>
+            [[ } ]]
           </ul>
-      </div>
+        </div>
+      [[ } ]]
     </div>
     <div class="box-stats-container">
       <div class="box-stats">
@@ -221,10 +227,12 @@
           <li data-value="[[=name]]" tabindex="0" role="link" class="link">
             <p>
               [[=name]]
-              [[ for (const flag of Object.values(option.flags)) {]]
-                <span class="emoji" title="[[=flag.tooltipDescription]]">
-                  [[=flag.emoji]]
-                </span>
+              [[ if (z.git_stats.showFlags) { ]]
+                [[ for (const flag of Object.values(option.flags)) {]]
+                  <span class="emoji" title="[[=flag.tooltipDescription]]">
+                    [[=flag.emoji]]
+                  </span>
+                [[ } ]]
               [[ } ]]
             </p>
           </li>
@@ -243,10 +251,12 @@
           <li data-value="[[=name]]" tabindex="0" role="link" class="link">
             <p>
               [[=name]]
-              [[ for (const flag of Object.values(option.flags)) {]]
-                <span class="emoji" title="[[=flag.tooltipDescription]]">
-                  [[=flag.emoji]]
-                </span>
+              [[ if (z.git_stats.showFlags) { ]]
+                [[ for (const flag of Object.values(option.flags)) {]]
+                  <span class="emoji" title="[[=flag.tooltipDescription]]">
+                    [[=flag.emoji]]
+                  </span>
+                [[ } ]]
               [[ } ]]
             </p>
           </li>
@@ -255,6 +265,7 @@
         </ul>
       </div>
 
+      [[ if (z.git_stats.showFlags) { ]]
       <div class="print-only">
         <!-- We display the emoji legend on print mode because PDF does not support title attribute -->
         <ul class="emoji-legend">
@@ -266,6 +277,7 @@
           [[ } ]]
           </ul>
       </div>
+      [[ } ]]
     </div>
     <div class="box-stats-container">
       <div class="box-stats">

@@ -53,7 +53,8 @@ export async function buildStatsFromNsecurePayloads(payloadFiles = [], options =
     packages_count: {
       all: 0, internal: 0, external: 0
     },
-    scorecards: {}
+    scorecards: {},
+    showFlags: config.showFlags
   };
 
   /**
@@ -154,7 +155,7 @@ export async function buildStatsFromNsecurePayloads(payloadFiles = [], options =
 
   const givenPackages = Object.values(stats.packages).filter((pkg) => pkg.isGiven);
 
-  await Promise.all(givenPackages.map(async (pkg) => {
+  await Promise.all(givenPackages.map(async(pkg) => {
     const { fullName } = pkg;
     const { score } = await scorecard.result(fullName, { resolveOnVersionControl: false });
     const [repo, platform] = getVCSRepositoryPathAndPlatform(pkg.links?.repository) ?? [];
