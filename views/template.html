@@ -234,7 +234,9 @@
           [[ if (!option.isThird) { ]]
           <li data-value="[[=name]]" tabindex="0" role="link" class="link">
             <p>
-              [[=name]]
+              <a href="[[=option.links.repository]]" target="_blank" rel="noopener">
+                <span class="">[[=name]]</span>
+              </a>
               [[ if (z.git_stats.showFlags) { ]]
                 [[ for (const flag of Object.values(option.flags)) {]]
                   <span class="emoji" title="[[=flag.tooltipDescription]]">
@@ -258,7 +260,9 @@
           [[ if (option.isThird) { ]]
           <li data-value="[[=name]]" tabindex="0" role="link" class="link">
             <p>
-              [[=name]]
+              <a href="[[=option.links.repository]]" target="_blank" rel="noopener">
+                <span class="">[[=name]]</span>
+              </a>
               [[ if (z.git_stats.showFlags) { ]]
                 [[ for (const flag of Object.values(option.flags)) {]]
                   <span class="emoji" title="[[=flag.tooltipDescription]]">
@@ -291,25 +295,29 @@
       <div class="box-stats">
         <div class="box-title">
           <i class="fas fa-project-diagram"></i>
-          <h3><span>[[=z.git_stats.deps.transitive.size]]</span>Transitive Dependencies</h3>
+          <h3><span>[[=Object.keys(z.git_stats.deps.transitive).length]]</span>Transitive Dependencies</h3>
         </div>
-        <ul>
-          [[ for (const name of z.git_stats.deps.transitive) { ]]
-          <li>
-            <p>[[=name]]</p>
-          </li>
+        <ul class="npm-packages-list">
+          [[ for (const [name, { links }] of Object.entries(z.git_stats.deps.transitive)) { ]]
+            <li class="npm-packages-item">
+              <a href="[[=links.repository]]" target="_blank" rel="noopener">
+                <span class="">[[=name]]</span>
+              </a>
+            </li>
           [[ } ]]
         </ul>
       </div>
       <div class="box-stats">
         <div class="box-title">
           <i class="fab fa-node-js"></i>
-          <h3><span>[[=z.git_stats.deps.node.size]]</span>Node.js Core Dependencies</h3>
+          <h3><span>[[=Object.keys(z.git_stats.deps.node).length]]</span>Node.js Core Dependencies</h3>
         </div>
-        <ul>
-          [[ for (const name of z.git_stats.deps.node) { ]]
-          <li>
-            <p>[[=name]]</p>
+        <ul class="node-list">
+          [[ for (const [name, { visualizerUrl }] of Object.entries(z.git_stats.deps.node)) { ]]
+          <li class="node-item">
+            <a href="[[=visualizerUrl]]" target="_blank" rel="noopener">
+              <span class="">[[=name]]</span>
+            </a>
           </li>
           [[ } ]]
         </ul>
@@ -338,7 +346,7 @@
             <h3>Scorecards</h3>
           </div>
           <ul class="scorecard-packages-list">
-            [[ for (const [package, { score, color, repo, platform }] of Object.entries(z.git_stats.scorecards)) { ]]
+            [[ for (const [package, { score, color, visualizerUrl }] of Object.entries(z.git_stats.scorecards)) { ]]
               <li class="scorecard-item">
                 <a href="[[=visualizerUrl]]" target="_blank" rel="noopener">
                   <span class="package">[[=package]]</span>
