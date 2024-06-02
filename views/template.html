@@ -58,9 +58,11 @@
         <ul class="npm-packages-list">
           [[ for (const [name, option] of Object.entries(z.npm_stats.packages)) { ]]
           [[ if (!option.isThird) { ]]
-          <li data-value="[[=name]]" tabindex="0" role="link" class="link">
+          <li class="npm-packages-item">
             <p>
-              [[=name]]
+              <a href="[[=option.links.npm]]" target="_blank" rel="noopener">
+                <span class="">[[=name]]</span>
+              </a>
               [[ if (z.npm_stats.showFlags) { ]]
                 [[ for (const flag of Object.values(option.flags)) {]]
                   <span class="emoji" title="[[=flag.tooltipDescription]]">
@@ -82,9 +84,11 @@
         <ul class="npm-packages-list">
           [[ for (const [name, option] of Object.entries(z.npm_stats.packages)) { ]]
           [[ if (option.isThird) { ]]
-          <li data-value="[[=name]]" tabindex="0" role="link" class="link">
+          <li class="npm-packages-item">
             <p>
-              [[=name]]
+              <a href="[[=option.links.npm]]" target="_blank" rel="noopener">
+                <span class="">[[=name]]</span>
+              </a>
               [[ if (z.npm_stats.showFlags) { ]]
                 [[ for (const flag of Object.values(option.flags)) {]]
                   <span class="emoji" title="[[=flag.tooltipDescription]]">
@@ -132,12 +136,14 @@
       <div class="box-stats">
         <div class="box-title">
           <i class="fab fa-node-js"></i>
-          <h3><span>[[=z.npm_stats.deps.node.size]]</span>Node.js Core Dependencies</h3>
+          <h3><span>[[=Object.keys(z.npm_stats.deps.node).length]]</span>Node.js Core Dependencies</h3>
         </div>
         <ul class="node-list">
-          [[ for (const name of z.npm_stats.deps.node) { ]]
-          <li data-value="[[=name]]" tabindex="0" role="link" class="link">
-            <p>[[=name]]</p>
+          [[ for (const [name, { visualizerUrl }] of Object.entries(z.npm_stats.deps.node)) { ]]
+          <li class="node-item">
+            <a href="[[=visualizerUrl]]" target="_blank" rel="noopener">
+              <span class="">[[=name]]</span>
+            </a>
           </li>
           [[ } ]]
         </ul>
