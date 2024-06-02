@@ -87,26 +87,6 @@ function createChart(elementId, type = "bar", payload = {}) {
 }
 window.createChart = createChart;
 
-function liPackageNavigateLink(e) {
-  const dataValue = this.getAttribute("data-value");
-  if (e.type === "click" || e.key === "Enter") {
-    const ref = e.target ?? e.srcElement;
-    if (ref) {
-      window.open(`https://www.npmjs.com/package/${dataValue}`, "_blank");
-    }
-  }
-}
-
-function nodeDepNavigateLink(e) {
-  const dataValue = this.getAttribute("data-value");
-  if (e.type === "click" || e.key === "Enter") {
-    const ref = e.target ?? e.srcElement;
-    if (ref) {
-      window.open(`https://nodejs.org/dist/latest/docs/api/${dataValue}.html`, "_blank");
-    }
-  }
-}
-
 document.addEventListener("DOMContentLoaded", () => {
   const avatarsElements = document.querySelectorAll(".avatar");
   for (const avatar of avatarsElements) {
@@ -119,18 +99,6 @@ document.addEventListener("DOMContentLoaded", () => {
       imgEl.src = kDefaultAvatarName;
     };
     aElement.appendChild(imgEl);
-  }
-
-  const packagesList = document.querySelectorAll("ul.npm-packages-list li");
-  for (const liElement of packagesList) {
-    liElement.addEventListener("click", liPackageNavigateLink);
-    liElement.addEventListener("keydown", liPackageNavigateLink);
-  }
-
-  const nodeList = document.querySelectorAll("ul.node-list li");
-  for (const liElement of nodeList) {
-    liElement.addEventListener("click", nodeDepNavigateLink);
-    liElement.addEventListener("keydown", nodeDepNavigateLink);
   }
 
   setTimeout(() => {
