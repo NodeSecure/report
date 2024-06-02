@@ -59,18 +59,16 @@
           [[ for (const [name, option] of Object.entries(z.npm_stats.packages)) { ]]
           [[ if (!option.isThird) { ]]
           <li class="npm-packages-item">
-            <p>
-              <a href="[[=option.links.npm]]" target="_blank" rel="noopener">
-                <span class="">[[=name]]</span>
-              </a>
-              [[ if (z.npm_stats.showFlags) { ]]
-                [[ for (const flag of Object.values(option.flags)) {]]
-                  <span class="emoji" title="[[=flag.tooltipDescription]]">
-                    [[=flag.emoji]]
-                  </span>
-                [[ } ]]
-              [[ } ]]
-            </p>
+            <a href="[[=option.links.npm]]" target="_blank" rel="noopener">
+              <span class="">[[=name]]</span>
+            </a>
+            [[ if (z.npm_stats.showFlags) { ]]
+            [[ for (const flag of Object.values(option.flags)) {]]
+            <span class="emoji" title="[[=flag.tooltipDescription]]">
+              [[=flag.emoji]]
+            </span>
+            [[ } ]]
+            [[ } ]]
           </li>
           [[ } ]]
           [[ } ]]
@@ -85,18 +83,16 @@
           [[ for (const [name, option] of Object.entries(z.npm_stats.packages)) { ]]
           [[ if (option.isThird) { ]]
           <li class="npm-packages-item">
-            <p>
-              <a href="[[=option.links.npm]]" target="_blank" rel="noopener">
-                <span class="">[[=name]]</span>
-              </a>
-              [[ if (z.npm_stats.showFlags) { ]]
-                [[ for (const flag of Object.values(option.flags)) {]]
-                  <span class="emoji" title="[[=flag.tooltipDescription]]">
-                    [[=flag.emoji]]
-                  </span>
-                [[ } ]]
-              [[ } ]]
-            </p>
+            <a href="[[=option.links.npm]]" target="_blank" rel="noopener">
+              <span class="">[[=name]]</span>
+            </a>
+            [[ if (z.npm_stats.showFlags) { ]]
+            [[ for (const flag of Object.values(option.flags)) {]]
+            <span class="emoji" title="[[=flag.tooltipDescription]]">
+              [[=flag.emoji]]
+            </span>
+            [[ } ]]
+            [[ } ]]
           </li>
           [[ } ]]
           [[ } ]]
@@ -104,17 +100,17 @@
       </div>
 
       [[ if (z.npm_stats.showFlags) { ]]
-        <div class="print-only">
-          <!-- We display the emoji legend on print mode because PDF does not support title attribute -->
-          <ul class="emoji-legend">
-            [[ for (const flag of Object.keys(z.npm_stats.flags)) { ]]
-              <li>
-                [[=z.npm_stats.flagsList[flag].emoji]]
-                [[=z.npm_stats.flagsList[flag].tooltipDescription]]
-              </li>
-            [[ } ]]
-          </ul>
-        </div>
+      <div class="print-only">
+        <!-- We display the emoji legend on print mode because PDF does not support title attribute -->
+        <ul class="emoji-legend">
+          [[ for (const flag of Object.keys(z.npm_stats.flags)) { ]]
+          <li>
+            [[=z.npm_stats.flagsList[flag].emoji]]
+            [[=z.npm_stats.flagsList[flag].tooltipDescription]]
+          </li>
+          [[ } ]]
+        </ul>
+      </div>
       [[ } ]]
     </div>
     <div class="box-stats-container">
@@ -125,11 +121,11 @@
         </div>
         <ul class="npm-packages-list">
           [[ for (const [name, { links }] of Object.entries(z.npm_stats.deps.transitive)) { ]]
-            <li class="npm-packages-item">
-              <a href="[[=links.npm]]" target="_blank" rel="noopener">
-                <span class="">[[=name]]</span>
-              </a>
-            </li>
+          <li class="npm-packages-item">
+            <a href="[[=links.npm]]" target="_blank" rel="noopener">
+              <span class="">[[=name]]</span>
+            </a>
+          </li>
           [[ } ]]
         </ul>
       </div>
@@ -232,19 +228,17 @@
         <ul class="npm-packages-list">
           [[ for (const [name, option] of Object.entries(z.git_stats.packages)) { ]]
           [[ if (!option.isThird) { ]]
-          <li data-value="[[=name]]" tabindex="0" role="link" class="link">
-            <p>
-              <a href="[[=option.links.repository]]" target="_blank" rel="noopener">
-                <span class="">[[=name]]</span>
-              </a>
-              [[ if (z.git_stats.showFlags) { ]]
-                [[ for (const flag of Object.values(option.flags)) {]]
-                  <span class="emoji" title="[[=flag.tooltipDescription]]">
-                    [[=flag.emoji]]
-                  </span>
-                [[ } ]]
-              [[ } ]]
-            </p>
+          <li class="npm-packages-item">
+            <a href="[[=option.links.repository]]" target="_blank" rel="noopener">
+              <span class="">[[=name]]</span>
+            </a>
+            [[ if (z.git_stats.showFlags) { ]]
+            [[ for (const flag of Object.values(option.flags)) {]]
+            <span class="emoji" title="[[=flag.tooltipDescription]]">
+              [[=flag.emoji]]
+            </span>
+            [[ } ]]
+            [[ } ]]
           </li>
           [[ } ]]
           [[ } ]]
@@ -258,19 +252,17 @@
         <ul class="npm-packages-list">
           [[ for (const [name, option] of Object.entries(z.git_stats.packages)) { ]]
           [[ if (option.isThird) { ]]
-          <li data-value="[[=name]]" tabindex="0" role="link" class="link">
-            <p>
-              <a href="[[=option.links.repository]]" target="_blank" rel="noopener">
-                <span class="">[[=name]]</span>
-              </a>
-              [[ if (z.git_stats.showFlags) { ]]
-                [[ for (const flag of Object.values(option.flags)) {]]
-                  <span class="emoji" title="[[=flag.tooltipDescription]]">
-                    [[=flag.emoji]]
-                  </span>
-                [[ } ]]
-              [[ } ]]
-            </p>
+          <li class="npm-packages-item">
+            <a href="[[=option.links.repository]]" target="_blank" rel="noopener">
+              <span class="">[[=name]]</span>
+            </a>
+            [[ if (z.git_stats.showFlags) { ]]
+            [[ for (const flag of Object.values(option.flags)) {]]
+            <span class="emoji" title="[[=flag.tooltipDescription]]">
+              [[=flag.emoji]]
+            </span>
+            [[ } ]]
+            [[ } ]]
           </li>
           [[ } ]]
           [[ } ]]
@@ -282,12 +274,12 @@
         <!-- We display the emoji legend on print mode because PDF does not support title attribute -->
         <ul class="emoji-legend">
           [[ for (const flag of Object.keys(z.git_stats.flags)) { ]]
-            <li>
-              [[=z.git_stats.flagsList[flag].emoji]]
-              [[=z.git_stats.flagsList[flag].tooltipDescription]]
-            </li>
+          <li>
+            [[=z.git_stats.flagsList[flag].emoji]]
+            [[=z.git_stats.flagsList[flag].tooltipDescription]]
+          </li>
           [[ } ]]
-          </ul>
+        </ul>
       </div>
       [[ } ]]
     </div>
@@ -299,11 +291,11 @@
         </div>
         <ul class="npm-packages-list">
           [[ for (const [name, { links }] of Object.entries(z.git_stats.deps.transitive)) { ]]
-            <li class="npm-packages-item">
-              <a href="[[=links.repository]]" target="_blank" rel="noopener">
-                <span class="">[[=name]]</span>
-              </a>
-            </li>
+          <li class="npm-packages-item">
+            <a href="[[=links.repository]]" target="_blank" rel="noopener">
+              <span class="">[[=name]]</span>
+            </a>
+          </li>
           [[ } ]]
         </ul>
       </div>
@@ -340,24 +332,24 @@
       </div>
     </div>
     [[ if (Object.keys(z.git_stats.scorecards).length > 0) { ]]
-      <div class="box-stats-container">
-        <div class="box-stats">
-          <div class="box-title">
-            <h3>Scorecards</h3>
-          </div>
-          <ul class="scorecard-packages-list">
-            [[ for (const [package, { score, color, visualizerUrl }] of Object.entries(z.git_stats.scorecards)) { ]]
-              <li class="scorecard-item">
-                <a href="[[=visualizerUrl]]" target="_blank" rel="noopener">
-                  <span class="package">[[=package]]</span>
-                  <span class="score [[=color]]">[[=score]]</span>
-                </a>
-              </li>
-            [[ } ]]
-          </ul>
+    <div class="box-stats-container">
+      <div class="box-stats">
+        <div class="box-title">
+          <h3>Scorecards</h3>
         </div>
+        <ul class="scorecard-packages-list">
+          [[ for (const [package, { score, color, visualizerUrl }] of Object.entries(z.git_stats.scorecards)) { ]]
+          <li class="scorecard-item">
+            <a href="[[=visualizerUrl]]" target="_blank" rel="noopener">
+              <span class="package">[[=package]]</span>
+              <span class="score [[=color]]">[[=score]]</span>
+            </a>
+          </li>
+          [[ } ]]
+        </ul>
       </div>
-      [[ } ]]
+    </div>
+    [[ } ]]
     [[ for (const { name, help } of z.charts) { ]]
     <div class="box-stats-container charts">
       <div class="box-stats">
