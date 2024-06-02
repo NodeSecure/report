@@ -143,7 +143,7 @@ export async function buildStatsFromNsecurePayloads(payloadFiles = [], options =
             break id;
           }
 
-          stats.deps.transitive[`${name}@${localVersion}`] = { visualizerUrl: links?.npm };
+          stats.deps.transitive[`${name}@${localVersion}`] = { links };
         }
         curr[localVersion] = { hasIndirectDependencies };
 

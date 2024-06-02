@@ -124,9 +124,9 @@
           <h3><span>[[=Object.keys(z.npm_stats.deps.transitive).length]]</span>Transitive Dependencies</h3>
         </div>
         <ul class="npm-packages-list">
-          [[ for (const [name, { visualizerUrl }] of Object.entries(z.npm_stats.deps.transitive)) { ]]
+          [[ for (const [name, { links }] of Object.entries(z.npm_stats.deps.transitive)) { ]]
             <li class="npm-packages-item">
-              <a href="[[=visualizerUrl]]" target="_blank" rel="noopener">
+              <a href="[[=links.npm]]" target="_blank" rel="noopener">
                 <span class="">[[=name]]</span>
               </a>
             </li>
