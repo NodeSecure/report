@@ -116,7 +116,7 @@ export async function buildStatsFromNsecurePayloads(payloadFiles = [], options =
         }
 
         (composition.required_builtin || composition.required_nodejs)
-          .forEach((dep) => (stats.deps.node[dep] = { visualizerUrl: `${kNodeVisualizerUrl}/${dep}.html` }));
+          .forEach((dep) => (stats.deps.node[dep] = { visualizerUrl: `${kNodeVisualizerUrl}/${dep.replace("node:", "")}.html` }));
         for (const extName of composition.extensions.filter((extName) => extName !== "")) {
           stats.extensions[extName] = extName in stats.extensions ? ++stats.extensions[extName] : 1;
         }
