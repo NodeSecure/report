@@ -60,7 +60,7 @@
           [[ if (!option.isThird) { ]]
           <li class="npm-packages-item">
             <a href="[[=option.links.npm]]" target="_blank" rel="noopener">
-              <span class="">[[=name]]</span>
+              <span>[[=name]]</span>
             </a>
             [[ if (z.npm_stats.showFlags) { ]]
             [[ for (const flag of Object.values(option.flags)) {]]
@@ -84,7 +84,7 @@
           [[ if (option.isThird) { ]]
           <li class="npm-packages-item">
             <a href="[[=option.links.npm]]" target="_blank" rel="noopener">
-              <span class="">[[=name]]</span>
+              <span>[[=name]]</span>
             </a>
             [[ if (z.npm_stats.showFlags) { ]]
             [[ for (const flag of Object.values(option.flags)) {]]
@@ -123,7 +123,7 @@
           [[ for (const [name, { links }] of Object.entries(z.npm_stats.deps.transitive)) { ]]
           <li class="npm-packages-item">
             <a href="[[=links.npm]]" target="_blank" rel="noopener">
-              <span class="">[[=name]]</span>
+              <span>[[=name]]</span>
             </a>
           </li>
           [[ } ]]
@@ -138,7 +138,7 @@
           [[ for (const [name, { visualizerUrl }] of Object.entries(z.npm_stats.deps.node)) { ]]
           <li class="node-item">
             <a href="[[=visualizerUrl]]" target="_blank" rel="noopener">
-              <span class="">[[=name]]</span>
+              <span >[[=name]]</span>
             </a>
           </li>
           [[ } ]]
@@ -230,7 +230,7 @@
           [[ if (!option.isThird) { ]]
           <li class="npm-packages-item">
             <a href="[[=option.links.repository]]" target="_blank" rel="noopener">
-              <span class="">[[=name]]</span>
+              <span>[[=name]]</span>
             </a>
             [[ if (z.git_stats.showFlags) { ]]
             [[ for (const flag of Object.values(option.flags)) {]]
@@ -254,7 +254,7 @@
           [[ if (option.isThird) { ]]
           <li class="npm-packages-item">
             <a href="[[=option.links.repository]]" target="_blank" rel="noopener">
-              <span class="">[[=name]]</span>
+              <span>[[=name]]</span>
             </a>
             [[ if (z.git_stats.showFlags) { ]]
             [[ for (const flag of Object.values(option.flags)) {]]
@@ -293,7 +293,7 @@
           [[ for (const [name, { links }] of Object.entries(z.git_stats.deps.transitive)) { ]]
           <li class="npm-packages-item">
             <a href="[[=links.repository]]" target="_blank" rel="noopener">
-              <span class="">[[=name]]</span>
+              <span>[[=name]]</span>
             </a>
           </li>
           [[ } ]]
@@ -308,7 +308,7 @@
           [[ for (const [name, { visualizerUrl }] of Object.entries(z.git_stats.deps.node)) { ]]
           <li class="node-item">
             <a href="[[=visualizerUrl]]" target="_blank" rel="noopener">
-              <span class="">[[=name]]</span>
+              <span>[[=name]]</span>
             </a>
           </li>
           [[ } ]]
