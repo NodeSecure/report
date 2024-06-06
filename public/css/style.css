@@ -340,3 +340,19 @@ li[role=link]:focus {
     display: 100%;
   }
 }
+
+.npm-packages-item a {
+  border-bottom: none;
+  display: inline;
+  letter-spacing: normal;
+  padding: 0;
+  color: var(--primary-text-color);
+}
+
+.node-item a {
+  border-bottom: none;
+  display: inline;
+  letter-spacing: normal;
+  padding: 0;
+  color: var(--primary-text-color);
+}

@@ -14,6 +14,7 @@ import * as localStorage from "../localStorage.js";
 const kFlagsList = Object.values(Flags.getManifest());
 const kWantedFlags = Flags.getFlags();
 const kScorecardVisualizerUrl = `https://kooltheba.github.io/openssf-scorecard-api-visualizer/#/projects`;
+const kNodeVisualizerUrl = `https://nodejs.org/dist/latest/docs/api`;
 
 function splitPackageWithOrg(pkg) {
   // reverse here so if there is no orgPrefix, its value will be undefined
@@ -38,8 +39,8 @@ export async function buildStatsFromNsecurePayloads(payloadFiles = [], options =
       all: 0, internal: 0, external: 0
     },
     deps: {
-      transitive: new Set(),
-      node: new Set()
+      transitive: {},
+      node: {}
     },
     licenses: {
       Unknown: 0
@@ -115,7 +116,7 @@ export async function buildStatsFromNsecurePayloads(payloadFiles = [], options =
         }
 
         (composition.required_builtin || composition.required_nodejs)
-          .forEach((dep) => stats.deps.node.add(dep));
+          .forEach((dep) => (stats.deps.node[dep] = { visualizerUrl: `${kNodeVisualizerUrl}/${dep.replace("node:", "")}.html` }));
         for (const extName of composition.extensions.filter((extName) => extName !== "")) {
           stats.extensions[extName] = extName in stats.extensions ? ++stats.extensions[extName] : 1;
         }
@@ -142,7 +143,7 @@ export async function buildStatsFromNsecurePayloads(payloadFiles = [], options =
             break id;
           }
 
-          stats.deps.transitive.add(`${name}@${localVersion}`);
+          stats.deps.transitive[`${name}@${localVersion}`] = { links };
         }
         curr[localVersion] = { hasIndirectDependencies };
 
