@@ -59,7 +59,7 @@
           [[ for (const [name, option] of Object.entries(z.npm_stats.packages)) { ]]
           [[ if (!option.isThird) { ]]
           <li class="npm-packages-item">
-            <a href="[[=option.links.npm]]" target="_blank" rel="noopener">
+            <a href="[[=option.links?.npm]]" target="_blank" rel="noopener">
               <span>[[=name]]</span>
             </a>
             [[ if (z.npm_stats.showFlags) { ]]
@@ -83,7 +83,7 @@
           [[ for (const [name, option] of Object.entries(z.npm_stats.packages)) { ]]
           [[ if (option.isThird) { ]]
           <li class="npm-packages-item">
-            <a href="[[=option.links.npm]]" target="_blank" rel="noopener">
+            <a href="[[=option.links?.npm]]" target="_blank" rel="noopener">
               <span>[[=name]]</span>
             </a>
             [[ if (z.npm_stats.showFlags) { ]]
@@ -122,7 +122,7 @@
         <ul class="npm-packages-list">
           [[ for (const [name, { links }] of Object.entries(z.npm_stats.deps.transitive)) { ]]
           <li class="npm-packages-item">
-            <a href="[[=links.npm]]" target="_blank" rel="noopener">
+            <a href="[[=links?.npm]]" target="_blank" rel="noopener">
               <span>[[=name]]</span>
             </a>
           </li>
@@ -138,7 +138,7 @@
           [[ for (const [name, { visualizerUrl }] of Object.entries(z.npm_stats.deps.node)) { ]]
           <li class="node-item">
             <a href="[[=visualizerUrl]]" target="_blank" rel="noopener">
-              <span >[[=name]]</span>
+              <span>[[=name]]</span>
             </a>
           </li>
           [[ } ]]
