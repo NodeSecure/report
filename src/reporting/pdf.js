@@ -11,7 +11,9 @@ import * as utils from "../utils.js";
 export async function PDF(reportHTMLPath, options) {
   const { title, saveOnDisk = true } = options;
 
-  const browser = await puppeteer.launch();
+  const browser = await puppeteer.launch({
+    args: ["--no-sandbox", "--disable-setuid-sandbox"]
+  });
 
   try {
     const page = await browser.newPage();

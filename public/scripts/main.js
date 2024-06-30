@@ -100,8 +100,4 @@ document.addEventListener("DOMContentLoaded", () => {
     };
     aElement.appendChild(imgEl);
   }
-
-  setTimeout(() => {
-    window.isReadyForPDF = true;
-  }, 1000);
 });
