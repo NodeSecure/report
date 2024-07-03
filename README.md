@@ -57,7 +57,7 @@ NODE_SECURE_TOKEN=
 
 To known how to get a **GIT_TOKEN** or how to register environment variables follow our [Governance Guide](https://github.com/SlimIO/Governance/blob/master/docs/tooling.md#environment-variables).
 
-> For NODE_SECURE_TOKEN, please check the [nsecure documentation](https://github.com/NodeSecure/cli?tab=readme-ov-file#private-registry--verdaccio).
+> For NODE_SECURE_TOKEN, please check the [NodeSecure CLI documentation](https://github.com/NodeSecure/cli?tab=readme-ov-file#private-registry--verdaccio).
 
 ## Configuration example
 
