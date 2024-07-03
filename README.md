@@ -12,7 +12,7 @@ Scorecard](https://api.securityscorecards.dev/projects/github.com/NodeSecure/rep
 
 </div>
 
-Project created to generate periodic security reports (HTML and PDF formats). It use [@nodesecure/scanner](https://github.com/NodeSecure/scanner) under the hood to fetch all required datas.
+This project is designed to generate periodic security reports in both HTML and PDF formats. It leverages the [@nodesecure/scanner](https://github.com/NodeSecure/scanner)  to retrieve all necessary data.
 
 |               Screen1                |               Screen2                |
 | :----------------------------------: | :----------------------------------: |
@@ -20,9 +20,10 @@ Project created to generate periodic security reports (HTML and PDF formats). It
 
 ## Features
 
-- Automatically clone GIT projects for you.
-- Have an overview of several projects (git or npm).
-- Ability to visualize changes over weeks.
+- Automatically clones and scans Git repositories using **scanner.cwd**.
+- Provides a visual overview of **security threats** and quality issues for multiple Git or NPM packages.
+- Facilitates visualization of changes over time.
+- Generates reports in both **HTML** and **PDF** formats.
 
 ## Requirements
 
@@ -39,14 +40,17 @@ $ npm i
 $ npm link
 ```
 
-Then the nodesecure/report binary will be available in your terminal.
+After installation, the `nreport` binary will be available in your terminal.
 
 ```bash
 nreport initialize
 nreport execute
 ```
 
-## Environment Variables
+> [!CAUTION]
+> Please read the following sections to understand how to properly set up the configuration. The **initialize** command generates an incomplete basic template.
+
+### Environment Variables
 
 To configure the project you have to register (set) environment variables on your system. These variables can be set in a **.env** file (that file must be created at the root of the project).
 
@@ -57,11 +61,12 @@ NODE_SECURE_TOKEN=
 
 To known how to get a **GIT_TOKEN** or how to register environment variables follow our [Governance Guide](https://github.com/SlimIO/Governance/blob/master/docs/tooling.md#environment-variables).
 
+> [!NOTE]
 > For NODE_SECURE_TOKEN, please check the [NodeSecure CLI documentation](https://github.com/NodeSecure/cli?tab=readme-ov-file#private-registry--verdaccio).
 
-## Configuration example
+### Configuration Example (.nodesecurerc)
 
-Under the hood it use the official NodeSecure [runtime configuration](https://github.com/NodeSecure/rc).
+This uses the official NodeSecure [runtime configuration](https://github.com/NodeSecure/rc) (`@nodesecure/rc`) under the hood.
 
 ```json
 {
@@ -112,8 +117,19 @@ Under the hood it use the official NodeSecure [runtime configuration](https://gi
 }
 ```
 
-<details>
-<summary>TypeScript definition</summary>
+The theme can be either `dark` or `light`. Themes are editable in _public/css/themes_ (feel free to PR new themes if you want).
+
+> [!NOTE]
+> All D3 scale-chromatic for charts can be found [here](https://github.com/d3/d3-scale-chromatic/blob/master/README.md).
+
+## API
+
+> [!CAUTION]
+> The API is ESM only
+
+### `report(options: ReportConfiguration, payload: Scanner.Payload): Promise<Buffer>`
+
+Generates and returns a PDF Buffer based on the provided report options and scanner payload.
 
 ```ts
 /**
@@ -150,7 +166,8 @@ export interface ReportConfiguration {
      */
     organizationUrl: string;
     /**
-     * List of repositories (name are enough, no need to provide .git url or any equivalent)
+     * List of repositories
+     * name are enough, no need to provide .git URL or any equivalent
      */
     repositories: string[];
   };
@@ -184,23 +201,6 @@ export interface ReportChart {
   interpolation?: string;
 }
 ```
-
-</details>
-
----
-
-The theme can be either `dark` or `light`. Themes are editable in _public/css/themes_ (feel free to PR new themes if you want).
-
-> All D3 scale-chromatic for charts can be found [here](https://github.com/d3/d3-scale-chromatic/blob/master/README.md).
-
-## API
-
-> [!IMPORTANT]
-> The API is ESM only
-
-### `report(reportOptions, scannerPayload): Promise<Buffer>`
-
-Returns a PDF Buffer based on the givens report options and scanner payload.
 
 ## Contributors ✨
 
