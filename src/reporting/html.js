@@ -10,7 +10,7 @@ import kleur from "kleur";
 import { taggedString } from "@nodesecure/utils";
 
 // Import Internal Dependencies
-import { cleanReportName } from "../utils.js";
+import * as utils from "../utils/index.js";
 import * as CONSTANTS from "../constants.js";
 import * as localStorage from "../localStorage.js";
 
@@ -50,7 +50,10 @@ export async function HTML(data, reportOptions = null) {
   const HTMLReport = kTemplateGenerator(templatePayload)
     .concat(`\n<script>\ndocument.addEventListener("DOMContentLoaded", () => {\n${charts.join("\n")}\n});\n</script>`);
 
-  const reportHTMLPath = path.join(CONSTANTS.DIRS.REPORTS, cleanReportName(config.title, ".html"));
+  const reportHTMLPath = path.join(
+    CONSTANTS.DIRS.REPORTS,
+    utils.cleanReportName(config.title, ".html")
+  );
   await fs.writeFile(reportHTMLPath, HTMLReport);
 
   spinner.text = kleur.yellow().bold("Bundling assets with esbuild");

@@ -2,7 +2,7 @@
 import kleur from "kleur";
 
 // Import Internal Dependencies
-import * as utils from "../utils.js";
+import * as utils from "../utils/index.js";
 import * as localStorage from "../localStorage.js";
 
 // Import Reporters
