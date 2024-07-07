@@ -1,27 +1,15 @@
+// Import Node.js Dependencies
+import path from "node:path";
+
 // Import Third-party Dependencies
 import kleur from "kleur";
 
 // Import Internal Dependencies
-import { cloneGITRepository } from "../utils.js";
 import { buildStatsFromNsecurePayloads } from "./extractScannerData.js";
 import * as scanner from "./scanner.js";
 import * as localStorage from "../localStorage.js";
-import * as utils from "../utils.js";
-
-function formatNpmPackages(organizationPrefix, packages) {
-  if (organizationPrefix === "") {
-    return packages;
-  }
-
-  return packages.map((pkg) => {
-    // in case the user has already added the organization prefix
-    if (pkg.startsWith(organizationPrefix)) {
-      return pkg;
-    }
-
-    return `${organizationPrefix}/${pkg}`;
-  });
-}
+import * as utils from "../utils/index.js";
+import * as CONSTANTS from "../constants.js";
 
 export async function fetchPackagesAndRepositoriesData() {
   const config = localStorage.getConfig().report;
@@ -35,11 +23,21 @@ export async function fetchPackagesAndRepositoriesData() {
   }
 
   const pkgStats = fetchNpm ?
-    await fetchPackagesStats(formatNpmPackages(config.npm.organizationPrefix, config.npm.packages)) : null;
+    await fetchPackagesStats(
+      utils.formatNpmPackages(
+        config.npm.organizationPrefix,
+        config.npm.packages
+      )
+    ) :
+    null;
 
   const { repositories, organizationUrl } = config.git;
   const repoStats = fetchGit ?
-    await fetchRepositoriesStats(repositories, organizationUrl) : null;
+    await fetchRepositoriesStats(
+      repositories,
+      organizationUrl
+    ) :
+    null;
 
   return { pkgStats, repoStats };
 }
@@ -66,7 +64,12 @@ async function fetchRepositoriesStats(repositories, organizationUrl) {
     },
     async(spinner) => {
       const repos = await Promise.all(
-        repositories.map((repositoryName) => cloneGITRepository(repositoryName, organizationUrl))
+        repositories.map((repositoryName) => {
+          return utils.cloneGITRepository(
+            path.join(CONSTANTS.DIRS.CLONES, repositoryName),
+            `${organizationUrl}/${repositoryName}.git`
+          );
+        })
       );
       spinner.text = "Fetching repositories metadata on the NPM Registry";
 

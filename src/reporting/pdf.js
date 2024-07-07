@@ -6,21 +6,24 @@ import puppeteer from "puppeteer";
 
 // Import Internal Dependencies
 import * as CONSTANTS from "../constants.js";
-import * as utils from "../utils.js";
+import * as utils from "../utils/index.js";
 
-export async function PDF(reportHTMLPath, options) {
+export async function PDF(
+  reportHTMLPath,
+  options
+) {
   const { title, saveOnDisk = true } = options;
 
   const browser = await puppeteer.launch({
     args: ["--no-sandbox", "--disable-setuid-sandbox"]
   });
+  const page = await browser.newPage();
 
   try {
-    const page = await browser.newPage();
     await page.emulateMediaType("print");
     await page.goto(`file:${reportHTMLPath}`, {
       waitUntil: "networkidle0",
-      timeout: 60_000
+      timeout: 20_000
     });
 
     const pdfBuffer = await page.pdf({
@@ -35,6 +38,7 @@ export async function PDF(reportHTMLPath, options) {
     return saveOnDisk ? path : pdfBuffer;
   }
   finally {
+    await page.close();
     await browser.close();
   }
 }

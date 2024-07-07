@@ -74,6 +74,8 @@ This uses the official NodeSecure [runtime configuration](https://github.com/Nod
   "i18n": "english",
   "strategy": "npm",
   "report": {
+    "title": "NodeSecure Security Report",
+    "logoUrl": "https://avatars.githubusercontent.com/u/85318671?s=200&v=4",
     "theme": "light",
     "includeTransitiveInternal": false,
     "reporters": ["html", "pdf"],
@@ -83,7 +85,9 @@ This uses the official NodeSecure [runtime configuration](https://github.com/Nod
     },
     "git": {
       "organizationUrl": "https://github.com/NodeSecure",
-      "repositories": []
+      "repositories": [
+        "vulnera"
+      ]
     },
     "charts": [
       {
@@ -110,9 +114,7 @@ This uses the official NodeSecure [runtime configuration](https://github.com/Nod
         "type": "horizontalBar",
         "interpolation": "d3.interpolateSinebow"
       }
-    ],
-    "title": "NodeSecure Security Report",
-    "logoUrl": "https://avatars.githubusercontent.com/u/85318671?s=200&v=4"
+    ]
   }
 }
 ```
