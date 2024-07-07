@@ -1,0 +1,763 @@
+{
+  "report_theme": "light",
+  "report_title": "nodesecure",
+  "report_logo": "https://avatars0.githubusercontent.com/u/29552883?s=200&v=4",
+  "report_date": "08 Jul 2024, 01:17:54",
+  "npm_stats": {
+    "size": {
+      "all": "6.99 MB",
+      "internal": "158.24 KB",
+      "external": "6.83 MB"
+    },
+    "deps": {
+      "transitive": {
+        "is-svg@4.4.0": {
+          "links": {
+            "npm": "https://www.npmjs.com/package/is-svg/v/4.4.0",
+            "homepage": "https://github.com/sindresorhus/is-svg#readme",
+            "repository": "https://github.com/sindresorhus/is-svg"
+          }
+        },
+        "string-width@5.1.2": {
+          "links": {
+            "npm": "https://www.npmjs.com/package/string-width/v/5.1.2",
+            "homepage": "https://github.com/sindresorhus/string-width#readme",
+            "repository": "https://github.com/sindresorhus/string-width"
+          }
+        }
+      },
+      "node": {
+        "path": {
+          "visualizerUrl": "https://nodejs.org/dist/latest/docs/api/path.html"
+        },
+        "fs": {
+          "visualizerUrl": "https://nodejs.org/dist/latest/docs/api/fs.html"
+        },
+        "stream": {
+          "visualizerUrl": "https://nodejs.org/dist/latest/docs/api/stream.html"
+        },
+        "util": {
+          "visualizerUrl": "https://nodejs.org/dist/latest/docs/api/util.html"
+        },
+        "events": {
+          "visualizerUrl": "https://nodejs.org/dist/latest/docs/api/events.html"
+        },
+        "node:path": {
+          "visualizerUrl": "https://nodejs.org/dist/latest/docs/api/path.html"
+        },
+        "node:url": {
+          "visualizerUrl": "https://nodejs.org/dist/latest/docs/api/url.html"
+        },
+        "node:assert": {
+          "visualizerUrl": "https://nodejs.org/dist/latest/docs/api/assert.html"
+        },
+        "repl": {
+          "visualizerUrl": "https://nodejs.org/dist/latest/docs/api/repl.html"
+        }
+      }
+    },
+    "licenses": {
+      "Unknown": 0,
+      "MIT": 19,
+      "ISC": 1
+    },
+    "flags": {
+      "hasManyPublishers": 19,
+      "hasMinifiedCode": 3,
+      "hasWarnings": 9,
+      "hasMissingOrUnusedDependency": 1,
+      "hasIndirectDependencies": 5,
+      "isOutdated": 4,
+      "isDead": 1
+    },
+    "flagsList": {
+      "hasExternalCapacity": {
+        "emoji": "🌍",
+        "title": "hasExternalCapacity",
+        "tooltipDescription": "The package uses at least one Node.js core dependency capable to establish communication outside of localhost"
+      },
+      "hasWarnings": {
+        "emoji": "🚧",
+        "title": "hasWarnings",
+        "tooltipDescription": "The AST analysis has detected warnings (suspect import, unsafe regex ..)"
+      },
+      "hasNativeCode": {
+        "emoji": "🐲",
+        "title": "hasNativeCode",
+        "tooltipDescription": "The package uses and runs C++ or Rust N-API code"
+      },
+      "hasCustomResolver": {
+        "emoji": "💎",
+        "title": "hasCustomResolver",
+        "tooltipDescription": "The package has dependencies who do not resolve on a registry (git, file, ssh etc..)"
+      },
+      "hasNoLicense": {
+        "emoji": "📜",
+        "title": "hasNoLicense",
+        "tooltipDescription": "The package does not have a license"
+      },
+      "hasMultipleLicenses": {
+        "emoji": "📚",
+        "title": "hasMultipleLicenses",
+        "tooltipDescription": "The package has licenses in multiple locations (files or manifest)"
+      },
+      "hasMinifiedCode": {
+        "emoji": "🔬",
+        "title": "hasMinifiedCode",
+        "tooltipDescription": "The package has minified and/or uglified files"
+      },
+      "isDeprecated": {
+        "emoji": "⛔️",
+        "title": "isDeprecated",
+        "tooltipDescription": "The package has been deprecated on NPM"
+      },
+      "hasManyPublishers": {
+        "emoji": "👥",
+        "title": "hasManyPublishers",
+        "tooltipDescription": "The package has several publishers"
+      },
+      "hasScript": {
+        "emoji": "📦",
+        "title": "hasScript",
+        "tooltipDescription": "The package has `post` and/or `pre` (un)install npm script"
+      },
+      "hasIndirectDependencies": {
+        "emoji": "🌲",
+        "title": "hasIndirectDependencies",
+        "tooltipDescription": "The package has indirect dependencies"
+      },
+      "isGit": {
+        "emoji": "☁️",
+        "title": "isGit",
+        "tooltipDescription": "The package (project) is a git repository"
+      },
+      "hasVulnerabilities": {
+        "emoji": "🚨",
+        "title": "hasVulnerabilities",
+        "tooltipDescription": "The package has one or many vulnerabilities"
+      },
+      "hasMissingOrUnusedDependency": {
+        "emoji": "👀",
+        "title": "hasMissingOrUnusedDependency",
+        "tooltipDescription": "A dependency is missing in package.json or a dependency is installed but never used"
+      },
+      "isDead": {
+        "emoji": "💀",
+        "title": "isDead",
+        "tooltipDescription": "The dependency has not received update from at least one year"
+      },
+      "hasBannedFile": {
+        "emoji": "⚔️",
+        "title": "hasBannedFile",
+        "tooltipDescription": "The project has at least one sensitive file"
+      },
+      "isOutdated": {
+        "emoji": "⌚️",
+        "title": "isOutdated",
+        "tooltipDescription": "The current package version is not equal to the package latest version"
+      },
+      "isDuplicated": {
+        "emoji": "🎭",
+        "title": "isDuplicated",
+        "tooltipDescription": "The package is also used somewhere else in the dependency tree but with a different version"
+      }
+    },
+    "extensions": {
+      ".js": 19,
+      ".json": 20,
+      ".md": 20,
+      ".ts": 13,
+      ".cjs": 2,
+      ".map": 2,
+      ".cts": 1,
+      ".mjs": 1,
+      ".yml": 2,
+      ".txt": 1
+    },
+    "warnings": {
+      "obfuscated-code": 10,
+      "unsafe-regex": 40,
+      "zero-semver": 2
+    },
+    "authors": {
+      "martin@kolarik.sk": 2,
+      "gentilhomme.thomas@gmail.com": 8,
+      "gabriel.vergnaud@gmail.com": 1,
+      "huochunpeng@gmail.com": 1,
+      "weiran.zsd@outlook.com": 1,
+      "klechon123@gmail.com": 1,
+      "ts-npm-types@microsoft.com": 1,
+      "richard.a.harris@gmail.com": 1,
+      "dmitry.soshnikov@gmail.com": 1,
+      "davisjam@vt.edu": 2,
+      "hello@miguelmota.com": 2,
+      "amitgupta.gwl@gmail.com": 2,
+      "sindresorhus@gmail.com": 8,
+      "pierredemailly.pro@gmail.com": 3,
+      "coulon_antoine@outlook.fr": 3,
+      "vincent.dhennin@viacesi.fr": 3,
+      "gorez.tony@gmail.com": 3,
+      "josh@junon.me": 2,
+      "mathias@qiwi.be": 1,
+      "node-team-npm+wombot@google.com": 1,
+      "komagata@gmail.com": 1
+    },
+    "packages": {
+      "is-minified-code": {
+        "isThird": true,
+        "versions": {},
+        "fullName": "is-minified-code",
+        "isGiven": false,
+        "flags": {
+          "hasManyPublishers": {
+            "emoji": "👥",
+            "title": "hasManyPublishers",
+            "tooltipDescription": "The package has several publishers"
+          }
+        },
+        "2.0.0": {
+          "hasIndirectDependencies": false
+        },
+        "links": {
+          "npm": "https://www.npmjs.com/package/is-minified-code/v/2.0.0",
+          "homepage": "https://github.com/MartinKolarik/is-minified-code/",
+          "repository": "https://github.com/MartinKolarik/is-minified-code"
+        }
+      },
+      "frequency-set": {
+        "isThird": true,
+        "versions": {},
+        "fullName": "frequency-set",
+        "isGiven": false,
+        "flags": {
+          "hasManyPublishers": {
+            "emoji": "👥",
+            "title": "hasManyPublishers",
+            "tooltipDescription": "The package has several publishers"
+          }
+        },
+        "1.0.2": {
+          "hasIndirectDependencies": false
+        },
+        "links": {
+          "npm": "https://www.npmjs.com/package/frequency-set/v/1.0.2",
+          "homepage": "https://github.com/fraxken/FrequencySet#readme",
+          "repository": "https://github.com/fraxken/FrequencySet"
+        }
+      },
+      "ts-pattern": {
+        "isThird": true,
+        "versions": {},
+        "fullName": "ts-pattern",
+        "isGiven": false,
+        "flags": {
+          "hasMinifiedCode": {
+            "emoji": "🔬",
+            "title": "hasMinifiedCode",
+            "tooltipDescription": "The package has minified and/or uglified files"
+          },
+          "hasManyPublishers": {
+            "emoji": "👥",
+            "title": "hasManyPublishers",
+            "tooltipDescription": "The package has several publishers"
+          }
+        },
+        "5.2.0": {
+          "hasIndirectDependencies": false
+        },
+        "links": {
+          "npm": "https://www.npmjs.com/package/ts-pattern/v/5.2.0",
+          "homepage": "https://github.com/gvergnaud/ts-pattern#readme",
+          "repository": "https://github.com/gvergnaud/ts-pattern"
+        }
+      },
+      "meriyah": {
+        "isThird": true,
+        "versions": {},
+        "fullName": "meriyah",
+        "isGiven": false,
+        "flags": {
+          "hasMinifiedCode": {
+            "emoji": "🔬",
+            "title": "hasMinifiedCode",
+            "tooltipDescription": "The package has minified and/or uglified files"
+          },
+          "hasWarnings": {
+            "emoji": "🚧",
+            "title": "hasWarnings",
+            "tooltipDescription": "The AST analysis has detected warnings (suspect import, unsafe regex ..)"
+          },
+          "hasManyPublishers": {
+            "emoji": "👥",
+            "title": "hasManyPublishers",
+            "tooltipDescription": "The package has several publishers"
+          }
+        },
+        "4.5.0": {
+          "hasIndirectDependencies": false
+        },
+        "links": {
+          "npm": "https://www.npmjs.com/package/meriyah/v/4.5.0",
+          "homepage": "https://github.com/meriyah/meriyah",
+          "repository": "https://github.com/meriyah/meriyah"
+        }
+      },
+      "@types/estree": {
+        "isThird": true,
+        "versions": {},
+        "fullName": "@types/estree",
+        "isGiven": false,
+        "flags": {},
+        "1.0.5": {
+          "hasIndirectDependencies": false
+        },
+        "links": {
+          "npm": "https://www.npmjs.com/package/@types/estree/v/1.0.5",
+          "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/estree",
+          "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped"
+        }
+      },
+      "estree-walker": {
+        "isThird": true,
+        "versions": {},
+        "fullName": "estree-walker",
+        "isGiven": false,
+        "flags": {
+          "hasManyPublishers": {
+            "emoji": "👥",
+            "title": "hasManyPublishers",
+            "tooltipDescription": "The package has several publishers"
+          }
+        },
+        "3.0.3": {
+          "hasIndirectDependencies": false
+        },
+        "links": {
+          "npm": "https://www.npmjs.com/package/estree-walker/v/3.0.3",
+          "homepage": "https://github.com/Rich-Harris/estree-walker#readme",
+          "repository": "https://github.com/Rich-Harris/estree-walker"
+        }
+      },
+      "regexp-tree": {
+        "isThird": true,
+        "versions": {},
+        "fullName": "regexp-tree",
+        "isGiven": false,
+        "flags": {
+          "hasWarnings": {
+            "emoji": "🚧",
+            "title": "hasWarnings",
+            "tooltipDescription": "The AST analysis has detected warnings (suspect import, unsafe regex ..)"
+          },
+          "hasManyPublishers": {
+            "emoji": "👥",
+            "title": "hasManyPublishers",
+            "tooltipDescription": "The package has several publishers"
+          }
+        },
+        "0.1.27": {
+          "hasIndirectDependencies": false
+        },
+        "links": {
+          "npm": "https://www.npmjs.com/package/regexp-tree/v/0.1.27",
+          "homepage": "https://github.com/DmitrySoshnikov/regexp-tree",
+          "repository": "https://github.com/DmitrySoshnikov/regexp-tree"
+        }
+      },
+      "safe-regex": {
+        "isThird": true,
+        "versions": {},
+        "fullName": "safe-regex",
+        "isGiven": false,
+        "flags": {
+          "hasWarnings": {
+            "emoji": "🚧",
+            "title": "hasWarnings",
+            "tooltipDescription": "The AST analysis has detected warnings (suspect import, unsafe regex ..)"
+          },
+          "hasManyPublishers": {
+            "emoji": "👥",
+            "title": "hasManyPublishers",
+            "tooltipDescription": "The package has several publishers"
+          }
+        },
+        "2.1.1": {
+          "hasIndirectDependencies": false
+        },
+        "links": {
+          "npm": "https://www.npmjs.com/package/safe-regex/v/2.1.1",
+          "homepage": "https://github.com/davisjam/safe-regex",
+          "repository": "https://github.com/davisjam/safe-regex"
+        }
+      },
+      "is-base64": {
+        "isThird": true,
+        "versions": {},
+        "fullName": "is-base64",
+        "isGiven": false,
+        "flags": {
+          "hasMinifiedCode": {
+            "emoji": "🔬",
+            "title": "hasMinifiedCode",
+            "tooltipDescription": "The package has minified and/or uglified files"
+          },
+          "hasManyPublishers": {
+            "emoji": "👥",
+            "title": "hasManyPublishers",
+            "tooltipDescription": "The package has several publishers"
+          }
+        },
+        "1.1.0": {
+          "hasIndirectDependencies": false
+        },
+        "links": {
+          "npm": "https://www.npmjs.com/package/is-base64/v/1.1.0",
+          "homepage": "https://github.com/miguelmota/is-base64",
+          "repository": "https://github.com/miguelmota/is-base64"
+        }
+      },
+      "strnum": {
+        "isThird": true,
+        "versions": {},
+        "fullName": "strnum",
+        "isGiven": false,
+        "flags": {
+          "hasWarnings": {
+            "emoji": "🚧",
+            "title": "hasWarnings",
+            "tooltipDescription": "The AST analysis has detected warnings (suspect import, unsafe regex ..)"
+          },
+          "hasManyPublishers": {
+            "emoji": "👥",
+            "title": "hasManyPublishers",
+            "tooltipDescription": "The package has several publishers"
+          }
+        },
+        "1.0.5": {
+          "hasIndirectDependencies": false
+        },
+        "links": {
+          "npm": "https://www.npmjs.com/package/strnum/v/1.0.5",
+          "homepage": "https://github.com/NaturalIntelligence/strnum#readme",
+          "repository": "https://github.com/NaturalIntelligence/strnum"
+        }
+      },
+      "fast-xml-parser": {
+        "isThird": true,
+        "versions": {},
+        "fullName": "fast-xml-parser",
+        "isGiven": false,
+        "flags": {
+          "hasMissingOrUnusedDependency": {
+            "emoji": "👀",
+            "title": "hasMissingOrUnusedDependency",
+            "tooltipDescription": "A dependency is missing in package.json or a dependency is installed but never used"
+          },
+          "hasWarnings": {
+            "emoji": "🚧",
+            "title": "hasWarnings",
+            "tooltipDescription": "The AST analysis has detected warnings (suspect import, unsafe regex ..)"
+          },
+          "hasManyPublishers": {
+            "emoji": "👥",
+            "title": "hasManyPublishers",
+            "tooltipDescription": "The package has several publishers"
+          }
+        },
+        "4.4.0": {
+          "hasIndirectDependencies": false
+        },
+        "links": {
+          "npm": "https://www.npmjs.com/package/fast-xml-parser/v/4.4.0",
+          "homepage": "https://github.com/NaturalIntelligence/fast-xml-parser#readme",
+          "repository": "https://github.com/NaturalIntelligence/fast-xml-parser"
+        }
+      },
+      "is-svg": {
+        "isThird": true,
+        "versions": {},
+        "fullName": "is-svg",
+        "isGiven": false,
+        "flags": {
+          "hasIndirectDependencies": {
+            "emoji": "🌲",
+            "title": "hasIndirectDependencies",
+            "tooltipDescription": "The package has indirect dependencies"
+          },
+          "isOutdated": {
+            "emoji": "⌚️",
+            "title": "isOutdated",
+            "tooltipDescription": "The current package version is not equal to the package latest version"
+          },
+          "hasManyPublishers": {
+            "emoji": "👥",
+            "title": "hasManyPublishers",
+            "tooltipDescription": "The package has several publishers"
+          }
+        },
+        "4.4.0": {
+          "hasIndirectDependencies": true
+        },
+        "links": {
+          "npm": "https://www.npmjs.com/package/is-svg/v/4.4.0",
+          "homepage": "https://github.com/sindresorhus/is-svg#readme",
+          "repository": "https://github.com/sindresorhus/is-svg"
+        }
+      },
+      "@nodesecure/sec-literal": {
+        "isThird": false,
+        "versions": {},
+        "fullName": "@nodesecure/sec-literal",
+        "isGiven": false,
+        "flags": {
+          "hasIndirectDependencies": {
+            "emoji": "🌲",
+            "title": "hasIndirectDependencies",
+            "tooltipDescription": "The package has indirect dependencies"
+          },
+          "hasWarnings": {
+            "emoji": "🚧",
+            "title": "hasWarnings",
+            "tooltipDescription": "The AST analysis has detected warnings (suspect import, unsafe regex ..)"
+          },
+          "isDead": {
+            "emoji": "💀",
+            "title": "isDead",
+            "tooltipDescription": "The dependency has not received update from at least one year"
+          },
+          "hasManyPublishers": {
+            "emoji": "👥",
+            "title": "hasManyPublishers",
+            "tooltipDescription": "The package has several publishers"
+          }
+        },
+        "1.2.0": {
+          "hasIndirectDependencies": true
+        },
+        "links": {
+          "npm": "https://www.npmjs.com/package/@nodesecure/sec-literal/v/1.2.0",
+          "homepage": "https://github.com/NodeSecure/sec-literal#readme",
+          "repository": "https://github.com/NodeSecure/sec-literal"
+        }
+      },
+      "ansi-regex": {
+        "isThird": true,
+        "versions": {},
+        "fullName": "ansi-regex",
+        "isGiven": false,
+        "flags": {
+          "hasManyPublishers": {
+            "emoji": "👥",
+            "title": "hasManyPublishers",
+            "tooltipDescription": "The package has several publishers"
+          }
+        },
+        "6.0.1": {
+          "hasIndirectDependencies": false
+        },
+        "links": {
+          "npm": "https://www.npmjs.com/package/ansi-regex/v/6.0.1",
+          "homepage": "https://github.com/chalk/ansi-regex#readme",
+          "repository": "https://github.com/chalk/ansi-regex"
+        }
+      },
+      "strip-ansi": {
+        "isThird": true,
+        "versions": {},
+        "fullName": "strip-ansi",
+        "isGiven": false,
+        "flags": {
+          "hasManyPublishers": {
+            "emoji": "👥",
+            "title": "hasManyPublishers",
+            "tooltipDescription": "The package has several publishers"
+          }
+        },
+        "7.1.0": {
+          "hasIndirectDependencies": false
+        },
+        "links": {
+          "npm": "https://www.npmjs.com/package/strip-ansi/v/7.1.0",
+          "homepage": "https://github.com/chalk/strip-ansi#readme",
+          "repository": "https://github.com/chalk/strip-ansi"
+        }
+      },
+      "emoji-regex": {
+        "isThird": true,
+        "versions": {},
+        "fullName": "emoji-regex",
+        "isGiven": false,
+        "flags": {
+          "isOutdated": {
+            "emoji": "⌚️",
+            "title": "isOutdated",
+            "tooltipDescription": "The current package version is not equal to the package latest version"
+          },
+          "hasWarnings": {
+            "emoji": "🚧",
+            "title": "hasWarnings",
+            "tooltipDescription": "The AST analysis has detected warnings (suspect import, unsafe regex ..)"
+          },
+          "hasManyPublishers": {
+            "emoji": "👥",
+            "title": "hasManyPublishers",
+            "tooltipDescription": "The package has several publishers"
+          }
+        },
+        "9.2.2": {
+          "hasIndirectDependencies": false
+        },
+        "links": {
+          "npm": "https://www.npmjs.com/package/emoji-regex/v/9.2.2",
+          "homepage": "https://mths.be/emoji-regex",
+          "repository": "https://github.com/mathiasbynens/emoji-regex"
+        }
+      },
+      "eastasianwidth": {
+        "isThird": true,
+        "versions": {},
+        "fullName": "eastasianwidth",
+        "isGiven": false,
+        "flags": {
+          "isOutdated": {
+            "emoji": "⌚️",
+            "title": "isOutdated",
+            "tooltipDescription": "The current package version is not equal to the package latest version"
+          },
+          "hasWarnings": {
+            "emoji": "🚧",
+            "title": "hasWarnings",
+            "tooltipDescription": "The AST analysis has detected warnings (suspect import, unsafe regex ..)"
+          },
+          "hasManyPublishers": {
+            "emoji": "👥",
+            "title": "hasManyPublishers",
+            "tooltipDescription": "The package has several publishers"
+          }
+        },
+        "0.2.0": {
+          "hasIndirectDependencies": false
+        },
+        "links": {
+          "npm": "https://www.npmjs.com/package/eastasianwidth/v/0.2.0",
+          "homepage": "https://github.com/komagata/eastasianwidth#readme",
+          "repository": "https://github.com/komagata/eastasianwidth"
+        }
+      },
+      "string-width": {
+        "isThird": true,
+        "versions": {},
+        "fullName": "string-width",
+        "isGiven": false,
+        "flags": {
+          "hasIndirectDependencies": {
+            "emoji": "🌲",
+            "title": "hasIndirectDependencies",
+            "tooltipDescription": "The package has indirect dependencies"
+          },
+          "isOutdated": {
+            "emoji": "⌚️",
+            "title": "isOutdated",
+            "tooltipDescription": "The current package version is not equal to the package latest version"
+          },
+          "hasManyPublishers": {
+            "emoji": "👥",
+            "title": "hasManyPublishers",
+            "tooltipDescription": "The package has several publishers"
+          }
+        },
+        "5.1.2": {
+          "hasIndirectDependencies": true
+        },
+        "links": {
+          "npm": "https://www.npmjs.com/package/string-width/v/5.1.2",
+          "homepage": "https://github.com/sindresorhus/string-width#readme",
+          "repository": "https://github.com/sindresorhus/string-width"
+        }
+      },
+      "@nodesecure/estree-ast-utils": {
+        "isThird": false,
+        "versions": {},
+        "fullName": "@nodesecure/estree-ast-utils",
+        "isGiven": false,
+        "flags": {
+          "hasIndirectDependencies": {
+            "emoji": "🌲",
+            "title": "hasIndirectDependencies",
+            "tooltipDescription": "The package has indirect dependencies"
+          },
+          "hasManyPublishers": {
+            "emoji": "👥",
+            "title": "hasManyPublishers",
+            "tooltipDescription": "The package has several publishers"
+          }
+        },
+        "1.4.1": {
+          "hasIndirectDependencies": true
+        },
+        "links": {
+          "npm": "https://www.npmjs.com/package/@nodesecure/estree-ast-utils/v/1.4.1",
+          "homepage": "https://github.com/NodeSecure/estree-ast-utils#readme",
+          "repository": "https://github.com/NodeSecure/estree-ast-utils"
+        }
+      },
+      "@nodesecure/js-x-ray": {
+        "isThird": false,
+        "versions": {},
+        "fullName": "@nodesecure/js-x-ray",
+        "isGiven": false,
+        "flags": {
+          "hasIndirectDependencies": {
+            "emoji": "🌲",
+            "title": "hasIndirectDependencies",
+            "tooltipDescription": "The package has indirect dependencies"
+          },
+          "hasWarnings": {
+            "emoji": "🚧",
+            "title": "hasWarnings",
+            "tooltipDescription": "The AST analysis has detected warnings (suspect import, unsafe regex ..)"
+          },
+          "hasManyPublishers": {
+            "emoji": "👥",
+            "title": "hasManyPublishers",
+            "tooltipDescription": "The package has several publishers"
+          }
+        },
+        "7.2.0": {
+          "hasIndirectDependencies": true
+        },
+        "links": {
+          "npm": "https://www.npmjs.com/package/@nodesecure/js-x-ray/v/7.2.0",
+          "homepage": "https://github.com/NodeSecure/js-x-ray#readme",
+          "repository": "https://github.com/NodeSecure/js-x-ray"
+        }
+      }
+    },
+    "packages_count": {
+      "all": 20,
+      "internal": 3,
+      "external": 17
+    },
+    "scorecards": {},
+    "showFlags": true
+  },
+  "git_stats": null,
+  "charts": [
+    {
+      "name": "Extensions",
+      "help": null
+    },
+    {
+      "name": "Licenses",
+      "help": null
+    },
+    {
+      "name": "Warnings",
+      "help": null
+    },
+    {
+      "name": "Flags",
+      "help": null
+    }
+  ]
+}

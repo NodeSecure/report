@@ -16,7 +16,9 @@
     "prepublishOnly": "pkg-ok",
     "lint": "eslint src test",
     "test-only": "glob -c \"node --test-reporter=spec --test\" \"./test/**/*.spec.js\"",
-    "test": "c8 --all --src ./src -r html npm run test-only"
+    "test": "c8 --all --src ./src -r html npm run test-only",
+    "preview:light": "node --no-warnings ./scripts/preview.js --theme light",
+    "preview:dark": "node --no-warnings ./scripts/preview.js --theme dark"
   },
   "repository": {
     "type": "git",
@@ -59,6 +61,7 @@
     "c8": "^10.1.2",
     "eslint": "^9.6.0",
     "glob": "^10.4.3",
+    "open": "^10.1.0",
     "pkg-ok": "^3.0.0"
   },
   "engines": {

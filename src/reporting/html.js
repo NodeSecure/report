@@ -1,116 +1,118 @@
 // Import Node.js Dependencies
 import path from "node:path";
-import { readdirSync, readFileSync } from "node:fs";
-import fs from "node:fs/promises";
+import { readdirSync, promises as fs } from "node:fs";
 
 // Import Third-party Dependencies
 import esbuild from "esbuild";
-import compile from "zup";
 import kleur from "kleur";
-import { taggedString } from "@nodesecure/utils";
 
 // Import Internal Dependencies
 import * as utils from "../utils/index.js";
 import * as CONSTANTS from "../constants.js";
 import * as localStorage from "../localStorage.js";
 
+import { HTMLTemplateGenerator } from "./template.js";
+
 // CONSTANTS
-const kChartTemplate = taggedString`\tcreateChart("${0}", "${4}", { labels: [${1}], interpolate: ${3}, data: [${2}] });`;
 const kDateFormatter = Intl.DateTimeFormat("en-GB", {
-  day: "2-digit", month: "short", year: "numeric", hour: "numeric", minute: "numeric", second: "numeric"
+  day: "2-digit",
+  month: "short",
+  year: "numeric",
+  hour: "numeric",
+  minute: "numeric",
+  second: "numeric"
 });
+
+const kStaticESBuildConfig = {
+  allowOverwrite: true,
+  loader: {
+    ".jpg": "file",
+    ".png": "file",
+    ".woff": "file",
+    ".woff2": "file",
+    ".eot": "file",
+    ".ttf": "file",
+    ".svg": "file"
+  },
+  platform: "browser",
+  bundle: true,
+  sourcemap: true,
+  treeShaking: true,
+  logLevel: "silent"
+};
+
 const kImagesDir = path.join(CONSTANTS.DIRS.PUBLIC, "img");
-const kOutDir = path.join(process.cwd(), "dist");
 const kAvailableThemes = new Set(
-  readdirSync(path.join(CONSTANTS.DIRS.PUBLIC, "css", "themes"))
+  readdirSync(CONSTANTS.DIRS.THEMES)
     .map((file) => path.basename(file, ".css"))
 );
-const kHTMLTemplate = readFileSync(path.join(CONSTANTS.DIRS.VIEWS, "template.html"), "utf8");
-const kTemplateGenerator = compile(kHTMLTemplate);
 
-export async function HTML(data, reportOptions = null) {
+export async function HTML(
+  data,
+  reportOptions = null,
+  reportOutputLocation = CONSTANTS.DIRS.REPORTS
+) {
   const { pkgStats, repoStats, spinner } = data;
 
-  spinner.text = "Building view with zup";
   const config = reportOptions ?? localStorage.getConfig().report;
-
-  const templatePayload = {
-    report_theme: kAvailableThemes.has(config.theme) ? config.theme : "dark",
-    report_title: config.title,
-    report_logo: config.logoUrl,
-    report_date: kDateFormatter.format(new Date()),
-    npm_stats: pkgStats,
-    git_stats: repoStats,
-    charts: config.charts.filter((chart) => chart.display).map(({ name, help = null }) => {
-      return { name, help };
-    })
-  };
-
-  const charts = [...generateChartArray(pkgStats, repoStats, config)];
-  const HTMLReport = kTemplateGenerator(templatePayload)
-    .concat(`\n<script>\ndocument.addEventListener("DOMContentLoaded", () => {\n${charts.join("\n")}\n});\n</script>`);
-
-  const reportHTMLPath = path.join(
-    CONSTANTS.DIRS.REPORTS,
+  const assetsOutputLocation = path.join(reportOutputLocation, "..", "dist");
+  const reportTheme = kAvailableThemes.has(config.theme) ? config.theme : "dark";
+  const reportFinalOutputLocation = path.join(
+    reportOutputLocation,
     utils.cleanReportName(config.title, ".html")
   );
-  await fs.writeFile(reportHTMLPath, HTMLReport);
+
+  spinner.text = "Building view with zup";
+  const charts = config.charts
+    .flatMap(({ display, name, help = null }) => display ? [{ name, help }] : []);
+
+  const HTMLReport = new HTMLTemplateGenerator(
+    {
+      report_theme: reportTheme,
+      report_title: config.title,
+      report_logo: config.logoUrl,
+      report_date: kDateFormatter.format(new Date()),
+      npm_stats: pkgStats,
+      git_stats: repoStats,
+      charts
+    }
+  ).render();
+
+  await fs.writeFile(
+    reportFinalOutputLocation,
+    HTMLReport
+  );
 
   spinner.text = kleur.yellow().bold("Bundling assets with esbuild");
+  await buildFrontAssets(
+    assetsOutputLocation,
+    { theme: reportTheme }
+  );
+
+  return reportFinalOutputLocation;
+}
+
+export async function buildFrontAssets(
+  outdir,
+  options = {}
+) {
+  const { theme = "light" } = options;
+
   await esbuild.build({
-    allowOverwrite: true,
+    ...kStaticESBuildConfig,
     entryPoints: [
       path.join(CONSTANTS.DIRS.PUBLIC, "scripts", "main.js"),
       path.join(CONSTANTS.DIRS.PUBLIC, "css", "style.css"),
-      path.join(CONSTANTS.DIRS.PUBLIC, "css", "themes", `${templatePayload.report_theme}.css`)
+      path.join(CONSTANTS.DIRS.PUBLIC, "css", "themes", `${theme}.css`)
     ],
-    loader: {
-      ".jpg": "file",
-      ".png": "file",
-      ".woff": "file",
-      ".woff2": "file",
-      ".eot": "file",
-      ".ttf": "file",
-      ".svg": "file"
-    },
-    platform: "browser",
-    bundle: true,
-    sourcemap: true,
-    treeShaking: true,
-    outdir: kOutDir,
-    logLevel: "silent"
+    outdir,
   });
+
   const imagesFiles = await fs.readdir(kImagesDir);
   await Promise.all([
     ...imagesFiles.map((name) => fs.copyFile(
       path.join(kImagesDir, name),
-      path.join(kOutDir, name)
+      path.join(outdir, name)
     ))
   ]);
-
-  return reportHTMLPath;
-}
-
-// eslint-disable-next-line max-params
-function toChart(baliseName, data, interpolateName, type = "bar") {
-  const graphLabels = Object.keys(data).map((key) => `"${key}"`).join(",");
-
-  return kChartTemplate(baliseName, graphLabels, Object.values(data).join(","), interpolateName, type);
-}
-
-function* generateChartArray(pkgStats, repoStats, config) {
-  const displayableCharts = config.charts.filter((chart) => chart.display);
-
-  if (pkgStats !== null) {
-    for (const chart of displayableCharts) {
-      const name = chart.name.toLowerCase();
-      yield toChart(`npm_${name}_canvas`, pkgStats[name], chart.interpolation, chart.type);
-    }
-  }
-  if (repoStats !== null) {
-    for (const chart of displayableCharts) {
-      const name = chart.name.toLowerCase();
-      yield toChart(`git_${name}_canvas`, repoStats[name], chart.interpolation, chart.type);
-    }
-  }
 }

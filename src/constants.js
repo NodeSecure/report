@@ -12,6 +12,7 @@ export const DIRS = Object.freeze({
   JSON: path.join(rc.homedir(), "json"),
   CLONES: path.join(rc.homedir(), "clones"),
   PUBLIC: path.join(__dirname, "..", "public"),
+  THEMES: path.join(__dirname, "..", "public", "css", "themes"),
   VIEWS: path.join(__dirname, "..", "views"),
   REPORTS: path.join(process.cwd(), "reports")
 });
