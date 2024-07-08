@@ -22,7 +22,7 @@ describe("cloneGITRepository", () => {
 
       assert.strictEqual(dir, dest);
       const files = (await fs.readdir(dest, { withFileTypes: true }))
-        .flatMap((dirent) => dirent.isFile() ? [dirent.name] : []);
+        .flatMap((dirent) => (dirent.isFile() ? [dirent.name] : []));
 
       assert.ok(files.includes("CODE_OF_CONDUCT.md"));
       assert.ok(files.includes("README.md"));

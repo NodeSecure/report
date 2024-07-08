@@ -64,7 +64,7 @@ export async function HTML(
 
   spinner.text = "Building view with zup";
   const charts = config.charts
-    .flatMap(({ display, name, help = null }) => display ? [{ name, help }] : []);
+    .flatMap(({ display, name, help = null }) => (display ? [{ name, help }] : []));
 
   const HTMLReport = new HTMLTemplateGenerator(
     {
@@ -105,7 +105,7 @@ export async function buildFrontAssets(
       path.join(CONSTANTS.DIRS.PUBLIC, "css", "style.css"),
       path.join(CONSTANTS.DIRS.PUBLIC, "css", "themes", `${theme}.css`)
     ],
-    outdir,
+    outdir
   });
 
   const imagesFiles = await fs.readdir(kImagesDir);

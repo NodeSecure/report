@@ -64,12 +64,10 @@ async function fetchRepositoriesStats(repositories, organizationUrl) {
     },
     async(spinner) => {
       const repos = await Promise.all(
-        repositories.map((repositoryName) => {
-          return utils.cloneGITRepository(
-            path.join(CONSTANTS.DIRS.CLONES, repositoryName),
-            `${organizationUrl}/${repositoryName}.git`
-          );
-        })
+        repositories.map((repositoryName) => utils.cloneGITRepository(
+          path.join(CONSTANTS.DIRS.CLONES, repositoryName),
+          `${organizationUrl}/${repositoryName}.git`
+        ))
       );
       spinner.text = "Fetching repositories metadata on the NPM Registry";
 
