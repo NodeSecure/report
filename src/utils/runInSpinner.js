@@ -6,9 +6,9 @@ export async function runInSpinner(
   options,
   asyncHandler
 ) {
-  const { title, start = void 0 } = options;
+  const { title, verbose = true, start = void 0 } = options;
 
-  const spinner = new Spinner()
+  const spinner = new Spinner({ verbose })
     .start(start, { withPrefix: `${kleur.gray().bold(title)} - ` });
 
   try {

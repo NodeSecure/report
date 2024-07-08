@@ -204,6 +204,15 @@ export interface ReportChart {
 }
 ```
 
+## Scripts
+
+You can generate a preview of a report using the following NPM scripts
+
+```bash
+$ npm run preview:light
+$ npm run preview:dark
+```
+
 ## Contributors ✨
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->

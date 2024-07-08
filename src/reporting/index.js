@@ -9,9 +9,13 @@ import * as localStorage from "../localStorage.js";
 import { HTML } from "./html.js";
 import { PDF } from "./pdf.js";
 
-export async function proceed(data) {
+export async function proceed(
+  data
+) {
   const reportHTMLPath = await utils.runInSpinner(
-    { title: `[Reporter: ${kleur.yellow().bold("HTML")}]` },
+    {
+      title: `[Reporter: ${kleur.yellow().bold("HTML")}]`
+    },
     async(spinner) => HTML({ ...data, spinner })
   );
 
