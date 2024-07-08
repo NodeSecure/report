@@ -7,11 +7,12 @@ import { HTML, PDF } from "../reporting/index.js";
 import * as CONSTANTS from "../constants.js";
 
 export async function report(
+  scannerPayload,
   reportOptions,
-  scannerPayload
+  reportOutputLocation = CONSTANTS.DIRS.REPORTS,
 ) {
   await fs.mkdir(
-    CONSTANTS.DIRS.REPORTS,
+    reportOutputLocation,
     { recursive: true }
   );
 
@@ -19,13 +20,16 @@ export async function report(
     isJson: true,
     reportOptions
   });
-  const fakeSpinner = Object.create(null);
 
-  const reportHTMLPath = await HTML({
-    pkgStats,
-    repoStats: null,
-    spinner: fakeSpinner
-  }, reportOptions);
+  const reportHTMLPath = await HTML(
+    {
+      pkgStats,
+      repoStats: null,
+      spinner: Object.create(null)
+    },
+    reportOptions,
+    reportOutputLocation
+  );
 
   return PDF(reportHTMLPath, {
     title: reportOptions.title,
