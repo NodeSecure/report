@@ -12,10 +12,9 @@ export function formatNpmPackages(
     return packages;
   }
 
-  return packages.map((pkg) => {
-    // in case the user has already added the organization prefix
-    return pkg.startsWith(organizationPrefix) ?
-      pkg :
-      `${organizationPrefix}/${pkg}`;
-  });
+  // in case the user has already added the organization prefix
+  return packages.map((pkg) => (pkg.startsWith(organizationPrefix) ?
+    pkg :
+    `${organizationPrefix}/${pkg}`)
+  );
 }
