@@ -1,31 +1,30 @@
 // Import Node.js Dependencies
+import path from "node:path";
+import os from "node:os";
 import fs from "node:fs/promises";
 
 // Import Internal Dependencies
 import { buildStatsFromNsecurePayloads } from "../analysis/extractScannerData.js";
 import { HTML, PDF } from "../reporting/index.js";
-import * as CONSTANTS from "../constants.js";
 
 export async function report(
-  scannerPayload,
   reportOptions,
-  reportOutputLocation = CONSTANTS.DIRS.REPORTS,
+  scannerPayload
 ) {
-  await fs.mkdir(
-    reportOutputLocation,
-    { recursive: true }
-  );
-
-  const pkgStats = await buildStatsFromNsecurePayloads(scannerPayload, {
-    isJson: true,
-    reportOptions
-  });
+  const [pkgStats, reportOutputLocation] = await Promise.all([
+    buildStatsFromNsecurePayloads(scannerPayload, {
+      isJson: true,
+      reportOptions
+    }),
+    fs.mkdtemp(
+      path.join(os.tmpdir(), "nsecure-report-")
+    )
+  ]);
 
   const reportHTMLPath = await HTML(
     {
       pkgStats,
-      repoStats: null,
-      spinner: Object.create(null)
+      repoStats: null
     },
     reportOptions,
     reportOutputLocation

@@ -10,13 +10,16 @@ import { HTML } from "./html.js";
 import { PDF } from "./pdf.js";
 
 export async function proceed(
-  data
+  data,
+  verbose = true
 ) {
   const reportHTMLPath = await utils.runInSpinner(
     {
-      title: `[Reporter: ${kleur.yellow().bold("HTML")}]`
+      title: `[Reporter: ${kleur.yellow().bold("HTML")}]`,
+      start: "Building template and assets",
+      verbose
     },
-    async(spinner) => HTML({ ...data, spinner })
+    async() => HTML(data)
   );
 
   const { reporters, title } = localStorage.getConfig().report;
@@ -27,7 +30,8 @@ export async function proceed(
   await utils.runInSpinner(
     {
       title: `[Reporter: ${kleur.yellow().bold("PDF")}]`,
-      start: "Using puppeteer to convert HTML content to PDF"
+      start: "Using puppeteer to convert HTML content to PDF",
+      verbose
     },
     async() => PDF(reportHTMLPath, { title })
   );
