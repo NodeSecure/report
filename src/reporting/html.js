@@ -4,7 +4,6 @@ import { readdirSync, promises as fs } from "node:fs";
 
 // Import Third-party Dependencies
 import esbuild from "esbuild";
-import kleur from "kleur";
 
 // Import Internal Dependencies
 import * as utils from "../utils/index.js";
@@ -52,7 +51,7 @@ export async function HTML(
   reportOptions = null,
   reportOutputLocation = CONSTANTS.DIRS.REPORTS
 ) {
-  const { pkgStats, repoStats, spinner } = data;
+  const { pkgStats, repoStats } = data;
 
   const config = reportOptions ?? localStorage.getConfig().report;
   const assetsOutputLocation = path.join(reportOutputLocation, "..", "dist");
@@ -62,7 +61,6 @@ export async function HTML(
     utils.cleanReportName(config.title, ".html")
   );
 
-  spinner.text = "Building view with zup";
   const charts = config.charts
     .flatMap(({ display, name, help = null }) => (display ? [{ name, help }] : []));
 
@@ -78,16 +76,16 @@ export async function HTML(
     }
   ).render();
 
-  await fs.writeFile(
-    reportFinalOutputLocation,
-    HTMLReport
-  );
-
-  spinner.text = kleur.yellow().bold("Bundling assets with esbuild");
-  await buildFrontAssets(
-    assetsOutputLocation,
-    { theme: reportTheme }
-  );
+  await Promise.all([
+    fs.writeFile(
+      reportFinalOutputLocation,
+      HTMLReport
+    ),
+    buildFrontAssets(
+      assetsOutputLocation,
+      { theme: reportTheme }
+    )
+  ]);
 
   return reportFinalOutputLocation;
 }
