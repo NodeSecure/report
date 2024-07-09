@@ -1,5 +1,3 @@
-/* eslint-disable no-invalid-this */
-
 // Import Internal Dependencies
 import { md5 } from "../lib/md5.js";
 
@@ -33,7 +31,6 @@ const kChartOptions = {
     }
   }
 };
-const kDefaultAvatarName = "../public/img/avatar-default.png";
 const colorRangeInfo = {
   colorStart: 0.2, colorEnd: 0.8, useEndAsStart: false
 };
@@ -88,6 +85,9 @@ function createChart(elementId, type = "bar", payload = {}) {
 window.createChart = createChart;
 
 document.addEventListener("DOMContentLoaded", () => {
+  const assetLocationElement = document.getElementById("asset_location");
+  const assetLocation = assetLocationElement.getAttribute("data-location");
+
   const avatarsElements = document.querySelectorAll(".avatar");
   for (const avatar of avatarsElements) {
     const email = avatar.getAttribute("data-email");
@@ -96,7 +96,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const imgEl = document.createElement("img");
     imgEl.src = `https://gravatar.com/avatar/${md5(email)}?&d=404`;
     imgEl.onerror = () => {
-      imgEl.src = kDefaultAvatarName;
+      imgEl.src = assetLocation + "/avatar-default.png";
     };
     aElement.appendChild(imgEl);
   }
