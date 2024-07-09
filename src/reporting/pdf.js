@@ -1,5 +1,6 @@
 // Import Node.js Dependencies
 import path from "node:path";
+import { pathToFileURL } from "node:url";
 
 // Import Third-party Dependencies
 import puppeteer from "puppeteer";
@@ -21,7 +22,7 @@ export async function PDF(
 
   try {
     await page.emulateMediaType("print");
-    await page.goto(`file:${reportHTMLPath}`, {
+    await page.goto(pathToFileURL(reportHTMLPath).href, {
       waitUntil: "networkidle0",
       timeout: 20_000
     });
