@@ -73,7 +73,8 @@ export async function HTML(
       npm_stats: pkgStats,
       git_stats: repoStats,
       charts
-    }
+    },
+    reportOptions
   ).render();
 
   await Promise.all([
