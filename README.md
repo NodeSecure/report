@@ -129,7 +129,15 @@ The theme can be either `dark` or `light`. Themes are editable in _public/css/th
 > [!CAUTION]
 > The API is ESM only
 
-### `report(options: ReportConfiguration, payload: Scanner.Payload): Promise<Buffer>`
+### report
+
+```ts
+function report(
+  scannerDependencies: Scanner.Payload["dependencies"],
+  report: ReportConfiguration,
+  reportOutputLocation?: string
+): Promise<Buffer>;
+```
 
 Generates and returns a PDF Buffer based on the provided report options and scanner payload.
 
