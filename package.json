@@ -46,7 +46,7 @@
     "@nodesecure/utils": "^2.2.0",
     "@openally/mutex": "^1.0.0",
     "@topcli/spinner": "^2.1.2",
-    "esbuild": "^0.22.0",
+    "esbuild": "^0.23.0",
     "filenamify": "^6.0.0",
     "frequency-set": "^1.0.2",
     "isomorphic-git": "^1.26.3",
