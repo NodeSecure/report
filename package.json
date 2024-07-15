@@ -20,6 +20,12 @@
     "preview:light": "node --no-warnings ./scripts/preview.js --theme light",
     "preview:dark": "node --no-warnings ./scripts/preview.js --theme dark"
   },
+  "files": [
+    "bin",
+    "public",
+    "src",
+    "views"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/NodeSecure/report.git"
