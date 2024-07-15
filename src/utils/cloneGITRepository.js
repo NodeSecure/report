@@ -1,10 +1,8 @@
 // Import Node.js Dependencies
-import fs from "node:fs";
+import { execFile } from "node:child_process";
+import { promisify } from "node:util";
 
-// Import Third-party Dependencies
-import git from "isomorphic-git";
-import http from "isomorphic-git/http/node/index.js";
-
+const execFilePromise = promisify(execFile);
 /**
  * @async
  * @function cloneGITRepository
@@ -14,19 +12,10 @@ import http from "isomorphic-git/http/node/index.js";
  *
  * @returns {Promise<string>}
  */
-export async function cloneGITRepository(
-  dir,
-  url
-) {
-  await git.clone({
-    fs,
-    http,
-    dir,
-    url,
-    token: process.env.GIT_TOKEN,
-    singleBranch: true,
-    oauth2format: "github"
-  });
+export async function cloneGITRepository(dir, url) {
+  const oauthUrl = url.replace("https://", `https://oauth2:${process.env.GIT_TOKEN}@`);
+
+  await execFilePromise("git", ["clone", oauthUrl, dir]);
 
   return dir;
 }
