@@ -93,6 +93,15 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "orlando1108",
+      "name": "Erwan Raulo",
+      "avatar_url": "https://avatars.githubusercontent.com/u/22614778?v=4",
+      "profile": "https://github.com/orlando1108",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,

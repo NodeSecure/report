@@ -224,7 +224,7 @@ $ npm run preview:dark
 ## Contributors ✨
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-9-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-10-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
@@ -246,6 +246,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <tr>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/lilleeleex"><img src="https://avatars.githubusercontent.com/u/55240847?v=4?s=100" width="100px;" alt="Lilleeleex"/><br /><sub><b>Lilleeleex</b></sub></a><br /><a href="https://github.com/NodeSecure/report/commits?author=lilleeleex" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://www.linkedin.com/in/nk-3906b7206/"><img src="https://avatars.githubusercontent.com/u/46855953?v=4?s=100" width="100px;" alt="Nishi"/><br /><sub><b>Nishi</b></sub></a><br /><a href="https://github.com/NodeSecure/report/commits?author=Nishi46" title="Documentation">📖</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/orlando1108"><img src="https://avatars.githubusercontent.com/u/22614778?v=4?s=100" width="100px;" alt="Erwan Raulo"/><br /><sub><b>Erwan Raulo</b></sub></a><br /><a href="https://github.com/NodeSecure/report/commits?author=orlando1108" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
