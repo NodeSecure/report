@@ -13,7 +13,11 @@ export async function PDF(
   reportHTMLPath,
   options
 ) {
-  const { title, saveOnDisk = true } = options;
+  const {
+    title,
+    saveOnDisk = true,
+    reportOutputLocation = CONSTANTS.DIRS.REPORTS
+  } = options;
 
   const browser = await puppeteer.launch({
     args: ["--no-sandbox", "--disable-setuid-sandbox"]
@@ -27,16 +31,17 @@ export async function PDF(
       timeout: 20_000
     });
 
+    const reportPath = saveOnDisk ? path.join(
+      reportOutputLocation,
+      utils.cleanReportName(title, ".pdf")
+    ) : undefined;
     const pdfBuffer = await page.pdf({
-      path: saveOnDisk ? path.join(
-        CONSTANTS.DIRS.REPORTS,
-        utils.cleanReportName(title, ".pdf")
-      ) : undefined,
+      path: reportPath,
       format: "A4",
       printBackground: true
     });
 
-    return saveOnDisk ? path : pdfBuffer;
+    return saveOnDisk ? reportPath : pdfBuffer;
   }
   finally {
     await page.close();
