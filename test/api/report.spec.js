@@ -53,7 +53,7 @@ const kReportPayload = {
 
 describe("(API) report", () => {
   test("Given a scanner Payload it should successfully generate a PDF", async() => {
-    const reportLocation = await fs.mkdtemp(
+    const reportOutputLocation = await fs.mkdtemp(
       path.join(os.tmpdir(), "test-runner-report-pdf-")
     );
 
@@ -62,13 +62,13 @@ describe("(API) report", () => {
     const generatedPDF = await report(
       payload.dependencies,
       structuredClone(kReportPayload),
-      reportLocation
+      { reportOutputLocation }
     );
     try {
       assert.ok(Buffer.isBuffer(generatedPDF));
       assert.ok(isPDF(generatedPDF));
 
-      const files = (await fs.readdir(reportLocation, { withFileTypes: true }))
+      const files = (await fs.readdir(reportOutputLocation, { withFileTypes: true }))
         .flatMap((dirent) => (dirent.isFile() ? [dirent.name] : []));
       assert.deepEqual(
         files,
@@ -76,7 +76,7 @@ describe("(API) report", () => {
       );
     }
     finally {
-      await fs.rm(reportLocation, { force: true, recursive: true });
+      await fs.rm(reportOutputLocation, { force: true, recursive: true });
     }
   });
 });

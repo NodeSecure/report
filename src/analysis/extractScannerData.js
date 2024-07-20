@@ -31,9 +31,9 @@ function splitPackageWithOrg(pkg) {
  * @returns
  */
 export async function buildStatsFromNsecurePayloads(payloadFiles = [], options = Object.create(null)) {
-  const { isJson = false, reportOptions } = options;
+  const { isJson = false, reportConfig } = options;
 
-  const config = reportOptions ?? localStorage.getConfig().report;
+  const config = reportConfig ?? localStorage.getConfig().report;
   const stats = {
     size: {
       all: 0, internal: 0, external: 0
