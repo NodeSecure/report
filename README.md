@@ -134,8 +134,8 @@ The theme can be either `dark` or `light`. Themes are editable in _public/css/th
 ```ts
 function report(
   scannerDependencies: Scanner.Payload["dependencies"],
-  report: ReportConfiguration,
-  reportOutputLocation?: string
+  reportConfig: ReportConfiguration,
+  reportOptions?: ReportOptions
 ): Promise<Buffer>;
 ```
 
@@ -209,6 +209,15 @@ export interface ReportChart {
    * @see https://github.com/d3/d3-scale-chromatic/blob/main/README.md
    */
   interpolation?: string;
+}
+
+export interface ReportOptions {
+  reportOutputLocation?: string | null;
+  /**
+   * Save the PDF on disk (in the current working directory)
+   * @default false
+   */
+  savePDFOnDisk?: boolean;
 }
 ```
 

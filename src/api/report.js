@@ -9,13 +9,17 @@ import { HTML, PDF } from "../reporting/index.js";
 
 export async function report(
   scannerDependencies,
-  reportOptions,
-  reportOutputLocation = null
+  reportConfig,
+  reportOptions = Object.create(null)
 ) {
+  const {
+    reportOutputLocation = null,
+    savePDFOnDisk = false
+  } = reportOptions;
   const [pkgStats, finalReportLocation] = await Promise.all([
     buildStatsFromNsecurePayloads(scannerDependencies, {
       isJson: true,
-      reportOptions
+      reportConfig
     }),
     reportOutputLocation === null ?
       fs.mkdtemp(path.join(os.tmpdir(), "nsecure-report-")) :
@@ -28,13 +32,13 @@ export async function report(
         pkgStats,
         repoStats: null
       },
-      reportOptions,
+      reportConfig,
       finalReportLocation
     );
 
     return await PDF(reportHTMLPath, {
-      title: reportOptions.title,
-      saveOnDisk: false
+      title: reportConfig.title,
+      saveOnDisk: savePDFOnDisk
     });
   }
   finally {
