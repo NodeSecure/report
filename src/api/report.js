@@ -37,7 +37,7 @@ export async function report(
     );
 
     if (reportConfig.reporters.includes("pdf")) {
-      return await PDF(reportHTMLPath, {
+      return PDF(reportHTMLPath, {
         title: reportConfig.title,
         saveOnDisk: savePDFOnDisk,
         reportOutputLocation: finalReportLocation
