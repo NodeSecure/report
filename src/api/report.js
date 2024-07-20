@@ -36,10 +36,15 @@ export async function report(
       finalReportLocation
     );
 
-    return await PDF(reportHTMLPath, {
-      title: reportConfig.title,
-      saveOnDisk: savePDFOnDisk
-    });
+    if (reportConfig.reporters.includes("pdf")) {
+      return await PDF(reportHTMLPath, {
+        title: reportConfig.title,
+        saveOnDisk: savePDFOnDisk,
+        reportOutputLocation: finalReportLocation
+      });
+    }
+
+    return reportHTMLPath;
   }
   finally {
     if (reportOutputLocation === null) {
