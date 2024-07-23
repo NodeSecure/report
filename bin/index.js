@@ -19,6 +19,7 @@ const cli = sade("nreport").version(version);
 
 cli
   .command("execute")
+  .option("-d, --debug", "Enable debug mode", false)
   .alias("exec")
   .describe("Execute report at the current working dir with current configuration.")
   .example("nreport exec")

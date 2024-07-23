@@ -12,7 +12,7 @@ Scorecard](https://api.securityscorecards.dev/projects/github.com/NodeSecure/rep
 
 </div>
 
-This project is designed to generate periodic security reports in both HTML and PDF formats. It leverages the [@nodesecure/scanner](https://github.com/NodeSecure/scanner)  to retrieve all necessary data.
+This project is designed to generate periodic security reports in both HTML and PDF formats. It leverages the [@nodesecure/scanner](https://github.com/NodeSecure/scanner) to retrieve all necessary data.
 
 |               Screen1                |               Screen2                |
 | :----------------------------------: | :----------------------------------: |
@@ -85,9 +85,7 @@ This uses the official NodeSecure [runtime configuration](https://github.com/Nod
     },
     "git": {
       "organizationUrl": "https://github.com/NodeSecure",
-      "repositories": [
-        "vulnera"
-      ]
+      "repositories": ["vulnera"]
     },
     "charts": [
       {
@@ -228,6 +226,14 @@ You can generate a preview of a report using the following NPM scripts
 ```bash
 $ npm run preview:light
 $ npm run preview:dark
+```
+
+## Debug mode
+
+You can write in the file "reports/debug-pkg-repo.txt", all data generated from NPM package and GIT repository scanners using the following option. Usefull if you want to get a preview from this data set.
+
+```bash
+$ nreport exec --debug
 ```
 
 ## Contributors ✨
