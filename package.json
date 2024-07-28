@@ -13,7 +13,6 @@
     }
   },
   "scripts": {
-    "prepublishOnly": "pkg-ok",
     "lint": "eslint src test",
     "test-only": "glob -c \"node --test-reporter=spec --test\" \"./test/**/*.spec.js\"",
     "test": "c8 --all --src ./src -r html npm run test-only",
@@ -66,8 +65,7 @@
     "c8": "^10.1.2",
     "eslint": "^9.6.0",
     "glob": "^11.0.0",
-    "open": "^10.1.0",
-    "pkg-ok": "^3.0.0"
+    "open": "^10.1.0"
   },
   "engines": {
     "node": ">=18"
