@@ -210,12 +210,22 @@ export interface ReportChart {
 }
 
 export interface ReportOptions {
+  /**
+   * Location where the report will be saved.
+   * 
+   * If not provided, default to cwd if HTML or PDF is saved on disk, or a temp directory else.
+   */
   reportOutputLocation?: string | null;
   /**
-   * Save the PDF on disk (in the current working directory)
+   * Save the PDF on disk
    * @default false
    */
   savePDFOnDisk?: boolean;
+  /**
+   * Save the HTML on disk
+   * @default false
+   */
+  saveHTMLOnDisk?: boolean;
 }
 ```
 
