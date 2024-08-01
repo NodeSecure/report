@@ -46,7 +46,7 @@
   "dependencies": {
     "@nodesecure/flags": "^2.4.0",
     "@nodesecure/ossf-scorecard-sdk": "^3.2.1",
-    "@nodesecure/rc": "^2.1.0",
+    "@nodesecure/rc": "^3.0.0",
     "@nodesecure/scanner": "^5.3.0",
     "@nodesecure/utils": "^2.2.0",
     "@openally/mutex": "^1.0.0",
