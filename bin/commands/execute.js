@@ -25,7 +25,10 @@ export async function execute(options = {}) {
   const [configResult] = await Promise.all([
     rc.read(
       process.cwd()
-    ),
+      , {
+        createIfDoesNotExist: false,
+        createMode: "report"
+      }),
     init()
   ]);
 
