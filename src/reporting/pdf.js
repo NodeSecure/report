@@ -35,13 +35,13 @@ export async function PDF(
       reportOutputLocation,
       utils.cleanReportName(title, ".pdf")
     ) : undefined;
-    const pdfBuffer = await page.pdf({
+    const pdfUint8Array = await page.pdf({
       path: reportPath,
       format: "A4",
       printBackground: true
     });
 
-    return saveOnDisk ? reportPath : pdfBuffer;
+    return saveOnDisk ? reportPath : Buffer.from(pdfUint8Array);
   }
   finally {
     await page.close();
