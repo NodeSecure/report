@@ -54,7 +54,7 @@ export async function HTML(
   const { pkgStats, repoStats } = data;
 
   const config = reportOptions ?? localStorage.getConfig().report;
-  const assetsOutputLocation = path.join(reportOutputLocation, "..", "dist");
+  const assetsOutputLocation = path.join(reportOutputLocation, "..", "asset");
   const reportTheme = kAvailableThemes.has(config.theme) ? config.theme : "dark";
   const reportFinalOutputLocation = path.join(
     reportOutputLocation,

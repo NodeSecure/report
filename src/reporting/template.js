@@ -25,7 +25,7 @@ export class HTMLTemplateGenerator {
   }
 
   render(options = {}) {
-    const { asset_location = "../dist" } = options;
+    const { asset_location = "../asset" } = options;
 
     const config = this.config ?? localStorage.getConfig().report;
     const compiledTemplate = compile(kHTMLStaticTemplate);
