@@ -98,7 +98,7 @@ export async function buildStatsFromNsecurePayloads(payloadFiles = [], options =
         if (curr.versions.has(localVersion)) {
           continue;
         }
-        const { flags, size, composition, license, author, warnings = [], links } = localDescriptor;
+        const { flags, size, composition, uniqueLicenseIds, author, warnings = [], links } = localDescriptor;
 
         stats.size.all += size;
         stats.size[isThird ? "external" : "internal"] += size;
@@ -121,14 +121,9 @@ export async function buildStatsFromNsecurePayloads(payloadFiles = [], options =
           stats.extensions[extName] = extName in stats.extensions ? ++stats.extensions[extName] : 1;
         }
 
-        if (typeof license === "string") {
-          stats.licenses.Unknown++;
-        }
-        else {
-          for (const licenseName of license.uniqueLicenseIds) {
-            stats.licenses[licenseName] = licenseName in stats.licenses ?
-              ++stats.licenses[licenseName] : 1;
-          }
+        for (const licenseName of uniqueLicenseIds) {
+          stats.licenses[licenseName] = licenseName in stats.licenses ?
+            ++stats.licenses[licenseName] : 1;
         }
 
         if (author?.email) {

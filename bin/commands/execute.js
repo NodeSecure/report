@@ -15,6 +15,12 @@ import { fetchPackagesAndRepositoriesData } from "../../src/analysis/fetch.js";
 import * as CONSTANTS from "../../src/constants.js";
 import * as reporting from "../../src/reporting/index.js";
 
+// CONSTANTS
+const kReadConfigOptions = {
+  createIfDoesNotExist: false,
+  createMode: "report"
+};
+
 export async function execute(options = {}) {
   const { debug: debugMode } = options;
 
@@ -23,9 +29,7 @@ export async function execute(options = {}) {
   }
 
   const [configResult] = await Promise.all([
-    rc.read(
-      process.cwd()
-    ),
+    rc.read(process.cwd(), kReadConfigOptions),
     init()
   ]);
 
