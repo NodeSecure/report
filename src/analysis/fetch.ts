@@ -10,21 +10,25 @@ import * as scanner from "./scanner.js";
 import * as localStorage from "../localStorage.js";
 import * as utils from "../utils/index.js";
 import * as CONSTANTS from "../constants.js";
+import { type RC } from "@nodesecure/rc";
 
 export async function fetchPackagesAndRepositoriesData(
   verbose = true
 ) {
-  const config = localStorage.getConfig().report;
+  const config = localStorage.getConfig()?.report;
+  // TODO: handle undefined ?
 
-  const fetchNpm = config.npm?.packages.length > 0;
-  const fetchGit = config.git?.repositories.length > 0;
+
+  const fetchNpm = hasReportConfig(config) && canFetchNpm(config.npm);
+  const fetchGit = hasReportConfig(config) && canFetchGit(config.git);
+
   if (!fetchGit && !fetchNpm) {
     throw new Error(
       "No git repositories and no npm packages to fetch in the local configuration!"
     );
   }
 
-  const pkgStats = fetchNpm ?
+  const pkgStats = canFetchNpm(config.npm) ?
     await fetchPackagesStats(
       utils.formatNpmPackages(
         config.npm.organizationPrefix,
@@ -34,11 +38,10 @@ export async function fetchPackagesAndRepositoriesData(
     ) :
     null;
 
-  const { repositories, organizationUrl } = config.git;
-  const repoStats = fetchGit ?
+  const repoStats = canFetchGit(config.git) ?
     await fetchRepositoriesStats(
-      repositories,
-      organizationUrl,
+      config.git.repositories,
+      config.git.organizationUrl,
       verbose
     ) :
     null;
@@ -47,7 +50,7 @@ export async function fetchPackagesAndRepositoriesData(
 }
 
 async function fetchPackagesStats(
-  packages,
+  packages: string[],
   verbose = true
 ) {
   const jsonFiles = await utils.runInSpinner(
@@ -65,8 +68,8 @@ async function fetchPackagesStats(
 }
 
 async function fetchRepositoriesStats(
-  repositories,
-  organizationUrl,
+  repositories: string[],
+  organizationUrl: string,
   verbose = true
 ) {
   const jsonFiles = await utils.runInSpinner(
@@ -95,4 +98,16 @@ async function fetchRepositoriesStats(
   return buildStatsFromNsecurePayloads(
     jsonFiles.filter((value) => value !== null)
   );
+}
+
+function hasReportConfig(config: RC["report"]): config is NonNullable<RC["report"]> {
+  return config !== undefined;
+}
+
+function canFetchGit<T extends NonNullable<RC["report"]>["git"]>(gitConfig: T): gitConfig is NonNullable<T> {
+  return gitConfig !== undefined && gitConfig.repositories.length > 0;
+}
+
+function canFetchNpm<T extends NonNullable<RC["report"]>["npm"]>(npmConfig: T): npmConfig is NonNullable<T> {
+  return npmConfig !== undefined && npmConfig.packages.length > 0;
 }

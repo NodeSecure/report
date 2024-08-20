@@ -4,15 +4,47 @@ import fs from "node:fs";
 
 // Import Third-party Dependencies
 import { formatBytes, getScoreColor, getVCSRepositoryPathAndPlatform } from "@nodesecure/utils";
-import * as Flags from "@nodesecure/flags";
+import { getFlags, getManifest } from "@nodesecure/flags/web";
 import * as scorecard from "@nodesecure/ossf-scorecard-sdk";
 
 // Import Internal Dependencies
 import * as localStorage from "../localStorage.js";
+import { type Dependencies, type Payload } from "@nodesecure/scanner";
+import type { RC } from "@nodesecure/rc";
+
+export interface ReportStat {
+  size: {
+    all: number, internal: number, external: number
+  };
+  deps: {
+    transitive: Record<PropertyKey, any>;
+    node: Record<PropertyKey, any>
+  },
+  licenses: {
+    Unknown: number
+  },
+  flags: Record<PropertyKey, any>;
+  flagsList: any;
+  extensions: Record<PropertyKey, any>;
+  warnings: Record<PropertyKey, any>;
+  authors: Record<PropertyKey, any>;
+  packages: Record<PropertyKey, any>;
+  packages_count: {
+    all: number, internal: number, external: number
+  };
+  scorecards: Record<PropertyKey, any>;
+  showFlags: boolean;
+}
+
+interface BuildStatOptions {
+  isJson: boolean;
+  reportConfig: RC["report"]
+
+}
 
 // CONSTANTS
-const kFlagsList = Object.values(Flags.getManifest());
-const kWantedFlags = Flags.getFlags();
+const kFlagsList = Object.values(getManifest());
+const kWantedFlags = getFlags();
 const kScorecardVisualizerUrl = `https://kooltheba.github.io/openssf-scorecard-api-visualizer/#/projects`;
 const kNodeVisualizerUrl = `https://nodejs.org/dist/latest/docs/api`;
 
@@ -28,13 +60,19 @@ function splitPackageWithOrg(pkg) {
  * @param {string[] | NodeSecure.Payload | NodeSecure.Payload[]} payloadFiles
  * @param {object} options
  * @param {boolean} options.isJson
- * @returns
+ * @returns {ReportStat}
  */
-export async function buildStatsFromNsecurePayloads(payloadFiles = [], options = Object.create(null)) {
-  const { isJson = false, reportConfig } = options;
+
+type PayloadFile = string[] | Payload | Payload[] | Payload["dependencies"];
+
+export async function buildStatsFromNsecurePayloads(
+  payloadFiles: PayloadFile = [],
+  options: BuildStatOptions = Object.create(null)
+): Promise<ReportStat> {
+  const { isJson = false, reportConfig = localStorage.getConfig().report } = options;
 
   const config = reportConfig ?? localStorage.getConfig().report;
-  const stats = {
+  const stats: ReportStat = {
     size: {
       all: 0, internal: 0, external: 0
     },
@@ -55,15 +93,15 @@ export async function buildStatsFromNsecurePayloads(payloadFiles = [], options =
       all: 0, internal: 0, external: 0
     },
     scorecards: {},
-    showFlags: config.showFlags
+    showFlags: reportConfig.showFlags
   };
 
   /**
    * @param {string | NodeSecure.Payload} fileOrJson
    * @returns {NodeSecure.Payload}
    */
-  function getJSONPayload(fileOrJson) {
-    if (isJson) {
+  function getJSONPayload(fileOrJson: string | Payload | Dependencies) {
+    if (isPayload(isJson, fileOrJson)) {
       return fileOrJson;
     }
 
@@ -169,5 +207,9 @@ export async function buildStatsFromNsecurePayloads(payloadFiles = [], options =
   stats.size.external = formatBytes(stats.size.external);
 
   return stats;
+}
+
+function isPayload(isJson: boolean, fileOrJson: string | Payload | Dependencies): fileOrJson is Payload | Dependencies {
+  return isJson === true;
 }
 

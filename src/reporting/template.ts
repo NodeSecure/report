@@ -9,6 +9,22 @@ import compile from "zup";
 import * as utils from "../utils/index.js";
 import * as CONSTANTS from "../constants.js";
 import * as localStorage from "../localStorage.js";
+import { type ReportStat } from "../analysis/extractScannerData.js";
+import { } from "@nodesecure/rc";
+
+interface TemplateGeneratorPayload {
+  report_theme: string;
+  report_title: string | undefined;
+  report_logo: string | undefined;
+  report_date: Intl.DateTimeFormat;
+  npm_stats: ReportStat;
+  git_stats: ReportStat;
+  charts: ReportChart;
+}
+
+interface RenderOptions {
+  asset_location?: string
+}
 
 const kHTMLStaticTemplate = readFileSync(
   path.join(CONSTANTS.DIRS.VIEWS, "template.html"),
@@ -17,14 +33,14 @@ const kHTMLStaticTemplate = readFileSync(
 
 export class HTMLTemplateGenerator {
   constructor(
-    payload,
-    config = null
+    private readonly payload: TemplateGeneratorPayload,
+    private readonly config = null
   ) {
     this.payload = payload;
     this.config = config;
   }
 
-  render(options = {}) {
+  render(options: RenderOptions = {}) {
     const { asset_location = "../asset" } = options;
 
     const config = this.config ?? localStorage.getConfig().report;

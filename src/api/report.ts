@@ -6,6 +6,17 @@ import fs from "node:fs/promises";
 // Import Internal Dependencies
 import { buildStatsFromNsecurePayloads } from "../analysis/extractScannerData.js";
 import { HTML, PDF } from "../reporting/index.js";
+import { type Payload } from "@nodesecure/scanner";
+import { type RC } from "@nodesecure/rc";
+import { hasPdfReporter } from "../reporting/pdf.js";
+import { hasHtmlReporter } from "../reporting/html.js";
+
+export interface ReportOptions {
+  reportOutputLocation?: string | null;
+  includesPDF?: boolean;
+  savePDFOnDisk?: boolean;
+  saveHTMLOnDisk?: boolean;
+}
 
 /**
  * Determine the final location of the report (on current working directory or in a temporary directory)
@@ -16,7 +27,7 @@ import { HTML, PDF } from "../reporting/index.js";
  * @param {boolean} options.saveHTMLOnDisk
  * @returns {Promise<string>}
  */
-async function reportLocation(location, options) {
+async function reportLocation(location: string | null, options: ReportOptions): Promise<string> {
   const {
     includesPDF,
     savePDFOnDisk,
@@ -35,17 +46,19 @@ async function reportLocation(location, options) {
 }
 
 export async function report(
-  scannerDependencies,
-  reportConfig,
-  reportOptions = Object.create(null)
-) {
+  scannerDependencies: Payload["dependencies"],
+  reportConfig: RC["report"],
+  reportOptions: ReportOptions = Object.create(null)
+): Promise<string | undefined | Buffer> {
   const {
     reportOutputLocation = null,
     savePDFOnDisk = false,
     saveHTMLOnDisk = false
   } = reportOptions;
-  const includesPDF = reportConfig.reporters.includes("pdf");
-  const includesHTML = reportConfig.reporters.includes("html");
+
+  const includesPDF = hasPdfReporter(reportConfig);
+  const includesHTML = hasHtmlReporter(reportConfig);
+
   if (!includesPDF && !includesHTML) {
     throw new Error("At least one reporter must be enabled (pdf or html)");
   }
@@ -69,7 +82,7 @@ export async function report(
       finalReportLocation
     );
 
-    if (reportConfig.reporters.includes("pdf")) {
+    if (hasPdfReporter(reportConfig)) {
       return await PDF(reportHTMLPath, {
         title: reportConfig.title,
         saveOnDisk: savePDFOnDisk,
@@ -88,3 +101,4 @@ export async function report(
     }
   }
 }
+

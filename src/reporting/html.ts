@@ -11,6 +11,13 @@ import * as CONSTANTS from "../constants.js";
 import * as localStorage from "../localStorage.js";
 
 import { HTMLTemplateGenerator } from "./template.js";
+import { type ReportStat } from "../analysis/extractScannerData.js";
+import { type RC } from "@nodesecure/rc";
+
+interface HTMLData {
+  pkgStats: ReportStat | null,
+  repoStats: ReportStat | null
+}
 
 // CONSTANTS
 const kDateFormatter = Intl.DateTimeFormat("en-GB", {
@@ -47,8 +54,8 @@ const kAvailableThemes = new Set(
 );
 
 export async function HTML(
-  data,
-  reportOptions = null,
+  data: HTMLData,
+  reportOptions?: RC["report"],
   reportOutputLocation = CONSTANTS.DIRS.REPORTS
 ) {
   const { pkgStats, repoStats } = data;
@@ -114,4 +121,8 @@ export async function buildFrontAssets(
       path.join(outdir, name)
     ))
   ]);
+}
+
+export function hasHtmlReporter(config: RC["report"]): config is NonNullable<RC["report"]> {
+  return config?.reporters?.includes("html") || false;
 }

@@ -2,10 +2,10 @@
   "name": "@nodesecure/report",
   "version": "3.0.0",
   "description": "NodeSecure HTML & PDF graphic security report",
-  "main": "./bin/index.js",
+  "main": "./dist/bin/index.js",
   "type": "module",
   "bin": {
-    "nreport": "./bin/index.js"
+    "nreport": "./dist/bin/index.js"
   },
   "exports": {
     ".": {
@@ -13,6 +13,10 @@
     }
   },
   "scripts": {
+    "build": "rimraf ./dist && npm run copy-views && npm run copy-public && npm run copy-package && tsc",
+    "copy-views": "copyfiles views/template.html dist/",
+    "copy-public": "copyfiles public/** dist/",
+    "copy-package": "copyfiles package.json dist/",
     "lint": "eslint src test",
     "test-only": "glob -c \"node --test-reporter=spec --test\" \"./test/**/*.spec.js\"",
     "test": "c8 --all --src ./src -r html npm run test-only",
@@ -60,12 +64,17 @@
     "zup": "0.0.2"
   },
   "devDependencies": {
-    "@nodesecure/eslint-config": "2.0.0-beta.0",
+    "@openally/config.eslint": "^1.0.0",
+    "@openally/config.typescript": "^1.0.3",
     "@types/node": "^22.2.0",
     "c8": "^10.1.2",
+    "copyfiles": "^2.4.1",
     "eslint": "^9.8.0",
     "glob": "^11.0.0",
-    "open": "^10.1.0"
+    "open": "^10.1.0",
+    "rimraf": "^6.0.1",
+    "tsx": "^4.17.0",
+    "typescript": "^5.4.2"
   },
   "engines": {
     "node": ">=18"
