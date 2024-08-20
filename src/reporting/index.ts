@@ -7,10 +7,16 @@ import * as localStorage from "../localStorage.js";
 
 // Import Reporters
 import { HTML } from "./html.js";
-import { PDF } from "./pdf.js";
+import { hasPdfReporter, PDF } from "./pdf.js";
+import { type ReportStat } from "../analysis/extractScannerData.js";
+
+interface ReportingData {
+  pkgStats: ReportStat | null;
+  repoStats: ReportStat | null;
+}
 
 export async function proceed(
-  data,
+  data: ReportingData,
   verbose = true
 ) {
   const reportHTMLPath = await utils.runInSpinner(
@@ -22,8 +28,8 @@ export async function proceed(
     async() => HTML(data)
   );
 
-  const { reporters, title } = localStorage.getConfig().report;
-  if (!reporters.includes("pdf")) {
+  const reportConfig = localStorage.getConfig().report;
+  if (!hasPdfReporter(reportConfig)) {
     return;
   }
 
@@ -33,7 +39,7 @@ export async function proceed(
       start: "Using puppeteer to convert HTML content to PDF",
       verbose
     },
-    async() => PDF(reportHTMLPath, { title })
+    async() => PDF(reportHTMLPath, { title: reportConfig.title })
   );
 }
 

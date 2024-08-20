@@ -65,5 +65,6 @@ json/
 reports/
 preview/
 dist/
+asset/
 .nodesecurerc
 .DS_Store

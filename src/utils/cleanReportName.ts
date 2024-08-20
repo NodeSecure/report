@@ -12,9 +12,9 @@ import filenamify from "filenamify";
  * @returns {string}
  */
 export function cleanReportName(
-  name,
-  extension = null
-) {
+  name: string,
+  extension: string | null = null
+): string {
   const cleanName = filenamify(name);
   if (extension === null) {
     return cleanName;

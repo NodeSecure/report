@@ -19,13 +19,13 @@ const kMaxAnalysisLock = new Mutex({ concurrency: 2 });
  * @param {!string} packageName
  * @returns {Promise<string>}
  */
-export async function from(packageName) {
+export async function from(packageName: string): Promise<string | null> {
   const release = await kMaxAnalysisLock.acquire();
 
   try {
     const name = `${packageName}.json`;
     const { dependencies } = await scanner.from(packageName, {
-      maxDepth: 4, verbose: false
+      maxDepth: 4, vulnerabilityStrategy: "none"
     });
 
     const filePath = path.join(CONSTANTS.DIRS.JSON, name);
@@ -34,7 +34,7 @@ export async function from(packageName) {
 
     return filePath;
   }
-  catch (error) {
+  catch {
     return null;
   }
   finally {
@@ -49,13 +49,13 @@ export async function from(packageName) {
  * @param {!string} dir
  * @returns {Promise<string>}
  */
-export async function cwd(dir) {
+export async function cwd(dir: string): Promise<string | null> {
   const release = await kMaxAnalysisLock.acquire();
 
   try {
     const name = `${path.basename(dir)}.json`;
     const { dependencies } = await scanner.cwd(dir, {
-      maxDepth: 4, verbose: false, usePackageLock: false
+      maxDepth: 4, vulnerabilityStrategy: "none"
     });
 
     const filePath = path.join(CONSTANTS.DIRS.JSON, name);
@@ -63,7 +63,7 @@ export async function cwd(dir) {
 
     return filePath;
   }
-  catch (error) {
+  catch {
     return null;
   }
   finally {

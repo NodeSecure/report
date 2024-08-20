@@ -2,10 +2,17 @@
 import { Spinner } from "@topcli/spinner";
 import kleur from "kleur";
 
-export async function runInSpinner(
-  options,
-  asyncHandler
-) {
+interface RunInSpinnerOption {
+    title: string,
+    start: string,
+    verbose: boolean
+}
+type RunInSpinnerHandler<R> = (spinner: Spinner) => Promise<R>;
+
+export async function runInSpinner<R>(
+  options: RunInSpinnerOption,
+  asyncHandler: RunInSpinnerHandler<R>
+): Promise<R> {
   const { title, verbose = true, start = void 0 } = options;
 
   const spinner = new Spinner({ verbose })
@@ -19,7 +26,7 @@ export async function runInSpinner(
 
     return response;
   }
-  catch (err) {
+  catch (err: any) {
     spinner.failed(err.message);
 
     throw err;

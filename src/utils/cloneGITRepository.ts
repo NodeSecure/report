@@ -12,7 +12,7 @@ const execFilePromise = promisify(execFile);
  *
  * @returns {Promise<string>}
  */
-export async function cloneGITRepository(dir, url) {
+export async function cloneGITRepository(dir: string, url: string): Promise<string> {
   const oauthUrl = url.replace("https://", `https://oauth2:${process.env.GIT_TOKEN}@`);
 
   await execFilePromise("git", ["clone", oauthUrl, dir]);

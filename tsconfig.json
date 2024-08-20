@@ -1,0 +1,11 @@
+{
+  "extends": "@openally/config.typescript",
+  "compilerOptions": {
+    "outDir": "dist",
+    "types": [
+      "node"
+    ],
+  },
+   "include": ["bin", "views"],
+   "exclude": ["node_modules", "dist", "asset", "eslint.config.mjs", "scripts"]
+ }

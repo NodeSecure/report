@@ -13,7 +13,7 @@ const compat = new FlatCompat({
 });
 
 export default [{
-  ignores: ["**/node_modules/", "**/tmp/", "**/dist/", "**/coverage/", "**/fixtures/", "**/public/lib"]
+  ignores: ["**/node_modules/", "**/tmp/", "**/dist/", "**/asset/", "**/coverage/", "**/fixtures/", "**/public/lib"]
 }, ...compat.extends("@nodesecure/eslint-config"), {
   languageOptions: {
     sourceType: "module",

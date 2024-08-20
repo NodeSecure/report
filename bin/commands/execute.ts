@@ -36,7 +36,11 @@ export async function execute(options = {}) {
   const config = configResult.unwrap();
   const { report } = config;
 
-  if (report.reporters.length === 0) {
+  if (!report) {
+    throw new Error("Report configuration is missing");
+  }
+
+  if (!hasReporter(report.reporters)) {
     throw new Error("At least one reporter must be selected (either 'HTML' or 'PDF')");
   }
 
@@ -85,3 +89,6 @@ function debug(obj) {
   writeFileSync(filePath, inspect(obj, { showHidden: true, depth: null }), "utf8");
 }
 
+function hasReporter<T extends NonNullable<rc.RC["report"]>["reporters"]>(reporters: T): reporters is NonNullable<T> {
+  return reporters !== undefined && reporters.length > 0;
+}

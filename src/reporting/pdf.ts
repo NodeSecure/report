@@ -8,11 +8,18 @@ import puppeteer from "puppeteer";
 // Import Internal Dependencies
 import * as CONSTANTS from "../constants.js";
 import * as utils from "../utils/index.js";
+import type { RC } from "@nodesecure/rc";
+
+export interface PdfOption {
+  title: string;
+  saveOnDisk?: boolean;
+  reportOutputLocation?: string
+}
 
 export async function PDF(
-  reportHTMLPath,
-  options
-) {
+  reportHTMLPath: string,
+  options: PdfOption
+): Promise<string | undefined | Buffer> {
   const {
     title,
     saveOnDisk = true,
@@ -48,4 +55,9 @@ export async function PDF(
     await browser.close();
   }
 }
+
+export function hasPdfReporter(config: RC["report"]): config is NonNullable<RC["report"]> {
+  return config?.reporters?.includes("pdf") || false;
+}
+
 

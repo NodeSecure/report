@@ -2,7 +2,7 @@
 import * as rc from "@nodesecure/rc";
 import kleur from "kleur";
 
-export async function init() {
+export async function init(): Promise<void> {
   const configLocation = process.cwd();
 
   const result = await rc.read(configLocation, {

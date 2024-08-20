@@ -45,10 +45,10 @@ payload.report_theme = theme;
 const config = {
   theme,
   includeTransitiveInternal: false,
-  reporters: [ "html" ],
+  reporters: ["html"],
   npm: {
     organizationPrefix: "@nodesecure",
-    packages: [ "@nodesecure/js-x-ray" ]
+    packages: ["@nodesecure/js-x-ray"]
   },
   git: {
     organizationUrl: "https://github.com/NodeSecure",
@@ -87,7 +87,7 @@ const config = {
 
 const HTMLReport = new HTMLTemplateGenerator(
   payload, config
-).render({ asset_location: "./dist" });
+).render({ asset_location: "./asset" });
 
 const previewLocation = path.join(kPreviewDir, "preview.html");
 writeFileSync(
@@ -96,7 +96,7 @@ writeFileSync(
 );
 
 await buildFrontAssets(
-  path.join(kPreviewDir, "dist"),
+  path.join(kPreviewDir, "asset"),
   { theme }
 );
 
