@@ -1,25 +1,14 @@
-// Import Node.js Dependencies
-import path from "node:path";
-import { fileURLToPath } from "node:url";
+import { ESLintConfig } from "@openally/config.eslint";
 
-// Import Third-party Dependencies
-import { FlatCompat } from "@eslint/eslintrc";
+export default [
+  ...ESLintConfig,
+  {
+    languageOptions: {
+      sourceType: "module",
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-const compat = new FlatCompat({
-  baseDirectory: __dirname
-});
-
-export default [{
-  ignores: ["**/node_modules/", "**/tmp/", "**/dist/", "**/coverage/", "**/fixtures/", "**/public/lib"]
-}, ...compat.extends("@nodesecure/eslint-config"), {
-  languageOptions: {
-    sourceType: "module",
-
-    parserOptions: {
-      requireConfigFile: false
+      parserOptions: {
+        requireConfigFile: false
+      }
     }
   }
-}];
+];
