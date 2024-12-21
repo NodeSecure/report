@@ -4,39 +4,75 @@ import fs from "node:fs";
 
 // Import Third-party Dependencies
 import { formatBytes, getScoreColor, getVCSRepositoryPathAndPlatform } from "@nodesecure/utils";
-import * as Flags from "@nodesecure/flags";
+import { getManifest, getFlags } from "@nodesecure/flags/web";
 import * as scorecard from "@nodesecure/ossf-scorecard-sdk";
+import type { Payload } from "@nodesecure/scanner";
+import type { RC } from "@nodesecure/rc";
 
 // Import Internal Dependencies
 import * as localStorage from "../localStorage.js";
 
 // CONSTANTS
-const kFlagsList = Object.values(Flags.getManifest());
-const kWantedFlags = Flags.getFlags();
+const kFlagsList = Object.values(getManifest());
+const kWantedFlags = getFlags();
 const kScorecardVisualizerUrl = `https://kooltheba.github.io/openssf-scorecard-api-visualizer/#/projects`;
 const kNodeVisualizerUrl = `https://nodejs.org/dist/latest/docs/api`;
 
-function splitPackageWithOrg(pkg) {
+function splitPackageWithOrg(pkg: string) {
   // reverse here so if there is no orgPrefix, its value will be undefined
   const [name, orgPrefix] = pkg.split("/").reverse();
 
   return { orgPrefix, name };
 }
 
-/**
- *
- * @param {string[] | NodeSecure.Payload | NodeSecure.Payload[]} payloadFiles
- * @param {object} options
- * @param {boolean} options.isJson
- * @returns
- */
-export async function buildStatsFromNsecurePayloads(payloadFiles = [], options = Object.create(null)) {
-  const { isJson = false, reportConfig } = options;
+export interface ReportStat {
+  size: {
+    all: string;
+    internal: string;
+    external: string;
+  };
+  deps: {
+    transitive: Record<PropertyKey, any>;
+    node: Record<PropertyKey, any>;
+  };
+  licenses: Record<PropertyKey, any>;
+  flags: Record<PropertyKey, any>;
+  flagsList: any;
+  extensions: Record<PropertyKey, any>;
+  warnings: Record<PropertyKey, any>;
+  authors: Record<PropertyKey, any>;
+  packages: Record<PropertyKey, any>;
+  packages_count: {
+    all: number;
+    internal: number;
+    external: number;
+  };
+  scorecards: Record<PropertyKey, any>;
+  showFlags: boolean;
+}
 
-  const config = reportConfig ?? localStorage.getConfig().report;
-  const stats = {
+export interface BuildScannerStatsOptions {
+  reportConfig?: RC["report"];
+}
+
+export async function buildStatsFromScannerDependencies(
+  payloadFiles: string[] | Payload["dependencies"] = [],
+  options: BuildScannerStatsOptions = Object.create(null)
+): Promise<ReportStat> {
+  const { reportConfig } = options;
+
+  const config = reportConfig ?? localStorage.getConfig().report!;
+  const sizeStats = {
+    all: 0,
+    internal: 0,
+    external: 0
+  };
+
+  const stats: ReportStat = {
     size: {
-      all: 0, internal: 0, external: 0
+      all: "",
+      internal: "",
+      external: ""
     },
     deps: {
       transitive: {},
@@ -55,33 +91,40 @@ export async function buildStatsFromNsecurePayloads(payloadFiles = [], options =
       all: 0, internal: 0, external: 0
     },
     scorecards: {},
-    showFlags: config.showFlags
+    showFlags: config.showFlags ?? true
   };
 
-  /**
-   * @param {string | NodeSecure.Payload} fileOrJson
-   * @returns {NodeSecure.Payload}
-   */
-  function getJSONPayload(fileOrJson) {
-    if (isJson) {
-      return fileOrJson;
+  function getPayloadDependencies(
+    fileOrJson: string | Payload["dependencies"]
+  ): Payload["dependencies"] {
+    if (typeof fileOrJson === "string") {
+      const buf = fs.readFileSync(fileOrJson);
+      const dependencies = JSON.parse(
+        buf.toString()
+      ) as Payload["dependencies"];
+
+      return dependencies;
     }
 
-    const buf = fs.readFileSync(fileOrJson);
-
-    return JSON.parse(buf.toString());
+    return fileOrJson;
   }
 
   const payloads = Array.isArray(payloadFiles) ? payloadFiles : [payloadFiles];
+  const npmConfig = config.npm!;
   for (const fileOrJson of payloads) {
-    const nsecurePayload = getJSONPayload(fileOrJson);
+    const dependencies = getPayloadDependencies(fileOrJson);
 
-    for (const [name, descriptor] of Object.entries(nsecurePayload)) {
+    for (const [name, descriptor] of Object.entries(dependencies)) {
       const { versions, metadata } = descriptor;
-      const isThird = config.npm.organizationPrefix === null ? true : !name.startsWith(`${config.npm.organizationPrefix}/`);
+      const isThird = npmConfig.organizationPrefix === null ?
+        true :
+        !name.startsWith(`${npmConfig.organizationPrefix}/`);
 
       for (const human of metadata.maintainers) {
-        stats.authors[human.email] = human.email in stats.authors ? ++stats.authors[human.email] : 1;
+        if (human.email) {
+          stats.authors[human.email] = human.email in stats.authors ?
+            ++stats.authors[human.email] : 1;
+        }
       }
 
       if (!(name in stats.packages)) {
@@ -100,22 +143,22 @@ export async function buildStatsFromNsecurePayloads(payloadFiles = [], options =
         }
         const { flags, size, composition, uniqueLicenseIds, author, warnings = [], links = [] } = localDescriptor;
 
-        stats.size.all += size;
-        stats.size[isThird ? "external" : "internal"] += size;
+        sizeStats.all += size;
+        sizeStats[isThird ? "external" : "internal"] += size;
 
         for (const { kind } of warnings) {
           stats.warnings[kind] = kind in stats.warnings ? ++stats.warnings[kind] : 1;
         }
 
         for (const flag of flags) {
-          if (!kWantedFlags.has(flag)) {
+          if (!(flag in kWantedFlags)) {
             continue;
           }
           stats.flags[flag] = flag in stats.flags ? ++stats.flags[flag] : 1;
           stats.packages[name].flags[flag] = { ...stats.flagsList[flag] };
         }
 
-        (composition.required_builtin || composition.required_nodejs)
+        (composition.required_nodejs)
           .forEach((dep) => (stats.deps.node[dep] = { visualizerUrl: `${kNodeVisualizerUrl}/${dep.replace("node:", "")}.html` }));
         for (const extName of composition.extensions.filter((extName) => extName !== "")) {
           stats.extensions[extName] = extName in stats.extensions ? ++stats.extensions[extName] : 1;
@@ -134,7 +177,7 @@ export async function buildStatsFromNsecurePayloads(payloadFiles = [], options =
         curr.versions.add(localVersion);
         const hasIndirectDependencies = flags.includes("hasIndirectDependencies");
         id: if (hasIndirectDependencies) {
-          if (!config.includeTransitiveInternal && name.startsWith(config.npm.organizationPrefix)) {
+          if (!config.includeTransitiveInternal && name.startsWith(npmConfig.organizationPrefix)) {
             break id;
           }
 
@@ -164,9 +207,9 @@ export async function buildStatsFromNsecurePayloads(payloadFiles = [], options =
 
   stats.packages_count.all = Object.keys(stats.packages).length;
   stats.packages_count.internal = stats.packages_count.all - stats.packages_count.external;
-  stats.size.all = formatBytes(stats.size.all);
-  stats.size.internal = formatBytes(stats.size.internal);
-  stats.size.external = formatBytes(stats.size.external);
+  stats.size.all = formatBytes(sizeStats.all);
+  stats.size.internal = formatBytes(sizeStats.internal);
+  stats.size.external = formatBytes(sizeStats.external);
 
   return stats;
 }

@@ -37,6 +37,7 @@ This package is available in the Node Package Repository and can be easily insta
 $ git clone https://github.com/NodeSecure/report.git
 $ cd report
 $ npm i
+$ npm run build
 $ npm link
 ```
 
@@ -72,7 +73,7 @@ This uses the official NodeSecure [runtime configuration](https://github.com/Nod
 {
   "version": "1.0.0",
   "i18n": "english",
-  "strategy": "npm",
+  "strategy": "github-advisory",
   "report": {
     "title": "NodeSecure Security Report",
     "logoUrl": "https://avatars.githubusercontent.com/u/85318671?s=200&v=4",
