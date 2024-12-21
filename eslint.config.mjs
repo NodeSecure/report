@@ -1,4 +1,4 @@
-import { ESLintConfig } from "@openally/config.eslint";
+import { ESLintConfig, globals } from "@openally/config.eslint";
 
 export default [
   ...ESLintConfig,
@@ -8,6 +8,9 @@ export default [
 
       parserOptions: {
         requireConfigFile: false
+      },
+      globals: {
+        ...globals.browser
       }
     }
   }

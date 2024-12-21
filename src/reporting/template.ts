@@ -4,37 +4,57 @@ import { readFileSync } from "node:fs";
 
 // Import Third-party Dependencies
 import compile from "zup";
+import type { RC } from "@nodesecure/rc";
 
 // Import Internal Dependencies
 import * as utils from "../utils/index.js";
 import * as CONSTANTS from "../constants.js";
 import * as localStorage from "../localStorage.js";
+import type { ReportStat } from "../analysis/extractScannerData.js";
 
 const kHTMLStaticTemplate = readFileSync(
   path.join(CONSTANTS.DIRS.VIEWS, "template.html"),
   "utf8"
 );
 
+export interface HTMLTemplateGeneratorPayload {
+  report_theme: string;
+  report_title: string;
+  report_logo: string | undefined;
+  report_date: string;
+  npm_stats: ReportStat | null;
+  git_stats: ReportStat | null;
+  charts: any[];
+}
+
+export interface HTMLTemplateGenerationRenderOptions {
+  asset_location?: string;
+}
+
 export class HTMLTemplateGenerator {
+  public payload: HTMLTemplateGeneratorPayload;
+  public config: RC["report"] | null;
+
   constructor(
-    payload,
-    config = null
+    payload: HTMLTemplateGeneratorPayload,
+    config: RC["report"] | null = null
   ) {
     this.payload = payload;
     this.config = config;
   }
 
-  render(options = {}) {
+  render(
+    options: HTMLTemplateGenerationRenderOptions = {}
+  ) {
     const { asset_location = "../dist" } = options;
 
     const config = this.config ?? localStorage.getConfig().report;
     const compiledTemplate = compile(kHTMLStaticTemplate);
 
-    /** @type {string} */
     const html = compiledTemplate({
       ...this.payload,
       asset_location
-    });
+    }) as string;
 
     const charts = [
       ...utils.generateChartArray(

@@ -6,13 +6,13 @@ import * as utils from "../utils/index.js";
 import * as localStorage from "../localStorage.js";
 
 // Import Reporters
-import { HTML } from "./html.js";
+import { HTML, type HTMLReportData } from "./html.js";
 import { PDF } from "./pdf.js";
 
 export async function proceed(
-  data,
+  data: HTMLReportData,
   verbose = true
-) {
+): Promise<void> {
   const reportHTMLPath = await utils.runInSpinner(
     {
       title: `[Reporter: ${kleur.yellow().bold("HTML")}]`,
@@ -22,7 +22,7 @@ export async function proceed(
     async() => HTML(data)
   );
 
-  const { reporters, title } = localStorage.getConfig().report;
+  const { reporters = [], title } = localStorage.getConfig().report!;
   if (!reporters.includes("pdf")) {
     return;
   }
