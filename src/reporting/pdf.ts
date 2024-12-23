@@ -9,10 +9,16 @@ import puppeteer from "puppeteer";
 import * as CONSTANTS from "../constants.js";
 import * as utils from "../utils/index.js";
 
+export interface PDFReportOptions {
+  title: string;
+  saveOnDisk?: boolean;
+  reportOutputLocation?: string;
+}
+
 export async function PDF(
-  reportHTMLPath,
-  options
-) {
+  reportHTMLPath: string,
+  options: PDFReportOptions
+): Promise<string | Buffer> {
   const {
     title,
     saveOnDisk = true,
@@ -41,7 +47,9 @@ export async function PDF(
       printBackground: true
     });
 
-    return saveOnDisk ? reportPath : Buffer.from(pdfUint8Array);
+    return saveOnDisk ?
+      (reportPath as string) :
+      Buffer.from(pdfUint8Array);
   }
   finally {
     await page.close();

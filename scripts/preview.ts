@@ -43,12 +43,12 @@ const payload = (await import(
 payload.report_theme = theme;
 
 const config = {
-  theme,
+  theme: theme as ("light" | "dark"),
   includeTransitiveInternal: false,
-  reporters: [ "html" ],
+  reporters: ["html" as const],
   npm: {
     organizationPrefix: "@nodesecure",
-    packages: [ "@nodesecure/js-x-ray" ]
+    packages: ["@nodesecure/js-x-ray"]
   },
   git: {
     organizationUrl: "https://github.com/NodeSecure",
@@ -56,27 +56,27 @@ const config = {
   },
   charts: [
     {
-      name: "Extensions",
+      name: "Extensions" as const,
       display: true,
       interpolation: "d3.interpolateRainbow",
-      type: "bar"
+      type: "bar" as const
     },
     {
-      name: "Licenses",
+      name: "Licenses" as const,
       display: true,
       interpolation: "d3.interpolateCool",
-      type: "bar"
+      type: "bar" as const
     },
     {
-      name: "Warnings",
+      name: "Warnings" as const,
       display: true,
-      type: "horizontalBar",
+      type: "horizontalBar" as const,
       interpolation: "d3.interpolateInferno"
     },
     {
-      name: "Flags",
+      name: "Flags" as const,
       display: true,
-      type: "horizontalBar",
+      type: "horizontalBar" as const,
       interpolation: "d3.interpolateSinebow"
     }
   ],
@@ -86,7 +86,8 @@ const config = {
 };
 
 const HTMLReport = new HTMLTemplateGenerator(
-  payload, config
+  payload,
+  config
 ).render({ asset_location: "./dist" });
 
 const previewLocation = path.join(kPreviewDir, "preview.html");
