@@ -98,7 +98,7 @@ export async function buildStatsFromNsecurePayloads(payloadFiles = [], options =
         if (curr.versions.has(localVersion)) {
           continue;
         }
-        const { flags, size, composition, uniqueLicenseIds, author, warnings = [], links } = localDescriptor;
+        const { flags, size, composition, uniqueLicenseIds, author, warnings = [], links = [] } = localDescriptor;
 
         stats.size.all += size;
         stats.size[isThird ? "external" : "internal"] += size;

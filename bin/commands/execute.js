@@ -54,7 +54,6 @@ export async function execute(options = {}) {
       })
       .catch((error) => {
         console.error(error);
-        process.exit(0);
       })
       .finally(teardown);
   });
