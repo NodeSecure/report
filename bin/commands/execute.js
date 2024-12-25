@@ -43,19 +43,23 @@ export async function execute(options = {}) {
   console.log(`>> title: ${kleur.cyan().bold(report.title)}`);
   console.log(`>> reporters: ${kleur.magenta().bold(report.reporters.join(","))}\n`);
 
-  store.run(config, () => {
-    fetchPackagesAndRepositoriesData()
-      .then((data) => {
-        if (debugMode) {
-          debug(data);
-        }
-
-        return reporting.proceed(data);
-      })
-      .catch((error) => {
-        console.error(error);
-      })
-      .finally(teardown);
+  store.run(config, async() => {
+    try {
+      const data = await fetchPackagesAndRepositoriesData();
+      if (debugMode) {
+        debug(data);
+      }
+      await reporting.proceed(data);
+      console.log(kleur.green().bold("\n>> Security report successfully generated! Enjoy 🚀.\n"));
+    }
+    catch (error) {
+      console.error(error);
+    }
+    finally {
+      await fs.rm(CONSTANTS.DIRS.CLONES, {
+        recursive: true, force: true
+      });
+    }
   });
 }
 
@@ -69,14 +73,6 @@ function init() {
   return Promise.all(
     directoriesToInitialize.map((dir) => fs.mkdir(dir, { recursive: true }))
   );
-}
-
-function teardown() {
-  console.log(kleur.green().bold("\n>> Security report successfully generated! Enjoy 🚀.\n"));
-
-  return fs.rm(CONSTANTS.DIRS.CLONES, {
-    recursive: true, force: true
-  });
 }
 
 function debug(obj) {
