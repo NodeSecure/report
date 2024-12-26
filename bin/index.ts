@@ -13,7 +13,7 @@ import * as commands from "./commands/index.js";
 console.log(kleur.grey().bold(`\n > Executing nreport at: ${kleur.yellow().bold(process.cwd())}\n`));
 
 const { version } = JSON.parse(
-  fs.readFileSync(new URL("../package.json", import.meta.url))
+  fs.readFileSync(new URL("../package.json", import.meta.url), "utf-8")
 );
 const cli = sade("nreport").version(version);
 

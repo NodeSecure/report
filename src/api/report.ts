@@ -1,22 +1,29 @@
 // Import Node.js Dependencies
-import path from "node:path";
-import os from "node:os";
-import fs from "node:fs/promises";
+import * as path from "node:path";
+import * as os from "node:os";
+import * as fs from "node:fs/promises";
+
+// Import Third-party Dependencies
+import { type Payload } from "@nodesecure/scanner";
+import { type RC } from "@nodesecure/rc";
 
 // Import Internal Dependencies
-import { buildStatsFromNsecurePayloads } from "../analysis/extractScannerData.js";
+import { buildStatsFromScannerDependencies } from "../analysis/extractScannerData.js";
 import { HTML, PDF } from "../reporting/index.js";
+
+export interface ReportLocationOptions {
+  includesPDF: boolean;
+  savePDFOnDisk: boolean;
+  saveHTMLOnDisk: boolean;
+}
 
 /**
  * Determine the final location of the report (on current working directory or in a temporary directory)
- * @param {string} location
- * @param {object} options
- * @param {boolean} options.includesPDF
- * @param {boolean} options.savePDFOnDisk
- * @param {boolean} options.saveHTMLOnDisk
- * @returns {Promise<string>}
  */
-async function reportLocation(location, options) {
+async function reportLocation(
+  location: string | null,
+  options: ReportLocationOptions
+): Promise<string> {
   const {
     includesPDF,
     savePDFOnDisk,
@@ -34,31 +41,36 @@ async function reportLocation(location, options) {
   return fs.mkdtemp(path.join(os.tmpdir(), "nsecure-report-"));
 }
 
+export interface ReportOptions {
+  reportOutputLocation?: string;
+  savePDFOnDisk?: boolean;
+  saveHTMLOnDisk?: boolean;
+}
+
 export async function report(
-  scannerDependencies,
-  reportConfig,
-  reportOptions = Object.create(null)
-) {
+  scannerDependencies: Payload["dependencies"],
+  reportConfig: NonNullable<RC["report"]>,
+  reportOptions: ReportOptions = Object.create(null)
+): Promise<string | Buffer> {
   const {
     reportOutputLocation = null,
     savePDFOnDisk = false,
     saveHTMLOnDisk = false
   } = reportOptions;
-  const includesPDF = reportConfig.reporters.includes("pdf");
-  const includesHTML = reportConfig.reporters.includes("html");
+  const includesPDF = reportConfig.reporters?.includes("pdf") ?? false;
+  const includesHTML = reportConfig.reporters?.includes("html") ?? false;
   if (!includesPDF && !includesHTML) {
     throw new Error("At least one reporter must be enabled (pdf or html)");
   }
 
   const [pkgStats, finalReportLocation] = await Promise.all([
-    buildStatsFromNsecurePayloads(scannerDependencies, {
-      isJson: true,
+    buildStatsFromScannerDependencies(scannerDependencies, {
       reportConfig
     }),
     reportLocation(reportOutputLocation, { includesPDF, savePDFOnDisk, saveHTMLOnDisk })
   ]);
 
-  let reportHTMLPath;
+  let reportHTMLPath: string | undefined;
   try {
     reportHTMLPath = await HTML(
       {
@@ -69,7 +81,7 @@ export async function report(
       finalReportLocation
     );
 
-    if (reportConfig.reporters.includes("pdf")) {
+    if (includesPDF) {
       return await PDF(reportHTMLPath, {
         title: reportConfig.title,
         saveOnDisk: savePDFOnDisk,

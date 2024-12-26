@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+
 // Import Internal Dependencies
 import { md5 } from "../lib/md5.js";
 

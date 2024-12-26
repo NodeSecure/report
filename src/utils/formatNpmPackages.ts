@@ -1,13 +1,7 @@
-/**
- * @param {!string} organizationPrefix
- * @param {string[]} packages
- *
- * @returns {string[]}
- */
 export function formatNpmPackages(
-  organizationPrefix,
-  packages
-) {
+  organizationPrefix: string,
+  packages: string[]
+): string[] {
   if (organizationPrefix === "") {
     return packages;
   }

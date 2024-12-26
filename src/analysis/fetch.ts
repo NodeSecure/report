@@ -5,7 +5,7 @@ import path from "node:path";
 import kleur from "kleur";
 
 // Import Internal Dependencies
-import { buildStatsFromNsecurePayloads } from "./extractScannerData.js";
+import { buildStatsFromScannerDependencies } from "./extractScannerData.js";
 import * as scanner from "./scanner.js";
 import * as localStorage from "../localStorage.js";
 import * as utils from "../utils/index.js";
@@ -14,17 +14,17 @@ import * as CONSTANTS from "../constants.js";
 export async function fetchPackagesAndRepositoriesData(
   verbose = true
 ) {
-  const config = localStorage.getConfig().report;
+  const config = localStorage.getConfig().report!;
 
-  const fetchNpm = config.npm?.packages.length > 0;
-  const fetchGit = config.git?.repositories.length > 0;
+  const fetchNpm = (config.npm?.packages ?? []).length > 0;
+  const fetchGit = (config.git?.repositories ?? []).length > 0;
   if (!fetchGit && !fetchNpm) {
     throw new Error(
       "No git repositories and no npm packages to fetch in the local configuration!"
     );
   }
 
-  const pkgStats = fetchNpm ?
+  const pkgStats = fetchNpm && config.npm ?
     await fetchPackagesStats(
       utils.formatNpmPackages(
         config.npm.organizationPrefix,
@@ -34,20 +34,22 @@ export async function fetchPackagesAndRepositoriesData(
     ) :
     null;
 
-  const { repositories, organizationUrl } = config.git;
-  const repoStats = fetchGit ?
+  const repoStats = fetchGit && config.git ?
     await fetchRepositoriesStats(
-      repositories,
-      organizationUrl,
+      config.git.repositories,
+      config.git.organizationUrl,
       verbose
     ) :
     null;
 
-  return { pkgStats, repoStats };
+  return {
+    pkgStats,
+    repoStats
+  };
 }
 
 async function fetchPackagesStats(
-  packages,
+  packages: string[],
   verbose = true
 ) {
   const jsonFiles = await utils.runInSpinner(
@@ -59,14 +61,14 @@ async function fetchPackagesStats(
     async() => Promise.all(packages.map(scanner.from))
   );
 
-  return buildStatsFromNsecurePayloads(
+  return buildStatsFromScannerDependencies(
     jsonFiles.filter((value) => value !== null)
   );
 }
 
 async function fetchRepositoriesStats(
-  repositories,
-  organizationUrl,
+  repositories: string[],
+  organizationUrl: string,
   verbose = true
 ) {
   const jsonFiles = await utils.runInSpinner(
@@ -92,7 +94,7 @@ async function fetchRepositoriesStats(
     }
   );
 
-  return buildStatsFromNsecurePayloads(
+  return buildStatsFromScannerDependencies(
     jsonFiles.filter((value) => value !== null)
   );
 }

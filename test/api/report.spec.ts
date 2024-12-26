@@ -15,38 +15,38 @@ import { report } from "../../src/index.js";
 // CONSTANTS
 const kReportPayload = {
   title: "test_runner",
-  theme: "light",
+  theme: "light" as const,
   includeTransitiveInternal: false,
   npm: {
-    organizationPrefix: null,
+    organizationPrefix: "@nodesecure",
     packages: []
   },
   reporters: [
-    "pdf"
+    "pdf" as const
   ],
   charts: [
     {
-      name: "Extensions",
+      name: "Extensions" as const,
       display: true,
       interpolation: "d3.interpolateRainbow",
-      type: "bar"
+      type: "bar" as const
     },
     {
-      name: "Licenses",
+      name: "Licenses" as const,
       display: true,
       interpolation: "d3.interpolateCool",
-      type: "bar"
+      type: "bar" as const
     },
     {
-      name: "Warnings",
+      name: "Warnings" as const,
       display: true,
-      type: "horizontalBar",
+      type: "horizontalBar" as const,
       interpolation: "d3.interpolateInferno"
     },
     {
-      name: "Flags",
+      name: "Flags" as const,
       display: true,
-      type: "horizontalBar",
+      type: "horizontalBar" as const,
       interpolation: "d3.interpolateSinebow"
     }
   ]
@@ -90,7 +90,10 @@ describe("(API) report", { concurrency: 1 }, () => {
 
     const generatedPDF = await report(
       payload.dependencies,
-      { ...kReportPayload, reporters: ["pdf", "html"] },
+      {
+        ...kReportPayload,
+        reporters: ["pdf", "html"]
+      },
       { reportOutputLocation, saveHTMLOnDisk: true }
     );
     try {
@@ -118,7 +121,10 @@ describe("(API) report", { concurrency: 1 }, () => {
 
     const generatedPDFPath = await report(
       payload.dependencies,
-      { ...kReportPayload, reporters: ["pdf", "html"] },
+      {
+        ...kReportPayload,
+        reporters: ["pdf", "html"]
+      },
       { reportOutputLocation, savePDFOnDisk: true }
     );
     try {

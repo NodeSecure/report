@@ -19,9 +19,13 @@ import * as reporting from "../../src/reporting/index.js";
 const kReadConfigOptions = {
   createIfDoesNotExist: false,
   createMode: "report"
-};
+} as const;
 
-export async function execute(options = {}) {
+export interface ExecuteOptions {
+  debug?: boolean;
+}
+
+export async function execute(options: ExecuteOptions = {}) {
   const { debug: debugMode } = options;
 
   if (debugMode) {
@@ -36,7 +40,10 @@ export async function execute(options = {}) {
   const config = configResult.unwrap();
   const { report } = config;
 
-  if (report.reporters.length === 0) {
+  if (!report) {
+    throw new Error("A valid configuration is required");
+  }
+  if (!report.reporters || report.reporters.length === 0) {
     throw new Error("At least one reporter must be selected (either 'HTML' or 'PDF')");
   }
 
@@ -75,7 +82,7 @@ function init() {
   );
 }
 
-function debug(obj) {
+function debug(obj: any) {
   const filePath = path.join(CONSTANTS.DIRS.REPORTS, `debug-pkg-repo.txt`);
   writeFileSync(filePath, inspect(obj, { showHidden: true, depth: null }), "utf8");
 }
