@@ -1,0 +1,42 @@
+{
+  "version": "1.0.0",
+  "i18n": "english",
+  "strategy": "github-advisory",
+  "registry": "https://registry.npmjs.org",
+  "report": {
+    "theme": "light",
+    "includeTransitiveInternal": false,
+    "reporters": [
+      "html",
+      "pdf"
+    ],
+    "charts": [
+      {
+        "name": "Extensions",
+        "display": true,
+        "interpolation": "d3.interpolateRainbow",
+        "type": "bar"
+      },
+      {
+        "name": "Licenses",
+        "display": true,
+        "interpolation": "d3.interpolateCool",
+        "type": "bar"
+      },
+      {
+        "name": "Warnings",
+        "display": true,
+        "type": "horizontalBar",
+        "interpolation": "d3.interpolateInferno"
+      },
+      {
+        "name": "Flags",
+        "display": true,
+        "type": "horizontalBar",
+        "interpolation": "d3.interpolateSinebow"
+      }
+    ],
+    "title": "Default report title",
+    "showFlags": true
+  }
+}
