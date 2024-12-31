@@ -65,5 +65,9 @@ json/
 reports/
 preview/
 dist/
-.nodesecurerc
+/.nodesecurerc
 .DS_Store
+
+# IDE
+.vscode
+jsconfig.json
