@@ -55,7 +55,7 @@ export async function cwd(
 
     return filePath;
   }
-  catch (error) {
+  catch {
     return null;
   }
   finally {
