@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-vars */
-
 // Import Third-party Dependencies
 import { Spinner } from "@topcli/spinner";
 import kleur from "kleur";
