@@ -52,7 +52,7 @@
     "@nodesecure/utils": "^2.2.0",
     "@openally/mutex": "^1.0.0",
     "@topcli/spinner": "^2.1.2",
-    "esbuild": "^0.24.0",
+    "esbuild": "^0.25.0",
     "filenamify": "^6.0.0",
     "kleur": "^4.1.5",
     "puppeteer": "23.11.1",
