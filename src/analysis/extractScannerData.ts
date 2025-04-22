@@ -15,8 +15,8 @@ import * as localStorage from "../localStorage.js";
 // CONSTANTS
 const kFlagsList = Object.values(getManifest());
 const kWantedFlags = getFlags();
-const kScorecardVisualizerUrl = `https://kooltheba.github.io/openssf-scorecard-api-visualizer/#/projects`;
-const kNodeVisualizerUrl = `https://nodejs.org/dist/latest/docs/api`;
+const kScorecardVisualizerUrl = "https://kooltheba.github.io/openssf-scorecard-api-visualizer/#/projects";
+const kNodeVisualizerUrl = "https://nodejs.org/dist/latest/docs/api";
 
 function splitPackageWithOrg(pkg: string) {
   // reverse here so if there is no orgPrefix, its value will be undefined
