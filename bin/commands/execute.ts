@@ -29,7 +29,7 @@ export async function execute(options: ExecuteOptions = {}) {
   const { debug: debugMode } = options;
 
   if (debugMode) {
-    console.log(kleur.bgMagenta().bold(` > Debug mode enabled \n`));
+    console.log(kleur.bgMagenta().bold(" > Debug mode enabled \n"));
   }
 
   const [configResult] = await Promise.all([
@@ -83,7 +83,7 @@ function init() {
 }
 
 function debug(obj: any) {
-  const filePath = path.join(CONSTANTS.DIRS.REPORTS, `debug-pkg-repo.txt`);
+  const filePath = path.join(CONSTANTS.DIRS.REPORTS, "debug-pkg-repo.txt");
   writeFileSync(filePath, inspect(obj, { showHidden: true, depth: null }), "utf8");
 }
 

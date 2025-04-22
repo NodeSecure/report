@@ -1,6 +1,6 @@
 // Import Node.js Dependencies
-import path from "path";
-import fs from "fs/promises";
+import path from "node:path";
+import fs from "node:fs/promises";
 
 // Import Third-party Dependencies
 import { Mutex } from "@openally/mutex";

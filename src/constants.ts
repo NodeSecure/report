@@ -2,7 +2,7 @@
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-// Import Node.js Dependencies
+// Import Third-party Dependencies
 import * as rc from "@nodesecure/rc";
 
 // CONSTANTS

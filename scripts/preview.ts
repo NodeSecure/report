@@ -3,12 +3,12 @@ import path from "node:path";
 import { mkdirSync, rmSync, writeFileSync } from "node:fs";
 import { parseArgs } from "node:util";
 
+// Import Third-party Dependencies
+import open from "open";
+
 // Import Internal Dependencies
 import { HTMLTemplateGenerator } from "../src/reporting/template.js";
 import { buildFrontAssets } from "../src/reporting/html.js";
-
-// Import Third-party Dependencies
-import open from "open";
 
 // CONSTANTS
 const kPreviewDir = path.join(import.meta.dirname, "..", "preview");
