@@ -1,12 +1,11 @@
-/* eslint-disable max-depth */
 // Import Node.js Dependencies
 import fs from "node:fs";
 
 // Import Third-party Dependencies
-import { formatBytes, getScoreColor, getVCSRepositoryPathAndPlatform } from "@nodesecure/utils";
+import { getScoreColor, getVCSRepositoryPathAndPlatform } from "@nodesecure/utils";
 import { getManifest, getFlags } from "@nodesecure/flags/web";
 import * as scorecard from "@nodesecure/ossf-scorecard-sdk";
-import type { Payload } from "@nodesecure/scanner";
+import { Extractors, type Payload, type Dependency, type DependencyVersion, type DependencyLinks } from "@nodesecure/scanner";
 import type { RC } from "@nodesecure/rc";
 
 // Import Internal Dependencies
@@ -62,11 +61,6 @@ export async function buildStatsFromScannerDependencies(
   const { reportConfig } = options;
 
   const config = reportConfig ?? localStorage.getConfig().report!;
-  const sizeStats = {
-    all: 0,
-    internal: 0,
-    external: 0
-  };
 
   const stats: ReportStat = {
     size: {
@@ -111,86 +105,77 @@ export async function buildStatsFromScannerDependencies(
 
   const payloads = Array.isArray(payloadFiles) ? payloadFiles : [payloadFiles];
   const npmConfig = config.npm!;
-  for (const fileOrJson of payloads) {
-    const dependencies = getPayloadDependencies(fileOrJson);
 
-    for (const [name, descriptor] of Object.entries(dependencies)) {
-      const { versions, metadata } = descriptor;
-      const isThird = npmConfig.organizationPrefix === null ?
-        true :
-        !name.startsWith(`${npmConfig.organizationPrefix}/`);
+  const dependencies = payloads.reduce<Payload["dependencies"]>((acc, curr) => {
+    const dep = getPayloadDependencies(curr);
+    Object.assign(acc, dep);
 
-      for (const human of metadata.maintainers) {
-        if (human.email) {
-          stats.authors[human.email] = human.email in stats.authors ?
-            ++stats.authors[human.email] : 1;
-        }
+    return acc;
+  }, {});
+
+  const extractor = new Extractors.Payload(dependencies, [
+    new Extractors.Probes.Contacts(),
+    new Extractors.Probes.Flags(),
+    new Extractors.Probes.Licenses(),
+    new Extractors.Probes.Warnings(),
+    new Extractors.Probes.Size({ organizationPrefix: npmConfig.organizationPrefix })
+  ]);
+
+  extractor.on("manifest", (spec: string,
+    { flags, composition, links = [] }: Omit<DependencyVersion, "links"> & {
+      links: DependencyLinks | never[];
+    },
+    { name }: { name: string; dependency: Dependency; }) => {
+    const isThird = npmConfig.organizationPrefix === null ?
+      true :
+      !name.startsWith(`${npmConfig.organizationPrefix}/`);
+    if (!(name in stats.packages)) {
+      const { orgPrefix, name: splitName } = splitPackageWithOrg(name);
+      const isGiven = config.npm?.packages.includes(splitName) && orgPrefix === config.npm?.organizationPrefix;
+      if (isThird) {
+        stats.packages_count.external++;
       }
-
-      if (!(name in stats.packages)) {
-        const { orgPrefix, name: splitName } = splitPackageWithOrg(name);
-        const isGiven = config.npm?.packages.includes(splitName) && orgPrefix === config.npm?.organizationPrefix;
-        if (isThird) {
-          stats.packages_count.external++;
-        }
-        stats.packages[name] = { isThird, versions: new Set(), fullName: name, isGiven, flags: {} };
-      }
-
-      const curr = stats.packages[name];
-      for (const [localVersion, localDescriptor] of Object.entries(versions)) {
-        if (curr.versions.has(localVersion)) {
-          continue;
-        }
-        const { flags, size, composition, uniqueLicenseIds, author, warnings = [], links = [] } = localDescriptor;
-
-        sizeStats.all += size;
-        sizeStats[isThird ? "external" : "internal"] += size;
-
-        for (const { kind } of warnings) {
-          stats.warnings[kind] = kind in stats.warnings ? ++stats.warnings[kind] : 1;
-        }
-
-        for (const flag of flags) {
-          if (!(flag in kWantedFlags)) {
-            continue;
-          }
-          stats.flags[flag] = flag in stats.flags ? ++stats.flags[flag] : 1;
-          stats.packages[name].flags[flag] = { ...stats.flagsList[flag] };
-        }
-
-        (composition.required_nodejs)
-          .forEach((dep) => (stats.deps.node[dep] = { visualizerUrl: `${kNodeVisualizerUrl}/${dep.replace("node:", "")}.html` }));
-        for (const extName of composition.extensions.filter((extName) => extName !== "")) {
-          stats.extensions[extName] = extName in stats.extensions ? ++stats.extensions[extName] : 1;
-        }
-
-        for (const licenseName of uniqueLicenseIds) {
-          stats.licenses[licenseName] = licenseName in stats.licenses ?
-            ++stats.licenses[licenseName] : 1;
-        }
-
-        if (author?.email) {
-          stats.authors[author.email] = author.email in stats.authors ?
-            ++stats.authors[author.email] : 1;
-        }
-
-        curr.versions.add(localVersion);
-        const hasIndirectDependencies = flags.includes("hasIndirectDependencies");
-        id: if (hasIndirectDependencies) {
-          if (!config.includeTransitiveInternal && name.startsWith(npmConfig.organizationPrefix)) {
-            break id;
-          }
-
-          stats.deps.transitive[`${name}@${localVersion}`] = { links };
-        }
-        curr[localVersion] = { hasIndirectDependencies };
-
-        if (!curr.links) {
-          Object.assign(curr, { links });
-        }
-      }
+      stats.packages[name] = { isThird, versions: new Set(), fullName: name, isGiven, flags: {} };
     }
-  }
+    const curr = stats.packages[name];
+    if (curr.versions.has(spec)) {
+      return;
+    }
+
+    for (const flag of flags) {
+      if (!(flag in kWantedFlags)) {
+        continue;
+      }
+      stats.packages[name].flags[flag] = { ...stats.flagsList[flag] };
+    }
+    (composition.required_nodejs)
+      .forEach((dep) => (stats.deps.node[dep] = { visualizerUrl: `${kNodeVisualizerUrl}/${dep.replace("node:", "")}.html` }));
+    for (const extName of composition.extensions.filter((extName) => extName !== "")) {
+      stats.extensions[extName] = extName in stats.extensions ? ++stats.extensions[extName] : 1;
+    }
+    curr.versions.add(spec);
+    const hasIndirectDependencies = flags.includes("hasIndirectDependencies");
+    id: if (hasIndirectDependencies) {
+      if (!config.includeTransitiveInternal && name.startsWith(npmConfig.organizationPrefix)) {
+        break id;
+      }
+
+      stats.deps.transitive[`${name}@${spec}`] = { links };
+    }
+    curr[spec] = { hasIndirectDependencies };
+
+    if (!curr.links) {
+      Object.assign(curr, { links });
+    }
+  });
+
+  const { contacts, licenses, flags, warnings, size } = extractor.extractAndMerge();
+
+  stats.authors = contacts;
+  stats.licenses = licenses;
+  stats.size = size;
+  stats.flags = flags;
+  stats.warnings = warnings;
 
   const givenPackages = Object.values(stats.packages).filter((pkg) => pkg.isGiven);
 
@@ -207,9 +192,6 @@ export async function buildStatsFromScannerDependencies(
 
   stats.packages_count.all = Object.keys(stats.packages).length;
   stats.packages_count.internal = stats.packages_count.all - stats.packages_count.external;
-  stats.size.all = formatBytes(sizeStats.all);
-  stats.size.internal = formatBytes(sizeStats.internal);
-  stats.size.external = formatBytes(sizeStats.external);
 
   return stats;
 }
