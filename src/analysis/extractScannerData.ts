@@ -171,11 +171,17 @@ export async function buildStatsFromScannerDependencies(
 
   const { contacts, licenses, flags, warnings, size } = extractor.extractAndMerge();
 
+  Object.keys(flags).forEach((flag) => {
+    if (!(flag in kWantedFlags)) {
+      delete flags[flag];
+    }
+  });
+
   stats.authors = contacts;
-  stats.licenses = licenses;
+  stats.licenses = { ...stats.licenses, ...licenses };
   stats.size = size;
   stats.flags = flags;
-  stats.warnings = warnings;
+  stats.warnings = warnings.uniqueKinds;
 
   const givenPackages = Object.values(stats.packages).filter((pkg) => pkg.isGiven);
 
