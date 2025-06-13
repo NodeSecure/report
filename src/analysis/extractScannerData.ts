@@ -143,7 +143,7 @@ export async function buildStatsFromScannerDependencies(
     }
 
     for (const flag of flags) {
-      if (!(flag in kWantedFlags)) {
+      if (!(kWantedFlags.has(flag))) {
         continue;
       }
       stats.packages[name].flags[flag] = { ...stats.flagsList[flag] };
@@ -170,12 +170,6 @@ export async function buildStatsFromScannerDependencies(
   });
 
   const { contacts, licenses, flags, warnings, size } = extractor.extractAndMerge();
-
-  Object.keys(flags).forEach((flag) => {
-    if (!(flag in kWantedFlags)) {
-      delete flags[flag];
-    }
-  });
 
   stats.authors = contacts;
   stats.licenses = { ...stats.licenses, ...licenses };
