@@ -118,11 +118,13 @@ export async function buildStatsFromScannerDependencies(
     new Extractors.Probes.Flags(),
     new Extractors.Probes.Licenses(),
     new Extractors.Probes.Warnings(),
-    new Extractors.Probes.Size({ organizationPrefix: npmConfig.organizationPrefix })
+    new Extractors.Probes.Size({ organizationPrefix: npmConfig.organizationPrefix }),
+    new Extractors.Probes.Extensions(),
+    new Extractors.Probes.NodeDependencies()
   ]);
 
   extractor.on("manifest", (spec: string,
-    { flags, composition, links = [] }: Omit<DependencyVersion, "links"> & {
+    { flags, links = [] }: Omit<DependencyVersion, "links"> & {
       links: DependencyLinks | never[];
     },
     { name }: { name: string; dependency: Dependency; }) => {
@@ -148,11 +150,6 @@ export async function buildStatsFromScannerDependencies(
       }
       stats.packages[name].flags[flag] = { ...stats.flagsList[flag] };
     }
-    (composition.required_nodejs)
-      .forEach((dep) => (stats.deps.node[dep] = { visualizerUrl: `${kNodeVisualizerUrl}/${dep.replace("node:", "")}.html` }));
-    for (const extName of composition.extensions.filter((extName) => extName !== "")) {
-      stats.extensions[extName] = extName in stats.extensions ? ++stats.extensions[extName] : 1;
-    }
     curr.versions.add(spec);
     const hasIndirectDependencies = flags.includes("hasIndirectDependencies");
     id: if (hasIndirectDependencies) {
@@ -169,13 +166,19 @@ export async function buildStatsFromScannerDependencies(
     }
   });
 
-  const { contacts, licenses, flags, warnings, size } = extractor.extractAndMerge();
+  const { contacts, licenses, flags, warnings, size, extensions, nodeDeps } = extractor.extractAndMerge();
 
   stats.authors = contacts;
   stats.licenses = { ...stats.licenses, ...licenses };
   stats.size = size;
   stats.flags = flags;
   stats.warnings = warnings.uniqueKinds;
+  stats.extensions = extensions;
+  stats.deps.node = nodeDeps.reduce((acc: ReportStat["deps"]["node"], curr) => {
+    Object.assign(acc, { [curr]: { visualizerUrl: `${kNodeVisualizerUrl}/${curr.replace("node:", "")}.html` } });
+
+    return acc;
+  }, {});
 
   const givenPackages = Object.values(stats.packages).filter((pkg) => pkg.isGiven);
 
