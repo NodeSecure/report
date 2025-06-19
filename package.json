@@ -49,7 +49,7 @@
     "@nodesecure/flags": "^3.0.3",
     "@nodesecure/ossf-scorecard-sdk": "^3.2.1",
     "@nodesecure/rc": "^4.1.0",
-    "@nodesecure/scanner": "^6.5.0",
+    "@nodesecure/scanner": "^6.8.0",
     "@nodesecure/utils": "^2.2.0",
     "@openally/mutex": "^1.0.0",
     "@topcli/spinner": "^3.0.0",
