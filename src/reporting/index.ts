@@ -2,12 +2,12 @@
 import kleur from "kleur";
 
 // Import Internal Dependencies
-import * as utils from "../utils/index.js";
-import * as localStorage from "../localStorage.js";
+import * as utils from "../utils/index.ts";
+import * as localStorage from "../localStorage.ts";
 
 // Import Reporters
-import { HTML, type HTMLReportData } from "./html.js";
-import { PDF } from "./pdf.js";
+import { HTML, type HTMLReportData } from "./html.ts";
+import { PDF } from "./pdf.ts";
 
 export async function proceed(
   data: HTMLReportData,

@@ -9,11 +9,11 @@ import * as rc from "@nodesecure/rc";
 import kleur from "kleur";
 
 // Import Internal Dependencies
-import { store } from "../../src/localStorage.js";
+import { store } from "../../src/localStorage.ts";
 
-import { fetchPackagesAndRepositoriesData } from "../../src/analysis/fetch.js";
-import * as CONSTANTS from "../../src/constants.js";
-import * as reporting from "../../src/reporting/index.js";
+import { fetchPackagesAndRepositoriesData } from "../../src/analysis/fetch.ts";
+import * as CONSTANTS from "../../src/constants.ts";
+import * as reporting from "../../src/reporting/index.ts";
 
 // CONSTANTS
 const kReadConfigOptions = {

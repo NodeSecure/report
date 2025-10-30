@@ -6,8 +6,8 @@ import { pathToFileURL } from "node:url";
 import puppeteer from "puppeteer";
 
 // Import Internal Dependencies
-import * as CONSTANTS from "../constants.js";
-import * as utils from "../utils/index.js";
+import * as CONSTANTS from "../constants.ts";
+import * as utils from "../utils/index.ts";
 
 export interface PDFReportOptions {
   title: string;

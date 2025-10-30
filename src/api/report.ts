@@ -8,8 +8,8 @@ import { type Payload } from "@nodesecure/scanner";
 import { type RC } from "@nodesecure/rc";
 
 // Import Internal Dependencies
-import { buildStatsFromScannerDependencies } from "../analysis/extractScannerData.js";
-import { HTML, PDF } from "../reporting/index.js";
+import { buildStatsFromScannerDependencies } from "../analysis/extractScannerData.ts";
+import { HTML, PDF } from "../reporting/index.ts";
 
 export interface ReportLocationOptions {
   includesPDF: boolean;

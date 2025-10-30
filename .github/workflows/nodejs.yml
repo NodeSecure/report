@@ -14,7 +14,7 @@ jobs:
     runs-on: ${{matrix.os}}
     strategy:
       matrix:
-        node-version: [20.x, 22.x]
+        node-version: [24.x]
         os: [ubuntu-latest]
       fail-fast: false
     steps:
@@ -28,8 +28,10 @@ jobs:
         uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
         with:
           node-version: ${{ matrix.node-version }}
+      - name: Install chromium
+        run: npx puppeteer browsers install chrome
       - name: Install dependencies
-        run: npm i
+        run: npm install --ignore-scripts
       - name: Lint
         run: npm run lint
       - name: Run tests

@@ -7,8 +7,8 @@ import assert from "node:assert";
 import { stripVTControlCharacters } from "node:util";
 
 // Import Internal Dependencies
-import { filterProcessStdout } from "../helpers/reportCommandRunner.js";
-import * as CONSTANTS from "../../src/constants.js";
+import { filterProcessStdout } from "../helpers/reportCommandRunner.ts";
+import * as CONSTANTS from "../../src/constants.ts";
 
 // CONSTANTS
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -22,7 +22,7 @@ describe("Report execute command", () => {
   it("should execute command on fixture '.nodesecurerc'", async() => {
     const options = {
       cmd: "node",
-      args: ["dist/bin/index.js", "execute"],
+      args: ["dist/bin/index.ts", "execute"],
       cwd: kProcessDir
     };
 

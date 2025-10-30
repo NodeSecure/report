@@ -7,8 +7,8 @@ import { parseArgs } from "node:util";
 import open from "open";
 
 // Import Internal Dependencies
-import { HTMLTemplateGenerator } from "../src/reporting/template.js";
-import { buildFrontAssets } from "../src/reporting/html.js";
+import { HTMLTemplateGenerator } from "../src/reporting/template.ts";
+import { buildFrontAssets } from "../src/reporting/html.ts";
 
 // CONSTANTS
 const kPreviewDir = path.join(import.meta.dirname, "..", "preview");

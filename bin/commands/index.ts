@@ -1,2 +1,2 @@
-export * from "./execute.js";
-export * from "./init.js";
+export * from "./execute.ts";
+export * from "./init.ts";

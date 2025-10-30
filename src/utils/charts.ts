@@ -3,7 +3,7 @@ import { taggedString } from "@nodesecure/utils";
 import type { RC } from "@nodesecure/rc";
 
 // Import Internal Dependencies
-import type { ReportStat } from "../analysis/extractScannerData.js";
+import type { ReportStat } from "../analysis/extractScannerData.ts";
 
 // CONSTANTS
 const kChartTemplate = taggedString`\tcreateChart("${0}", "${4}", { labels: [${1}], interpolate: ${3}, data: [${2}] });`;

@@ -7,10 +7,10 @@ import compile from "zup";
 import type { RC } from "@nodesecure/rc";
 
 // Import Internal Dependencies
-import * as utils from "../utils/index.js";
-import * as CONSTANTS from "../constants.js";
-import * as localStorage from "../localStorage.js";
-import type { ReportStat } from "../analysis/extractScannerData.js";
+import * as utils from "../utils/index.ts";
+import * as CONSTANTS from "../constants.ts";
+import * as localStorage from "../localStorage.ts";
+import type { ReportStat } from "../analysis/extractScannerData.ts";
 
 const kHTMLStaticTemplate = readFileSync(
   path.join(CONSTANTS.DIRS.VIEWS, "template.html"),

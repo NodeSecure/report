@@ -10,7 +10,7 @@ import assert from "node:assert";
 import { from } from "@nodesecure/scanner";
 
 // Import Internal Dependencies
-import { report } from "../../src/index.js";
+import { report } from "../../src/index.ts";
 
 // CONSTANTS
 const kReportPayload = {

@@ -5,11 +5,11 @@ import path from "node:path";
 import kleur from "kleur";
 
 // Import Internal Dependencies
-import { buildStatsFromScannerDependencies } from "./extractScannerData.js";
-import * as scanner from "./scanner.js";
-import * as localStorage from "../localStorage.js";
-import * as utils from "../utils/index.js";
-import * as CONSTANTS from "../constants.js";
+import { buildStatsFromScannerDependencies } from "./extractScannerData.ts";
+import * as scanner from "./scanner.ts";
+import * as localStorage from "../localStorage.ts";
+import * as utils from "../utils/index.ts";
+import * as CONSTANTS from "../constants.ts";
 
 export async function fetchPackagesAndRepositoriesData(
   verbose = true
