@@ -8,7 +8,7 @@ import sade from "sade";
 import kleur from "kleur";
 
 // Import Internal Dependencies
-import * as commands from "./commands/index.js";
+import * as commands from "./commands/index.ts";
 
 console.log(kleur.grey().bold(`\n > Executing nreport at: ${kleur.yellow().bold(process.cwd())}\n`));
 

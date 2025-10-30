@@ -7,7 +7,7 @@ import { Mutex } from "@openally/mutex";
 import * as scanner from "@nodesecure/scanner";
 
 // Import Internal Dependencies
-import * as CONSTANTS from "../constants.js";
+import * as CONSTANTS from "../constants.ts";
 
 // CONSTANTS
 const kMaxAnalysisLock = new Mutex({ concurrency: 2 });

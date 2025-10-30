@@ -3,7 +3,7 @@ import { describe, test } from "node:test";
 import assert from "node:assert";
 
 // Import Internal Dependencies
-import { formatNpmPackages } from "../../src/utils/index.js";
+import { formatNpmPackages } from "../../src/utils/index.ts";
 
 describe("formatNpmPackages", () => {
   test("If no organizationPrefix is provided, it should return the packages list as is.", () => {

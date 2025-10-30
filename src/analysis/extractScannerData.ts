@@ -9,7 +9,7 @@ import { Extractors, type Payload, type Dependency, type DependencyVersion, type
 import type { RC } from "@nodesecure/rc";
 
 // Import Internal Dependencies
-import * as localStorage from "../localStorage.js";
+import * as localStorage from "../localStorage.ts";
 
 // CONSTANTS
 const kFlagsList = Object.values(getManifest());

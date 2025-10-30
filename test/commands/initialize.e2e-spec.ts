@@ -8,11 +8,11 @@ import assert from "node:assert";
 import { stripVTControlCharacters } from "node:util";
 
 // Import Internal Dependencies
-import { runProcess } from "../helpers/reportCommandRunner.js";
+import { runProcess } from "../helpers/reportCommandRunner.ts";
 
 // CONSTANTS
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const kBinDir = path.join(__dirname, "../..", "dist/bin/index.js");
+const kBinDir = path.join(__dirname, "../..", "dist/bin/index.ts");
 const kProcessDir = os.tmpdir();
 const kConfigFilePath = path.join(kProcessDir, ".nodesecurerc");
 

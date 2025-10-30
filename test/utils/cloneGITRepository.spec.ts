@@ -6,7 +6,7 @@ import path from "node:path";
 import assert from "node:assert";
 
 // Import Internal Dependencies
-import { cloneGITRepository } from "../../src/utils/index.js";
+import { cloneGITRepository } from "../../src/utils/index.ts";
 
 describe("cloneGITRepository", () => {
   it("should clone a remote GIT repository", async() => {

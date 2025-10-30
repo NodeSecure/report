@@ -3,7 +3,7 @@ import { describe, it } from "node:test";
 import assert from "node:assert";
 
 // Import Internal Dependencies
-import { cleanReportName } from "../../src/utils/index.js";
+import { cleanReportName } from "../../src/utils/index.ts";
 
 describe("cleanReportName", () => {
   it("should remove invalid Windows characters", () => {

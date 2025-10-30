@@ -7,11 +7,11 @@ import esbuild from "esbuild";
 import type { RC } from "@nodesecure/rc";
 
 // Import Internal Dependencies
-import * as utils from "../utils/index.js";
-import * as CONSTANTS from "../constants.js";
-import * as localStorage from "../localStorage.js";
-import { HTMLTemplateGenerator } from "./template.js";
-import type { ReportStat } from "../analysis/extractScannerData.js";
+import * as utils from "../utils/index.ts";
+import * as CONSTANTS from "../constants.ts";
+import * as localStorage from "../localStorage.ts";
+import { HTMLTemplateGenerator } from "./template.ts";
+import type { ReportStat } from "../analysis/extractScannerData.ts";
 
 // CONSTANTS
 const kDateFormatter = Intl.DateTimeFormat("en-GB", {

@@ -17,11 +17,11 @@
     "build:views": "rimraf dist/views && cp -r views dist/views",
     "build:public": "rimraf dist/public && cp -r public dist/public",
     "lint": "eslint src test bin scripts",
-    "test-only": "glob -c \"tsx --test-reporter=spec --test\" \"./test/**/*.spec.ts\"",
+    "test-only": "node --test-reporter=spec --test ./test/**/*.spec.ts",
     "test": "c8 --all --src ./src -r html npm run test-only",
-    "test:e2e": "glob -c \"tsx -r dotenv/config --test-reporter=spec --test\" \"./test/**/*.e2e-spec.ts\"",
-    "preview:light": "tsx --no-warnings ./scripts/preview.js --theme light",
-    "preview:dark": "tsx --no-warnings ./scripts/preview.js --theme dark",
+    "test:e2e": "node -r dotenv/config --test-reporter=spec --test ./test/**/*.e2e-spec.ts",
+    "preview:light": "node --no-warnings ./scripts/preview.js --theme light",
+    "preview:dark": "node --no-warnings ./scripts/preview.js --theme dark",
     "prepublishOnly": "npm run build"
   },
   "files": [
@@ -65,13 +65,11 @@
     "@openally/config.typescript": "1.2.1",
     "@types/node": "^24.0.1",
     "c8": "^10.1.2",
-    "glob": "^11.0.0",
     "open": "^10.1.0",
     "rimraf": "^6.0.1",
-    "tsx": "^4.19.2",
     "typescript": "^5.7.2"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=24"
   }
 }
