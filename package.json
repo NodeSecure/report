@@ -20,8 +20,8 @@
     "test-only": "node --test-reporter=spec --test ./test/**/*.spec.ts",
     "test": "c8 --all --src ./src -r html npm run test-only",
     "test:e2e": "node -r dotenv/config --test-reporter=spec --test ./test/**/*.e2e-spec.ts",
-    "preview:light": "node --no-warnings ./scripts/preview.js --theme light",
-    "preview:dark": "node --no-warnings ./scripts/preview.js --theme dark",
+    "preview:light": "node --no-warnings ./scripts/preview.ts --theme light",
+    "preview:dark": "node --no-warnings ./scripts/preview.ts --theme dark",
     "prepublishOnly": "npm run build"
   },
   "files": [
