@@ -81,6 +81,41 @@ describe("(API) report", { concurrency: 1 }, () => {
     }
   });
 
+  test(`it should successfully generate a PDF and should not save
+PDF or HTML for packages that don't have a scorecard`, async() => {
+    const reportOutputLocation = await fs.mkdtemp(
+      path.join(os.tmpdir(), "test-runner-report-pdf-")
+    );
+
+    const payload = await from("@pyroscope/nodejs");
+
+    const generatedPDF = await report(
+      payload.dependencies,
+      structuredClone({
+        ...kReportPayload,
+        npm: {
+          organizationPrefix: "@pyroscope",
+          packages: ["nodejs"]
+        }
+      }),
+      { reportOutputLocation }
+    );
+    try {
+      assert.ok(Buffer.isBuffer(generatedPDF));
+      assert.ok(isPDF(generatedPDF));
+
+      const files = (await fs.readdir(reportOutputLocation, { withFileTypes: true }))
+        .flatMap((dirent) => (dirent.isFile() ? [dirent.name] : []));
+      assert.deepEqual(
+        files,
+        []
+      );
+    }
+    finally {
+      await fs.rm(reportOutputLocation, { force: true, recursive: true });
+    }
+  });
+
   test("should save HTML when saveHTMLOnDisk is truthy", async() => {
     const reportOutputLocation = await fs.mkdtemp(
       path.join(os.tmpdir(), "test-runner-report-pdf-")

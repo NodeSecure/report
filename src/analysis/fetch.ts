@@ -3,6 +3,8 @@ import path from "node:path";
 
 // Import Third-party Dependencies
 import kleur from "kleur";
+import * as scorecard from "@nodesecure/ossf-scorecard-sdk";
+import { isHTTPError } from "@openally/httpie";
 
 // Import Internal Dependencies
 import { buildStatsFromScannerDependencies } from "./extractScannerData.ts";
@@ -10,6 +12,9 @@ import * as scanner from "./scanner.ts";
 import * as localStorage from "../localStorage.ts";
 import * as utils from "../utils/index.ts";
 import * as CONSTANTS from "../constants.ts";
+
+// CONSTANTS
+const kNotFoundStatusCode = 404;
 
 export async function fetchPackagesAndRepositoriesData(
   verbose = true
@@ -97,4 +102,25 @@ async function fetchRepositoriesStats(
   return buildStatsFromScannerDependencies(
     jsonFiles.filter((value) => value !== null)
   );
+}
+
+const scoresCache = new Map<string, number>();
+
+export async function fetchScorecardScore(fullName: string) {
+  if (scoresCache.has(fullName)) {
+    return scoresCache.get(fullName);
+  }
+  try {
+    const { score } = await scorecard.result(fullName, { resolveOnVersionControl: false });
+    scoresCache.set(fullName, score);
+
+    return score;
+  }
+  catch (e) {
+    if (isHTTPError(e) && e.statusCode === kNotFoundStatusCode) {
+      scoresCache.set(fullName, 0);
+    }
+
+    return 0;
+  }
 }

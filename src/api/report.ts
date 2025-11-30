@@ -8,7 +8,7 @@ import { type Payload } from "@nodesecure/scanner";
 import { type RC } from "@nodesecure/rc";
 
 // Import Internal Dependencies
-import { buildStatsFromScannerDependencies } from "../analysis/extractScannerData.ts";
+import { buildStatsFromScannerDependencies, buildGivenPackagesScorecards } from "../analysis/extractScannerData.ts";
 import { HTML, PDF } from "../reporting/index.ts";
 
 export interface ReportLocationOptions {
@@ -63,12 +63,13 @@ export async function report(
     throw new Error("At least one reporter must be enabled (pdf or html)");
   }
 
-  const [pkgStats, finalReportLocation] = await Promise.all([
-    buildStatsFromScannerDependencies(scannerDependencies, {
-      reportConfig
-    }),
-    reportLocation(reportOutputLocation, { includesPDF, savePDFOnDisk, saveHTMLOnDisk })
-  ]);
+  const pkgStats = buildStatsFromScannerDependencies(scannerDependencies, {
+    reportConfig
+  });
+
+  pkgStats.scorecards = await buildGivenPackagesScorecards(pkgStats);
+
+  const finalReportLocation = await reportLocation(reportOutputLocation, { includesPDF, savePDFOnDisk, saveHTMLOnDisk });
 
   let reportHTMLPath: string | undefined;
   try {
