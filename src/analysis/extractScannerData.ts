@@ -4,12 +4,12 @@ import fs from "node:fs";
 // Import Third-party Dependencies
 import { getScoreColor, getVCSRepositoryPathAndPlatform } from "@nodesecure/utils";
 import { getManifest, getFlags } from "@nodesecure/flags/web";
-import * as scorecard from "@nodesecure/ossf-scorecard-sdk";
 import { Extractors, type Payload, type Dependency, type DependencyVersion, type DependencyLinks } from "@nodesecure/scanner";
 import type { RC } from "@nodesecure/rc";
 
 // Import Internal Dependencies
 import * as localStorage from "../localStorage.ts";
+import { fetchScorecardScore } from "./fetch.ts";
 
 // CONSTANTS
 const kFlagsList = Object.values(getManifest());
@@ -54,10 +54,10 @@ export interface BuildScannerStatsOptions {
   reportConfig?: RC["report"];
 }
 
-export async function buildStatsFromScannerDependencies(
+export function buildStatsFromScannerDependencies(
   payloadFiles: string[] | Payload["dependencies"] = [],
   options: BuildScannerStatsOptions = Object.create(null)
-): Promise<ReportStat> {
+): ReportStat {
   const { reportConfig } = options;
 
   const config = reportConfig ?? localStorage.getConfig().report!;
@@ -180,22 +180,26 @@ export async function buildStatsFromScannerDependencies(
     return acc;
   }, {});
 
-  const givenPackages = Object.values(stats.packages).filter((pkg) => pkg.isGiven);
+  stats.packages_count.all = Object.keys(stats.packages).length;
+  stats.packages_count.internal = stats.packages_count.all - stats.packages_count.external;
+  stats.scorecards = {};
 
+  return stats;
+}
+
+export async function buildGivenPackagesScorecards(stats: ReportStat): Promise<ReportStat["scorecards"]> {
+  const givenPackages = Object.values(stats.packages).filter((pkg) => pkg.isGiven);
+  const scorecards: ReportStat["scorecards"] = {};
   await Promise.all(givenPackages.map(async(pkg) => {
     const { fullName } = pkg;
-    const { score } = await scorecard.result(fullName, { resolveOnVersionControl: false });
+    const score = await fetchScorecardScore(fullName);
     const [repo, platform] = getVCSRepositoryPathAndPlatform(pkg.links?.repository) ?? [];
-    stats.scorecards[fullName] = {
+    scorecards[fullName] = {
       score,
       color: getScoreColor(score),
       visualizerUrl: repo ? `${kScorecardVisualizerUrl}/${platform}/${repo}` : "#"
     };
   }));
 
-  stats.packages_count.all = Object.keys(stats.packages).length;
-  stats.packages_count.internal = stats.packages_count.all - stats.packages_count.external;
-
-  return stats;
+  return scorecards;
 }
-
