@@ -106,9 +106,11 @@ async function fetchRepositoriesStats(
 
 const scoresCache = new Map<string, number>();
 
-export async function fetchScorecardScore(fullName: string) {
+export async function fetchScorecardScore(
+  fullName: string
+): Promise<number> {
   if (scoresCache.has(fullName)) {
-    return scoresCache.get(fullName);
+    return scoresCache.get(fullName)!;
   }
   try {
     const { score } = await scorecard.result(fullName, { resolveOnVersionControl: false });
