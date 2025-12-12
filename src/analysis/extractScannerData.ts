@@ -4,7 +4,7 @@ import fs from "node:fs";
 // Import Third-party Dependencies
 import { getScoreColor, getVCSRepositoryPathAndPlatform } from "@nodesecure/utils";
 import { getManifest, getFlags } from "@nodesecure/flags/web";
-import { Extractors, type Payload, type Dependency, type DependencyVersion, type DependencyLinks } from "@nodesecure/scanner";
+import { Extractors, type Payload } from "@nodesecure/scanner";
 import type { RC } from "@nodesecure/rc";
 
 // Import Internal Dependencies
@@ -123,11 +123,8 @@ export function buildStatsFromScannerDependencies(
     new Extractors.Probes.NodeDependencies()
   ]);
 
-  extractor.on("manifest", (spec: string,
-    { flags, links = [] }: Omit<DependencyVersion, "links"> & {
-      links: DependencyLinks | never[];
-    },
-    { name }: { name: string; dependency: Dependency; }) => {
+  extractor.on("manifest", (spec: string, dependencyVersion, { name }) => {
+    const { flags, links = [] } = dependencyVersion;
     const isThird = npmConfig.organizationPrefix === null ?
       true :
       !name.startsWith(`${npmConfig.organizationPrefix}/`);
