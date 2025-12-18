@@ -24,6 +24,11 @@
     "preview:dark": "node --no-warnings ./scripts/preview.ts --theme dark",
     "prepublishOnly": "npm run build"
   },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org",
+    "access": "public",
+    "provenance": true
+  },
   "files": [
     "dist"
   ],
