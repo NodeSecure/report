@@ -1,6 +1,10 @@
 // Import Third-party Dependencies
 import * as rc from "@nodesecure/rc";
-import kleur from "kleur";
+
+// Import Internal Dependencies
+import * as utils from "../../src/utils/index.ts";
+
+const { formatter } = utils;
 
 export async function init() {
   const configLocation = process.cwd();
@@ -11,7 +15,7 @@ export async function init() {
   });
 
   if (result.ok) {
-    console.log(kleur.green().bold(
+    console.log(formatter.green.bold(
       "Successfully generated NodeSecure runtime configuration at current location\n"
     ));
   }

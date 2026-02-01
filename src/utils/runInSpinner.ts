@@ -1,6 +1,8 @@
 // Import Third-party Dependencies
 import { Spinner } from "@topcli/spinner";
-import kleur from "kleur";
+
+// Import Internal Dependencies
+import { formatter } from "./formatter.ts";
 
 export interface RunInSpinnerOptions {
   title: string;
@@ -17,13 +19,13 @@ export async function runInSpinner<R>(
   const { title, verbose = true, start = void 0 } = options;
 
   const spinner = new Spinner({ verbose })
-    .start(start, { withPrefix: `${kleur.gray().bold(title)} - ` });
+    .start(start, { withPrefix: `${formatter.gray.bold(title)} - ` });
 
   try {
     const response = await asyncHandler(spinner);
 
     const elapsed = `${spinner.elapsedTime.toFixed(2)}ms`;
-    spinner.succeed(kleur.white().bold(`successfully executed in ${kleur.green().bold(elapsed)}`));
+    spinner.succeed(formatter.white.bold(`successfully executed in ${formatter.green.bold(elapsed)}`));
 
     return response;
   }

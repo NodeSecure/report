@@ -1,9 +1,8 @@
-// Import Third-party Dependencies
-import kleur from "kleur";
-
 // Import Internal Dependencies
 import * as utils from "../utils/index.ts";
 import * as localStorage from "../localStorage.ts";
+
+const { formatter } = utils;
 
 // Import Reporters
 import { HTML, type HTMLReportData } from "./html.ts";
@@ -15,7 +14,7 @@ export async function proceed(
 ): Promise<void> {
   const reportHTMLPath = await utils.runInSpinner(
     {
-      title: `[Reporter: ${kleur.yellow().bold("HTML")}]`,
+      title: `[Reporter: ${formatter.yellow.bold("HTML")}]`,
       start: "Building template and assets",
       verbose
     },
@@ -29,7 +28,7 @@ export async function proceed(
 
   await utils.runInSpinner(
     {
-      title: `[Reporter: ${kleur.yellow().bold("PDF")}]`,
+      title: `[Reporter: ${formatter.yellow.bold("PDF")}]`,
       start: "Using puppeteer to convert HTML content to PDF",
       verbose
     },

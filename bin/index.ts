@@ -5,12 +5,14 @@ import fs from "node:fs";
 
 // Import Third-party Dependencies
 import sade from "sade";
-import kleur from "kleur";
 
 // Import Internal Dependencies
 import * as commands from "./commands/index.ts";
+import * as utils from "../src/utils/index.ts";
 
-console.log(kleur.grey().bold(`\n > Executing nreport at: ${kleur.yellow().bold(process.cwd())}\n`));
+const { formatter } = utils;
+
+console.log(formatter.gray.bold(`\n > Executing nreport at: ${formatter.yellow.bold(process.cwd())}\n`));
 
 const { version } = JSON.parse(
   fs.readFileSync(new URL("../package.json", import.meta.url), "utf-8")
