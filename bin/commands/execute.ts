@@ -6,10 +6,12 @@ import { inspect } from "node:util";
 
 // Import Third-party Dependencies
 import * as rc from "@nodesecure/rc";
-import kleur from "kleur";
 
 // Import Internal Dependencies
 import { store } from "../../src/localStorage.ts";
+import * as utils from "../../src/utils/index.ts";
+
+const { formatter } = utils;
 
 import { fetchPackagesAndRepositoriesData } from "../../src/analysis/fetch.ts";
 import * as CONSTANTS from "../../src/constants.ts";
@@ -29,7 +31,7 @@ export async function execute(options: ExecuteOptions = {}) {
   const { debug: debugMode } = options;
 
   if (debugMode) {
-    console.log(kleur.bgMagenta().bold(" > Debug mode enabled \n"));
+    console.log(formatter.bgMagenta.bold(" > Debug mode enabled \n"));
   }
 
   const [configResult] = await Promise.all([
@@ -47,8 +49,8 @@ export async function execute(options: ExecuteOptions = {}) {
     throw new Error("At least one reporter must be selected (either 'HTML' or 'PDF')");
   }
 
-  console.log(`>> title: ${kleur.cyan().bold(report.title)}`);
-  console.log(`>> reporters: ${kleur.magenta().bold(report.reporters.join(","))}\n`);
+  console.log(`>> title: ${formatter.cyan.bold(report.title)}`);
+  console.log(`>> reporters: ${formatter.magenta.bold(report.reporters.join(","))}\n`);
 
   store.run(config, async() => {
     try {
@@ -57,7 +59,7 @@ export async function execute(options: ExecuteOptions = {}) {
         debug(data);
       }
       await reporting.proceed(data);
-      console.log(kleur.green().bold("\n>> Security report successfully generated! Enjoy 🚀.\n"));
+      console.log(formatter.green.bold("\n>> Security report successfully generated! Enjoy 🚀.\n"));
     }
     catch (error) {
       console.error(error);

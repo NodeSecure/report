@@ -3,3 +3,4 @@ export * from "./cloneGITRepository.ts";
 export * from "./runInSpinner.ts";
 export * from "./formatNpmPackages.ts";
 export * from "./charts.ts";
+export * from "./formatter.ts";

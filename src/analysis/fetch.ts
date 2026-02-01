@@ -2,7 +2,6 @@
 import path from "node:path";
 
 // Import Third-party Dependencies
-import kleur from "kleur";
 import * as scorecard from "@nodesecure/ossf-scorecard-sdk";
 import { isHTTPError } from "@openally/httpie";
 
@@ -12,6 +11,8 @@ import * as scanner from "./scanner.ts";
 import * as localStorage from "../localStorage.ts";
 import * as utils from "../utils/index.ts";
 import * as CONSTANTS from "../constants.ts";
+
+const { formatter } = utils;
 
 // CONSTANTS
 const kNotFoundStatusCode = 404;
@@ -59,7 +60,7 @@ async function fetchPackagesStats(
 ) {
   const jsonFiles = await utils.runInSpinner(
     {
-      title: `[Fetcher: ${kleur.yellow().bold("NPM")}]`,
+      title: `[Fetcher: ${formatter.yellow.bold("NPM")}]`,
       start: "Fetching NPM packages metadata on the NPM Registry",
       verbose
     },
@@ -78,7 +79,7 @@ async function fetchRepositoriesStats(
 ) {
   const jsonFiles = await utils.runInSpinner(
     {
-      title: `[Fetcher: ${kleur.yellow().bold("GIT")}]`,
+      title: `[Fetcher: ${formatter.yellow.bold("GIT")}]`,
       start: "Cloning GIT repositories",
       verbose
     },
