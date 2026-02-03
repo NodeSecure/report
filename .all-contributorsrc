@@ -102,6 +102,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "jmpp",
+      "name": "Jean-Marie Cléry",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1759179?v=4",
+      "profile": "https://jmclery.dev",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
