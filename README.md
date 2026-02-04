@@ -20,7 +20,7 @@ This project is designed to generate periodic security reports in both HTML and 
 
 ## Features
 
-- Automatically clones and scans Git repositories using **scanner.cwd**.
+- Automatically clones and scans Git repositories using **scanner.workingDir**.
 - Provides a visual overview of **security threats** and quality issues for multiple Git or NPM packages.
 - Facilitates visualization of changes over time.
 - Generates reports in both **HTML** and **PDF** formats.

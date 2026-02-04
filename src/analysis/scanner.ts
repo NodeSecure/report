@@ -45,7 +45,7 @@ export async function cwd(
 
   try {
     const name = `${path.basename(dir)}.json`;
-    const { dependencies } = await scanner.cwd(dir, {
+    const { dependencies } = await scanner.workingDir(dir, {
       maxDepth: 4,
       vulnerabilityStrategy: "none"
     });

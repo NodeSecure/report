@@ -188,7 +188,7 @@ PDF or HTML for packages that don't have a scorecard`, async() => {
   });
 });
 
-function isPDF(buf) {
+function isPDF(buf: Buffer) {
   return (
     Buffer.isBuffer(buf) && buf.lastIndexOf("%PDF-") === 0 && buf.lastIndexOf("%%EOF") > -1
   );
