@@ -347,3 +347,86 @@ li[role=link]:focus {
     display: 100%;
   }
 }
+
+/* ===== UI ENHANCEMENTS ===== */
+
+.box-stats,
+.box-stats-resume > .one-stat {
+  background: var(--card-background, transparent);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.box-stats:hover,
+.box-stats-resume > .one-stat:hover {
+  transform: translateY(-2px);
+}
+
+ul > li > a span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.npm-packages-item:hover {
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 4px;
+}
+
+.box-stats-resume > .one-stat span {
+  font-size: 1.3rem;
+  letter-spacing: 1px;
+}
+
+.box-stats-container.charts {
+  box-shadow: inset 0 0 0 1px var(--faded-border-color);
+}
+
+/* ===== Authors & Maintainers – List View ===== */
+
+.authors-list {
+  margin-top: 15px;
+  width: 100%;
+  max-width: 520px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0;
+}
+
+.authors-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 10px;
+  border-bottom: 1px solid var(--primary-border-color);
+  font-family: "mononoki";
+}
+
+.authors-list li:last-child {
+  border-bottom: none;
+}
+
+.author-email {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 75%;
+}
+
+.author-count {
+  font-weight: bold;
+  color: var(--main-color);
+}
+
+
+.authors-list li:nth-child(1)::before {
+  content: "🥇";
+  margin-right: 6px;
+}
+.authors-list li:nth-child(2)::before {
+  content: "🥈";
+  margin-right: 6px;
+}
+.authors-list li:nth-child(3)::before {
+  content: "🥉";
+  margin-right: 6px;
+}
