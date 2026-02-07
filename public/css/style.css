@@ -258,7 +258,8 @@ div.page>section h2 {
 ul {
   margin-top: var(--default-margin);
 }
-ul + ul {
+
+ul+ul {
   margin-right: 20px;
 }
 
@@ -283,7 +284,8 @@ ul>li>a {
   color: var(--secondary-text-color);
 }
 
-ul>li>p,ul>li>span {
+ul>li>p,
+ul>li>span {
   font-size: 18px;
 }
 
@@ -351,17 +353,17 @@ li[role=link]:focus {
 /* ===== UI ENHANCEMENTS ===== */
 
 .box-stats,
-.box-stats-resume > .one-stat {
+.box-stats-resume>.one-stat {
   background: var(--card-background, transparent);
   transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 .box-stats:hover,
-.box-stats-resume > .one-stat:hover {
+.box-stats-resume>.one-stat:hover {
   transform: translateY(-2px);
 }
 
-ul > li > a span {
+ul>li>a span {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -372,7 +374,7 @@ ul > li > a span {
   border-radius: 4px;
 }
 
-.box-stats-resume > .one-stat span {
+.box-stats-resume>.one-stat span {
   font-size: 1.3rem;
   letter-spacing: 1px;
 }
@@ -381,52 +383,55 @@ ul > li > a span {
   box-shadow: inset 0 0 0 1px var(--faded-border-color);
 }
 
-/* ===== Authors & Maintainers – List View ===== */
+/* ===== Authors & Maintainers – Leaderboard UI ===== */
 
-.authors-list {
-  margin-top: 15px;
-  width: 100%;
-  max-width: 520px;
+.authors-leaderboard {
+  margin-top: 20px;
+  max-width: 650px;
   margin-left: auto;
   margin-right: auto;
   padding: 0;
 }
 
-.authors-list li {
-  display: flex;
-  justify-content: space-between;
+.authors-leaderboard li {
+  display: grid;
+  grid-template-columns: 40px 1fr 60px;
   align-items: center;
-  padding: 6px 10px;
-  border-bottom: 1px solid var(--primary-border-color);
+  gap: 10px;
+  padding: 10px 14px;
+  margin-bottom: 8px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--faded-border-color);
   font-family: "mononoki";
 }
 
-.authors-list li:last-child {
-  border-bottom: none;
+.authors-leaderboard .rank {
+  font-weight: bold;
+  text-align: center;
+}
+
+/* Top 3 highlight */
+.authors-leaderboard .rank-1 {
+  border-color: gold;
+}
+
+.authors-leaderboard .rank-2 {
+  border-color: silver;
+}
+
+.authors-leaderboard .rank-3 {
+  border-color: #cd7f32;
 }
 
 .author-email {
+  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
-  max-width: 75%;
 }
 
 .author-count {
   font-weight: bold;
   color: var(--main-color);
-}
-
-
-.authors-list li:nth-child(1)::before {
-  content: "🥇";
-  margin-right: 6px;
-}
-.authors-list li:nth-child(2)::before {
-  content: "🥈";
-  margin-right: 6px;
-}
-.authors-list li:nth-child(3)::before {
-  content: "🥉";
-  margin-right: 6px;
+  text-align: right;
 }

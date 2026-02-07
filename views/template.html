@@ -163,12 +163,15 @@
           [[ } ]]
         </div>
 
-        <ul class="authors-list">
-          [[ for (const [email, count] of Object.entries(z.npm_stats.authors)) { ]]
-          <li>
+        <ul class="authors-leaderboard">
+          [[ let index = 0; ]]
+          [[ for (const [email, count] of Object.entries(z.npm_stats.authors).sort((a, b) => b[1] - a[1])) { ]]
+          <li class="rank-[[=index+1]]">
+            <span class="rank">[[=index+1]]</span>
             <span class="author-email">[[=email]]</span>
             <span class="author-count">[[=count]]</span>
           </li>
+          [[ index++; ]]
           [[ } ]]
         </ul>
 
