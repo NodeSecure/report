@@ -1,5 +1,4 @@
 // Import Node.js Dependencies
-import { fileURLToPath } from "node:url";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
@@ -11,8 +10,7 @@ import { stripVTControlCharacters } from "node:util";
 import { runProcess } from "../helpers/reportCommandRunner.ts";
 
 // CONSTANTS
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const kBinDir = path.join(__dirname, "../..", "dist/bin/index.ts");
+const kBinDir = path.join(import.meta.dirname, "../..", "dist/bin/index.ts");
 const kProcessDir = os.tmpdir();
 const kConfigFilePath = path.join(kProcessDir, ".nodesecurerc");
 

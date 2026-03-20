@@ -1,7 +1,8 @@
 {
   "extends": "@openally/config.typescript/esm-ts-next",
   "compilerOptions": {
-    "outDir": "dist"
+    "outDir": "dist",
+    "types": ["node"]
   },
   "include": [
     "src",

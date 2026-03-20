@@ -1,5 +1,4 @@
 // Import Node.js Dependencies
-import { fileURLToPath } from "node:url";
 import path from "node:path";
 import fs from "node:fs/promises";
 import { afterEach, describe, it } from "node:test";
@@ -11,8 +10,7 @@ import { filterProcessStdout } from "../helpers/reportCommandRunner.ts";
 import * as CONSTANTS from "../../src/constants.ts";
 
 // CONSTANTS
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const kProcessDir = path.join(__dirname, "../..");
+const kProcessDir = path.join(import.meta.dirname, "../..");
 
 describe("Report execute command", () => {
   afterEach(async() => await fs.rm(CONSTANTS.DIRS.CLONES, {
