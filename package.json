@@ -52,7 +52,7 @@
   "homepage": "https://github.com/NodeSecure/report#readme",
   "dependencies": {
     "@nodesecure/flags": "^3.0.3",
-    "@nodesecure/ossf-scorecard-sdk": "^3.2.1",
+    "@nodesecure/ossf-scorecard-sdk": "4.0.0",
     "@nodesecure/rc": "^5.0.0",
     "@nodesecure/scanner": "10.5.1",
     "@nodesecure/utils": "^2.2.0",
