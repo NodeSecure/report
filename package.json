@@ -17,9 +17,9 @@
     "build:views": "rimraf dist/views && cp -r views dist/views",
     "build:public": "rimraf dist/public && cp -r public dist/public",
     "lint": "eslint src test bin scripts",
-    "test-only": "node --test-reporter=spec --test ./test/**/*.spec.ts",
+    "test-only": "node --test-reporter=spec --test \"./test/**/*.spec.ts\"",
     "test": "c8 --all --src ./src -r html npm run test-only",
-    "test:e2e": "node --env-file-if-exists=.env --test-reporter=spec --test ./test/**/*.e2e-spec.ts",
+    "test:e2e": "node --env-file-if-exists=.env --test-reporter=spec --test \"./test/**/*.e2e-spec.ts\"",
     "preview:light": "node --no-warnings ./scripts/preview.ts --theme light",
     "preview:dark": "node --no-warnings ./scripts/preview.ts --theme dark",
     "prepublishOnly": "npm run build"
@@ -60,7 +60,7 @@
     "@topcli/spinner": "^4.0.0",
     "esbuild": "^0.27.0",
     "filenamify": "^7.0.0",
-    "puppeteer": "^24.10.1",
+    "puppeteer": "24.40.0",
     "sade": "^1.8.1",
     "zup": "0.0.2"
   },

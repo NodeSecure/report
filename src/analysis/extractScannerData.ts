@@ -104,7 +104,7 @@ export function buildStatsFromScannerDependencies(
   }
 
   const payloads = Array.isArray(payloadFiles) ? payloadFiles : [payloadFiles];
-  const npmConfig = config.npm!;
+  const npmConfig = config.npm;
 
   const dependencies = payloads.reduce<Payload["dependencies"]>((acc, curr) => {
     const dep = getPayloadDependencies(curr);
@@ -118,16 +118,16 @@ export function buildStatsFromScannerDependencies(
     new Extractors.Probes.Flags(),
     new Extractors.Probes.Licenses(),
     new Extractors.Probes.Warnings(),
-    new Extractors.Probes.Size({ organizationPrefix: npmConfig.organizationPrefix }),
+    new Extractors.Probes.Size({ organizationPrefix: npmConfig?.organizationPrefix }),
     new Extractors.Probes.Extensions(),
     new Extractors.Probes.NodeDependencies()
   ]);
 
   extractor.on("manifest", (spec: string, dependencyVersion, { name }) => {
     const { flags, links = [] } = dependencyVersion;
-    const isThird = npmConfig.organizationPrefix === null ?
+    const isThird = npmConfig?.organizationPrefix === null ?
       true :
-      !name.startsWith(`${npmConfig.organizationPrefix}/`);
+      !name.startsWith(`${npmConfig?.organizationPrefix}/`);
     if (!(name in stats.packages)) {
       const { orgPrefix, name: splitName } = splitPackageWithOrg(name);
       const isGiven = config.npm?.packages.includes(splitName) && orgPrefix === config.npm?.organizationPrefix;
@@ -150,7 +150,11 @@ export function buildStatsFromScannerDependencies(
     curr.versions.add(spec);
     const hasIndirectDependencies = flags.includes("hasIndirectDependencies");
     id: if (hasIndirectDependencies) {
-      if (!config.includeTransitiveInternal && name.startsWith(npmConfig.organizationPrefix)) {
+      if (
+        !config.includeTransitiveInternal &&
+        npmConfig &&
+        name.startsWith(npmConfig.organizationPrefix)
+      ) {
         break id;
       }
 
