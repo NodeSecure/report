@@ -28,8 +28,12 @@ jobs:
         uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
         with:
           node-version: ${{ matrix.node-version }}
+      - name: Install socket firewall
+        run: npm i -g sfw
+      - name: Install puppeteer safely
+        run: sfw npm i -g puppeteer
       - name: Install chromium
-        run: npx puppeteer browsers install chrome
+        run: npx --no --offline puppeteer browsers install chrome
       - name: Install dependencies
         run: npm install --ignore-scripts
       - name: build
