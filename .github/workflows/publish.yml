@@ -23,8 +23,12 @@ jobs:
       # Ensure npm 11.5.1 or later is installed
       - name: Update npm
         run: npm install -g npm@latest
+      - name: Install socket firewall
+        run: npm i -g sfw
+      - name: Install puppeteer safely
+        run: sfw npm i -g puppeteer
       - name: Install chromium
-        run: npx puppeteer browsers install chrome
+        run: npx --no --offline puppeteer browsers install chrome
       - run: npm install --ignore-scripts
       - run: npm run build --if-present
       - run: npm test
