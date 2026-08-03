@@ -56,11 +56,11 @@
     "@nodesecure/rc": "^5.0.0",
     "@nodesecure/scanner": "10.13.0",
     "@nodesecure/utils": "^2.2.0",
-    "@openally/mutex": "^2.0.0",
+    "@openally/mutex": "^3.0.0",
     "@topcli/spinner": "^4.0.0",
     "esbuild": "^0.28.0",
     "filenamify": "^7.0.0",
-    "puppeteer": "25.3.0",
+    "puppeteer": "25.4.0",
     "sade": "^1.8.1",
     "zup": "0.0.2"
   },
