@@ -57,7 +57,7 @@
     "@nodesecure/scanner": "10.13.0",
     "@nodesecure/utils": "^2.2.0",
     "@openally/mutex": "^3.0.0",
-    "@topcli/spinner": "^4.0.0",
+    "@topcli/spinner": "^5.0.0",
     "esbuild": "^0.28.0",
     "filenamify": "^7.0.0",
     "puppeteer": "25.9.0",
